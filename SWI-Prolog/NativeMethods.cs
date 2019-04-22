@@ -22,11 +22,11 @@
 // Uncomment the following line to compile on Linux or MacOS
 // #define _LINUX
 
+using Microsoft.Win32.SafeHandles;
 using System;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using Microsoft.Win32.SafeHandles;
-using System.Runtime.ConstrainedExecution;
 
 namespace SWI_Prolog
 {

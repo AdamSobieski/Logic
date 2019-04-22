@@ -119,7 +119,7 @@ namespace SWI_Prolog
         }
 
 
-        internal static void SetStreamFunction(Streams.PlStreamType streamType, StreamsFunction functionType, Delegate function)
+        internal static void SetStreamFunction(Streams.StreamType streamType, StreamsFunction functionType, Delegate function)
         {
             // to calculate to following values use the C++ Project CalcStreamSize
 #if _PL_X64

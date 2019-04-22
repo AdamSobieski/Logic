@@ -26,7 +26,6 @@ namespace Logic.Prolog
             prolog = new PrologEngine();
             v8.AddHostType("Console", typeof(Console));
             v8.AddHostObject("prolog", prolog);
-            prolog.Initialize(v8);
         }
 
         [ClassCleanup]

@@ -19,9 +19,7 @@ namespace Application
                 using (var prolog = new PrologEngine())
                 {
                     engine.AddHostType("Console", typeof(Console));
-
                     engine.AddHostObject("prolog", prolog);
-                    prolog.Initialize(engine);
 
                     //var now = DateTime.Now;
 
@@ -110,7 +108,6 @@ namespace Application
 
                     //Console.WriteLine();
                     //Console.WriteLine("Elapsed: {0}", DateTime.Now - now);
-
                 }
             }
         }

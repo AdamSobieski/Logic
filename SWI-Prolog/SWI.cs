@@ -68,7 +68,7 @@ namespace SWI_Prolog.Streams
     /// <summary>
     /// The standard SWI-Prolog streams ( input output error )
     /// </summary>
-    public enum PlStreamType
+    public enum StreamType
     {
         /// <summary>0 - The standard input stream.</summary>
         Input = 0,
@@ -128,74 +128,131 @@ namespace SWI_Prolog.Streams
 // The namespace summary is above class NamespaceDoc
 namespace Logic.Prolog
 {
-    /// <summary>
-    /// Obtain the type of a term, which should be a term returned by one of the other 
-    /// interface predicates or passed as an argument. The function returns the type of 
-    /// the Prolog term. The type identifiers are listed below. 
-    /// </summary>
-    /// <remarks>see <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_term_type()">PL_term_type(term_t)</see> in the SWI-Prolog Manual.</remarks>
-    /// <seealso cref="P:SbsSW.SwiPlCs.PlTerm.PlType"/>
-    /// <example>
-    /// In this sample a Prolog variable is created in <see cref="Term">PlTerm t</see> and the <see cref="P:SbsSW.SwiPlCs.PlTerm.PlType"/> 
-    /// is checked by his integer representation and his name.
-    /// <code>
-    ///     PlTerm t = PlTerm.PlVar();
-    ///     Assert.AreEqual(1, (int)t.PlType);
-    ///     Assert.AreEqual(PlType.PlVariable, t.PlType);
-    /// </code>
-    /// </example>
+    // from: http://www.swi-prolog.org/pldoc/doc_for?object=c(%27PL_term_type%27)
+    //---------------------------------------------------------------------------
+    //PL_VARIABLE A variable or attributed variable
+    //PL_ATOM A Prolog atom
+    //PL_NIL The constant[]
+    //PL_BLOB A blob(see section 12.4.8.2)
+    //PL_STRING A string (see section 5.2)
+    //PL_INTEGER A integer
+    //PL_FLOAT    A floating point number
+    //PL_TERM A compound term
+    //PL_LIST_PAIR A list cell([H|T])
+    //PL_DICT A dict(see section 5.4))
+
+    //from: SWI-Prolog.h
+    //---------------------------------------------------------------------------
+    ///*******************************
+    //*      TERM-TYPE CONSTANTS	*
+    //*******************************/
+    //  /* PL_unify_term() arguments */
+    //#define PL_VARIABLE	 (1)		/* nothing */
+    //#define PL_ATOM		 (2)		/* const char * */
+    //#define PL_INTEGER	 (3)		/* int */
+    //#define PL_FLOAT	 (4)		/* double */
+    //#define PL_STRING	 (5)		/* const char * */
+    //#define PL_TERM		 (6)
+
+    //#define PL_NIL		 (7)		/* The constant [] */
+    //#define PL_BLOB		 (8)		/* non-atom blob */
+    //#define PL_LIST_PAIR	 (9)		/* [_|_] term */
+
+    //  /* PL_unify_term() */
+    //#define PL_FUNCTOR	 (10)		/* functor_t, arg ... */
+    //#define PL_LIST		 (11)		/* length, arg ... */
+    //#define PL_CHARS	 (12)		/* const char * */
+    //#define PL_POINTER	 (13)		/* void * */
+    //  /* PlArg::PlArg(text, type) */
+    //#define PL_CODE_LIST	 (14)		/* [ascii...] */
+    //#define PL_CHAR_LIST	 (15)		/* [h,e,l,l,o] */
+    //#define PL_BOOL		 (16)		/* PL_set_prolog_flag() */
+    //#define PL_FUNCTOR_CHARS (17)		/* PL_unify_term() */
+    //#define _PL_PREDICATE_INDICATOR (18)	/* predicate_t (Procedure) */
+    //#define PL_SHORT	 (19)		/* short */
+    //#define PL_INT		 (20)		/* int */
+    //#define PL_LONG		 (21)		/* long */
+    //#define PL_DOUBLE	 (22)		/* double */
+    //#define PL_NCHARS	 (23)		/* size_t, const char * */
+    //#define PL_UTF8_CHARS	 (24)		/* const char * */
+    //#define PL_UTF8_STRING	 (25)		/* const char * */
+    //#define PL_INT64	 (26)		/* int64_t */
+    //#define PL_NUTF8_CHARS	 (27)		/* size_t, const char * */
+    //#define PL_NUTF8_CODES	 (29)		/* size_t, const char * */
+    //#define PL_NUTF8_STRING	 (30)		/* size_t, const char * */
+    //#define PL_NWCHARS	 (31)		/* size_t, const wchar_t * */
+    //#define PL_NWCODES	 (32)		/* size_t, const wchar_t * */
+    //#define PL_NWSTRING	 (33)		/* size_t, const wchar_t * */
+    //#define PL_MBCHARS	 (34)		/* const char * */
+    //#define PL_MBCODES	 (35)		/* const char * */
+    //#define PL_MBSTRING	 (36)		/* const char * */
+    //#define PL_INTPTR	 (37)		/* intptr_t */
+    //#define PL_CHAR		 (38)		/* int */
+    //#define PL_CODE		 (39)		/* int */
+    //#define PL_BYTE		 (40)		/* int */
+    //  /* PL_skip_list() */
+    //#define PL_PARTIAL_LIST	 (41)		/* a partial list */
+    //#define PL_CYCLIC_TERM	 (42)		/* a cyclic list/term */
+    //#define PL_NOT_A_LIST	 (43)		/* Object is not a list */
+    //  /* dicts */
+    //#define PL_DICT		 (44)
+
     public enum PrologTermType
     {
-        /// <summary>0 - PL_UNKNOWN: Undefined </summary>
         Unknown = 0,
-        /// <summary>1 - PL_VARIABLE: An unbound variable. The value of term as such is a unique identifier for the variable.</summary>
         Variable = 1,
-        /// <summary>2 - PL_ATOM: A Prolog atom.</summary>
         Atom = 2,
-        /// <summary>3 - PL_INTEGER: A Prolog integer.</summary>
         Integer = 3,
-        /// <summary>4 - PL_FLOAT: A Prolog floating point number.</summary>
         Float = 4,
-        /// <summary>5 - PL_STRING: A Prolog string.</summary>
         String = 5,
-        /// <summary>6 - PL_TERM: A compound term. Note that a list is a compound term ./2.</summary>
         Term = 6,
-
-        /// <summary>14 - PL_CODE_LIST: [ascii...].</summary>
+        Nil = 7,
+        Blob = 8,
+        ListPair = 9,
+        Functor = 10,
+        List = 11,
+        Chars = 12,
+        Pointer = 13,
         CodeList = 14,
-        /// <summary>15 - PL_CHAR_LIST: [h,e,l,l,o].</summary>
         CharList = 15,
+        Bool = 16,
+        FunctorChars = 17,
+        PredicateIndicator = 18,
+        Short = 19,
+        Int = 20,
+        Long = 21,
+        Double = 22,
+        NChars = 23,
+        UTF8Chars = 24,
+        UTF8String = 25,
+        Int64 = 26,
+        NUTF8Chars = 27,
+        NUTF8Codes = 29,
+        NUTF8String = 30,
+        NWChars = 31,
+        NWCodes = 32,
+        NWString = 33,
+        MBChars = 34,
+        MBCodes = 35,
+        MBString = 36,
+        IntPtr = 37,
+        Char = 38,
+        Code = 39,
+        Byte = 40,
+        PartialList = 41,
+        CyclicTerm = 42,
+        NotAList = 43,
+        Dict = 44
     }
 
     /********************************
     *     GENERIC PROLOG TERM		*
     ********************************/
     #region public struct PrologTerm
-#pragma warning disable 1574
-    // warning CS1574: XML comment on 'SbsSW.SwiPlCs.PlTerm' has cref attribute 'System.Linq' that 
-    // SwiPlCs need no assambly reference to Linq
 
     /// <summary>
-    ///  <para>The PlTerm <see langword="struct"/> plays a central role in conversion and operating on Prolog data.</para>
-    ///  <para>PlTerm implements <see cref="System.IComparable"/> to support ordering in <see cref="T:System.Linq"/> queries if PlTerm is a List.
-    /// see <see cref="PlTerm.Append"/> for examples.
-    /// </para>
-    ///  <para>Creating a PlTerm can be done by the <see href="Overload_SbsSW_SwiPlCs_PlTerm__ctor.htm">Constructors</see> or by the following static methods:</para>
-    ///  <para>PlVar(), PlTail(), PlCompound, PlString(), PlCodeList(), PlCharList() (see remarks)</para>
+    ///  <para>The PrologTerm <see langword="struct"/> plays a central role in operating on Prolog data.</para>
     /// </summary>
-    /// <remarks>
-    /// <list type="table">  
-    /// <listheader><term>static method</term><description>Description </description></listheader>  
-    /// <item><term><see cref="Variable()"/></term><description>Creates a new initialised term (holding a Prolog variable).</description></item>  
-    /// <item><term><see cref="PlTail(PlTerm)"/></term><description>PlTail is for analysing and constructing lists.</description></item>  
-    /// <item><term><see href="Overload_SbsSW_SwiPlCs_PlTerm_PlCompound.htm">PlCompound(string)</see></term><description>Create compound terms. E.g. by parsing (as read/1) the given text.</description></item>  
-    /// <item><term><see cref="String(string)"/></term><description>Create a SWI-Prolog string.</description></item>  
-    /// <item><term><see cref="PlCodeList(string)"/></term><description>Create a Prolog list of ASCII codes from a 0-terminated C-string.</description></item>  
-    /// <item><term><see cref="PlCharList(string)"/></term><description>Create a Prolog list of one-character atoms from a 0-terminated C-string.</description></item>  
-    /// </list>   
-    /// </remarks>
-#pragma warning restore 1574
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public struct PrologTerm : IComparable, IEnumerable<PrologTerm>// TODO, IList<PlTerm> // LISTS
     {
         private uintptr_t _termRef;
@@ -213,7 +270,7 @@ namespace Logic.Prolog
 
         #region implementing IComparable CompareTo
 
-        ///<inheritdoc />
+        [NoScriptAccess]
         public int CompareTo(object obj)
         {
             if (obj is PrologTerm)
@@ -374,7 +431,7 @@ namespace Logic.Prolog
             //Check.Require(list != null);
             Contract.Requires(list != null);
             //Check.Require(list.IsList || list.IsVar);
-            Contract.Requires(list.IsList || list.IsVar);
+            Contract.Requires(list.IsList || list.IsVariable);
 
             var term = new PrologTerm();
             if (0 != libswipl.PL_is_variable(list.TermRef) || 0 != libswipl.PL_is_list(list.TermRef))
@@ -387,35 +444,12 @@ namespace Logic.Prolog
         #endregion
 
         #region Compound Creation
-        /// <overloads>
-        /// <summary>
-        /// <para>These static methods creates a new compound <see cref="PrologTerm"/>.</para>
-        /// <para>For an example <see cref="Compound(string, PrologTermVector)"/></para>
-        /// </summary>
-        /// </overloads>
-        /// <summary>
-        /// It is the same as new PlTerm(text).
-        /// </summary>
-        /// <param name="text">The string representing the compound term.</param>
-        /// <returns>a new <see cref="PrologTerm"/></returns>
-        [Obsolete("PlTerm.PlCompound(test) is deprecated, please use new PlTerm(text) instead.")]
+        [Obsolete("PrologTerm.Compound(text) is deprecated, please use new PrologTerm(text) instead.")]
         static internal PrologTerm Compound(string text)
         {
             return new PrologTerm(text);
         }
 
-        /// <summary>
-        /// <para>Create a compound term with the given name from the given vector of arguments. See <see cref="PrologTermVector"/> for details.</para>
-        /// </summary>
-        /// <example>
-        /// <para>The example below creates the Prolog term hello(world).</para>
-        /// <code>
-        ///  PlTerm t = PlTerm.PlCompound("hello", new PlTermv("world"));
-        /// </code>
-        /// </example>
-        /// <param name="functor">The functor (name) of the compound term</param>
-        /// <param name="args">the arguments as a <see cref="PrologTermVector"/></param>
-        /// <returns>a new <see cref="PrologTerm"/></returns>
         static public PrologTerm Compound(string functor, PrologTermVector args)
         {
             //Check.Require(args.A0 != 0);
@@ -427,33 +461,24 @@ namespace Logic.Prolog
             return term;
         }
 
-        /// <summary>
-        /// <para>Create a compound term with the given name ant the arguments</para>
-        /// </summary>
-        /// <param name="functor">The functor (name) of the compound term</param>
-        /// <param name="arg1">The first Argument as a <see cref="PrologTerm"/></param>
-        /// <returns>a new <see cref="PrologTerm"/></returns>
         static public PrologTerm Compound(string functor, PrologTerm arg1)
         {
             var args = new PrologTermVector(arg1);
             return Compound(functor, args);
         }
-#pragma warning disable 1573
-        ///<inheritdoc cref="Compound(string, PrologTerm)" />
-        /// <param name="arg2">The second Argument as a <see cref="PrologTerm"/></param>
+
         static public PrologTerm Compound(string functor, PrologTerm arg1, PrologTerm arg2)
         {
             var args = new PrologTermVector(arg1, arg2);
             return Compound(functor, args);
         }
-        ///<inheritdoc cref="Compound(string, PrologTerm, PrologTerm)" />
-        /// <param name="arg3">The third Argument as a <see cref="PrologTerm"/></param>
+
         static public PrologTerm Compound(string functor, PrologTerm arg1, PrologTerm arg2, PrologTerm arg3)
         {
             var args = new PrologTermVector(arg1, arg2, arg3);
             return Compound(functor, args);
         }
-#pragma warning restore 1573
+
         #endregion PlCompound Creation
 
         #region String Creation
@@ -466,23 +491,20 @@ namespace Logic.Prolog
         /// </summary>
         /// <param name="text">the string</param>
         /// <returns>a new PlTerm</returns>
-        /// <remarks>NOTE: this Method do *not* work with unicode characters. Concider to use new PlTerm(test) instead.</remarks>
+        /// <remarks>NOTE: this Method does *not* work with unicode characters. Concider to use new PlTerm(test) instead.</remarks>
         public static PrologTerm String(string text)
         {
             var t = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
             libswipl.PL_unify_wchars(t.TermRef, PrologTermType.String, text);
             return t;
         }
-#pragma warning disable 1573
-        /// <inheritdoc cref="String(string)" />
-        /// <param name="len">the length of the string</param>
-        static public PrologTerm String(string text, int len)
+
+        public static PrologTerm String(string text, int len)
         {
             var t = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
             libswipl.PL_unify_wchars(t.TermRef, PrologTermType.String, len, text);
             return t;
         }
-#pragma warning restore 1573
         #endregion PlString Creation
 
         #region PlCodeList Creation
@@ -491,7 +513,7 @@ namespace Logic.Prolog
         /// </summary>
         /// <param name="text">The text</param>
         /// <returns>a new <see cref="PrologTerm"/></returns>
-        static public PrologTerm PlCodeList(string text)
+        public static PrologTerm PlCodeList(string text)
         {
             var term = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
             libswipl.PL_unify_wchars(term.TermRef, PrologTermType.CodeList, text);
@@ -509,7 +531,7 @@ namespace Logic.Prolog
         /// <remarks>Character lists are compliant to Prolog's <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/manipatom.html#atom_chars/2">atom_chars/2</see> predicate.</remarks>
         /// <param name="text">a string</param>
         /// <returns>A new PlTerm containing a prolog list of character</returns>
-        static public PrologTerm PlCharList(string text)
+        public static PrologTerm PlCharList(string text)
         {
             var term = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
             libswipl.PL_unify_wchars(term.TermRef, PrologTermType.CharList, text);
@@ -523,14 +545,9 @@ namespace Logic.Prolog
 
         #region Testing the type of a term ( IsVar, IsList, .... )
 
-        /// <summary>
-        /// return false for a PlTerm variable wihich is only declareted 
-        /// and tru if it is also Initialized
-        /// </summary>
         [NoScriptAccess]
         public bool IsInitialized { get { return 0 != _termRef; } }
 
-        /// <summary>Get the <see cref="T:SbsSW.SwiPlCs.PlType"/> of a <see cref="PrologTerm"/>.</summary>
         [NoScriptAccess]
         public PrologTermType PlType
         {
@@ -539,53 +556,33 @@ namespace Logic.Prolog
 
         // all return non zero if condition succeed
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a variable</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isVariable")]
-        public bool IsVar { get { return 0 != libswipl.PL_is_variable(TermRef); } }
+        public bool IsVariable { get { return 0 != libswipl.PL_is_variable(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a ground term. See also ground/1. This function is cycle-safe.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isGround")]
         public bool IsGround { get { return 0 != libswipl.PL_is_ground(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is an atom.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isAtom")]
         public bool IsAtom { get { return 0 != libswipl.PL_is_atom(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a string.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isString")]
         public bool IsString { get { return 0 != libswipl.PL_is_string(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is an integer.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isInteger")]
         public bool IsInteger { get { return 0 != libswipl.PL_is_integer(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a float.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isFloat")]
         public bool IsFloat { get { return 0 != libswipl.PL_is_float(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a compound term. Note that a list is a compound term ./2</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isCompound")]
         public bool IsCompound { get { return 0 != libswipl.PL_is_compound(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is a compound term with functor ./2 or the atom [].</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isList")]
         public bool IsList { get { return 0 != libswipl.PL_is_list(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is atomic (not variable or compound).</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isAtomic")]
         public bool IsAtomic { get { return 0 != libswipl.PL_is_atomic(TermRef); } }
 
-        /// <summary>Return true if <see cref="PrologTerm"/> is an integer or float.</summary>
-        /// <seealso cref="T:SbsSW.SwiPlCs.PlType"/>
         [ScriptMember("isNumber")]
         public bool IsNumber { get { return 0 != libswipl.PL_is_number(TermRef); } }
 
@@ -618,7 +615,7 @@ namespace Logic.Prolog
         public bool Append(PrologTerm term)
         {
             //Check.Require(IsList || IsVar);
-            Contract.Requires(IsList || IsVar);
+            Contract.Requires(IsList || IsVariable);
             //Check.Require(term._termRef != 0);
             Contract.Requires(term._termRef != 0);
 
@@ -699,7 +696,7 @@ namespace Logic.Prolog
         public int Close()
         {
             //Check.Require(IsList || IsVar);
-            Contract.Requires(IsList || IsVar);
+            Contract.Requires(IsList || IsVariable);
             return libswipl.PL_unify_nil(TermRef);
         }
 
@@ -1716,9 +1713,9 @@ namespace SWI_Prolog
         /// <example>
         /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamWrite_doc" />
         /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.PlStreamType"/></param>
+        /// <param name="streamType">Determine which stream to use <see cref="Streams.StreamType"/></param>
         /// <param name="function">A <see cref="Streams.DelegateStreamWriteFunction"/></param>
-        static public void SetStreamFunctionWrite(PlStreamType streamType, DelegateStreamWriteFunction function)
+        static public void SetStreamFunctionWrite(StreamType streamType, DelegateStreamWriteFunction function)
         {
             libswipl.LoadLibPl();
             libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Write, function);
@@ -1731,9 +1728,9 @@ namespace SWI_Prolog
         /// <example>
         /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamRead_doc" />
         /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.PlStreamType"/></param>
+        /// <param name="streamType">Determine which stream to use <see cref="Streams.StreamType"/></param>
         /// <param name="function">A <see cref="Streams.DelegateStreamReadFunction"/></param>
-        static public void SetStreamFunctionRead(PlStreamType streamType, DelegateStreamReadFunction function)
+        static public void SetStreamFunctionRead(StreamType streamType, DelegateStreamReadFunction function)
         {
             libswipl.LoadLibPl();
             libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Read, function);

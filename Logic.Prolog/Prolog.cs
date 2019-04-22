@@ -11,15 +11,27 @@ using SWI_Prolog.Callback;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Runtime.InteropServices;
 
 namespace Logic.Prolog
 {
-    public sealed class PrologEngine : IDisposable
+    public sealed class PrologEngine : IDisposable, IScriptableObject
     {
         public PrologEngine()
         {
             if (!SWI.IsInitialized)
             {
+                bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                if (!isWindows)
+                    throw new Exception("This project presently is built for 64-bit Windows.");
+
+                bool is64bit = Environment.Is64BitOperatingSystem && Environment.Is64BitProcess;
+                if(!is64bit)
+                    throw new Exception("This project presently is built for 64-bit Windows.");
+
+                if (!System.IO.Directory.Exists(@"C:\Program Files\swipl"))
+                    throw new Exception("This project requites SWI-Prolog (64-bit Windows version) to be installed.");
+
                 Environment.SetEnvironmentVariable("SWI_HOME_DIR", @"C:\Program Files\swipl");
                 Environment.SetEnvironmentVariable("Path", @"C:\Program Files\swipl\bin;%Path%");
 
@@ -31,12 +43,6 @@ namespace Logic.Prolog
         }
 
         private List<PrologModule> modules;
-
-        [NoScriptAccess]
-        public void Initialize(ScriptEngine engine)
-        {
-
-        }
 
         [ScriptMember("createModule")]
         public PrologModule CreateModule()
@@ -75,43 +81,43 @@ namespace Logic.Prolog
         }
 
         [ScriptMember("atom")]
-        public dynamic Atom(string name)
+        public PrologTerm Atom(string name)
         {
             return new PrologTerm(name);
         }
 
         [ScriptMember("atom")]
-        public dynamic Atom(int value)
+        public PrologTerm Atom(int value)
         {
             return new PrologTerm(value);
         }
 
         [ScriptMember("atom")]
-        public dynamic Atom(double value)
+        public PrologTerm Atom(double value)
         {
             return new PrologTerm(value);
         }
 
         [ScriptMember("variable")]
-        public dynamic Variable()
+        public PrologTerm Variable()
         {
             return PrologTerm.Variable();
         }
 
         [ScriptMember("compound")]
-        public dynamic Compound(string functor, params PrologTerm[] args)
+        public PrologTerm Compound(string functor, params PrologTerm[] args)
         {
             return PrologTerm.Compound(functor, new PrologTermVector(args));
         }
 
         [ScriptMember("list")]
-        public dynamic List(PrologTerm initial)
+        public PrologTerm List(PrologTerm initial)
         {
             return PrologTerm.Tail(initial);
         }
 
         [ScriptMember("string")]
-        public dynamic String(string text)
+        public PrologTerm String(string text)
         {
             return PrologTerm.String(text);
         }
@@ -120,6 +126,12 @@ namespace Logic.Prolog
         void IDisposable.Dispose()
         {
             SWI.Cleanup();
+        }
+
+        [NoScriptAccess]
+        void IScriptableObject.OnExposedToScriptCode(ScriptEngine engine)
+        {
+            
         }
     }
 
@@ -149,37 +161,43 @@ namespace Logic.Prolog
         [ScriptMember("assert")]
         public bool Assert(string term)
         {
-            return PrologQuery.PlCall(module, "assert(" + term + ")");
+            return PrologQuery.Call(module, "assert(" + term + ")");
         }
 
         [ScriptMember("retract")]
         public bool Retract(string term)
         {
-            return PrologQuery.PlCall(module, "retract(" + term + ")");
+            return PrologQuery.Call(module, "retract(" + term + ")");
         }
 
         [ScriptMember("contains")]
         public bool Contains(string term)
         {
-            return PrologQuery.PlCall(module, term);
+            return PrologQuery.Call(module, term);
         }
 
         [ScriptMember("assertRule")]
         public bool AssertRule(string head, string body)
         {
-            return PrologQuery.PlCall(module, "assert((" + head + " :- " + body + "))");
+            return PrologQuery.Call(module, "assert((" + head + " :- " + body + "))");
         }
 
         [ScriptMember("retractRule")]
         public bool RetractRule(string head, string body)
         {
-            return PrologQuery.PlCall(module, "retract((" + head + " :- " + body + "))");
+            return PrologQuery.Call(module, "retract((" + head + " :- " + body + "))");
         }
 
         [ScriptMember("call")]
         public bool Call(string goal)
         {
-            return PrologQuery.PlCall(module, goal);
+            return PrologQuery.Call(module, goal);
+        }
+
+        [ScriptMember("call")]
+        public bool Call(PrologTerm goal)
+        {
+            return Call(goal.ToString());
         }
 
         [ScriptMember("query")]
@@ -197,14 +215,20 @@ namespace Logic.Prolog
         [ScriptMember("query")]
         public IEnumerable<PrologQueryResult> Query(PrologTerm query)
         {
-            return Query(query.ToString());
-            //using (var q = new PrologQuery(module, query.Name, ))
-            //{
-            //    foreach (PrologQueryResult v in q.SolutionVariables)
-            //    {
-            //        yield return v;
-            //    }
-            //}
+            //return Query(query.ToString());
+            var count = query.Arity;
+            var array = new PrologTerm[count];
+            for(int index = 0; index < count; ++index)
+            {
+                array[index] = query[index + 1];
+            }
+            using (var q = new PrologQuery(module, query.Name, new PrologTermVector(array)))
+            {
+                foreach (PrologQueryResult v in q.SolutionVariables)
+                {
+                    yield return v;
+                }
+            }
         }
 
         [ScriptMember("addPredicate")]
@@ -541,7 +565,7 @@ namespace Logic.Prolog
             if (arity < 0) throw new ArgumentOutOfRangeException(nameof(arity));
             if (functor == null) throw new ArgumentNullException(nameof(functor));
 
-            // TO DO: is the pointer to context the same from the back-and-forth marshalling, should we add it to a list to prevent garbage collection and then remove it from a list upon completion
+            // TO DO: is the pointer to context the same from the back-and-forth marshalling; should we add it to a list to prevent garbage collection and then remove it from a list upon completion
 
             Delegate d;
 

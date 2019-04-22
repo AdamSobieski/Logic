@@ -28,14 +28,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-// The namespace summary is above class NamespaceDoc
 namespace SWI_Prolog
 {
-    /// <summary>
-    /// Flags that control  for the foreign predicate parameters 
-    /// <para><see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_query()">SWI-Prolog Manual - 9.6.16 Querying Prolog</see>.</para>
-    /// </summary>
-    /// <seealso cref="PrologQuery.Query"/>
     public enum QuerySwitch
     {
         /// <summary>The default value.</summary>
@@ -233,7 +227,7 @@ namespace Logic.Prolog
     /// <list type="table">  
     /// <listheader><term>Query type</term><description>Description </description></listheader>  
     /// <item><term>A <see href="Overload_SbsSW_SwiPlCs_PlQuery_PlCall.htm">static call</see></term><description>To ask prolog for a proof. Return only true or false.</description></item>  
-    /// <item><term>A <see cref="PlCallQuery(string)"/></term><description>To get the first result of a goal</description></item>  
+    /// <item><term>A <see cref="CallQuery(string)"/></term><description>To get the first result of a goal</description></item>  
     /// <item><term><see href="Overload_SbsSW_SwiPlCs_PlQuery__ctor.htm">Construct</see> a PlQuery object by a string.</term><description>The most convenient way.</description></item>  
     /// <item><term><see href="Overload_SbsSW_SwiPlCs_PlQuery__ctor.htm">Construct</see> a PlQuery object by compound terms.</term><description>The most flexible and fast (runtime) way.</description></item>  
     /// </list>   
@@ -463,7 +457,7 @@ namespace Logic.Prolog
                 l.Append(PrologTerm.Compound("variable_names", variablenames));
                 l.Close();
                 var args = new PrologTermVector(atom, term, options);
-                if (!PlCall(module, "read_term_from_atom", args))
+                if (!Call(module, "read_term_from_atom", args))
                     throw new PlLibException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
 
                 // set list of variables and variable_names into _queryVariables
@@ -656,13 +650,7 @@ namespace Logic.Prolog
             return new ReadOnlyCollection<PrologQueryResult>(list);
         }
 
-
-
-        #region static PlCall
-
-
-
-
+        #region static Call
 
         /// <summary>
         /// <para>Obtain status information on the Prolog system. The actual argument type depends on the information required. 
@@ -704,16 +692,16 @@ namespace Logic.Prolog
         /// <param name="predicate">defines the name of the predicate</param>
         /// <param name="args">Is a <see cref="PrologTermVector"/> of arguments for the predicate</param>
         /// <returns>Return true or false as the result of NextSolution() or throw an exception.</returns>
-        public static bool PlCall(string predicate, PrologTermVector args)
+        public static bool Call(string predicate, PrologTermVector args)
         {
-            return PlCall(ModuleDefault, predicate, args);
+            return Call(ModuleDefault, predicate, args);
         }
 #pragma warning disable 1573
         // Parameter 'predicate' has no matching param tag in the XML comment for 'SbsSW.SwiPlCs.PlQuery.PlCall(string, string, SbsSW.SwiPlCs.PlTermV)' (but other parameters do)
-        /// <inheritdoc cref="PlCall(string, PrologTermVector)" />
-        /// <summary>As <see cref="PlCall(string, PrologTermVector)"/> but locating the predicate in the named module.</summary>
+        /// <inheritdoc cref="Call(string, PrologTermVector)" />
+        /// <summary>As <see cref="Call(string, PrologTermVector)"/> but locating the predicate in the named module.</summary>
         /// <param name="module">locating the predicate in the named module.</param>
-        public static bool PlCall(string module, string predicate, PrologTermVector args)
+        public static bool Call(string module, string predicate, PrologTermVector args)
         {
             bool bRet;
             using (var q = new PrologQuery(module, predicate, args))
@@ -724,7 +712,7 @@ namespace Logic.Prolog
             return bRet;
         }
 #pragma warning restore 1573
-        /// <inheritdoc cref="PlCall(string, PrologTermVector)" />
+        /// <inheritdoc cref="Call(string, PrologTermVector)" />
         /// <summary>Call a goal once.</summary>
         /// <example>
         /// <code>
@@ -735,7 +723,7 @@ namespace Logic.Prolog
         /// </code>
         /// </example>
         /// <param name="goal">The complete goal as a string</param>
-        public static bool PlCall(string goal)
+        public static bool Call(string goal)
         {
             bool bRet;
             using (var q = new PrologQuery("call", new PrologTermVector(new PrologTerm(goal))))
@@ -752,7 +740,7 @@ namespace Logic.Prolog
         /// <param name="module"></param>
         /// <param name="goal"></param>
         /// <returns></returns>
-        public static bool PlCall(string module, string goal)
+        public static bool Call(string module, string goal)
         {
             bool bRet;
             using (var q = new PrologQuery(module, "call", new PrologTermVector(new PrologTerm(goal))))
@@ -784,16 +772,16 @@ namespace Logic.Prolog
         ///     <para>This sample shows both how to get the working_directory from SWI-Prolog.</para>
         ///     <code source="..\..\TestSwiPl\PlQuery.cs" region="PlCallQuery_direct_3_doc" />
         /// </example>
-        public static PrologTerm PlCallQuery(string goal)
+        public static PrologTerm CallQuery(string goal)
         {
-            return PlCallQuery(ModuleDefault, goal);
+            return CallQuery(ModuleDefault, goal);
         }
 
 #pragma warning disable 1573
-        /// <inheritdoc cref="PlCallQuery(System.String)" />
-        /// <summary>As <see cref="PlCallQuery(string)"/> but executed in the named module.</summary>
+        /// <inheritdoc cref="CallQuery(System.String)" />
+        /// <summary>As <see cref="CallQuery(string)"/> but executed in the named module.</summary>
         /// <param name="module">The modulename in which the query is executed</param>
-        public static PrologTerm PlCallQuery(string module, string goal)
+        public static PrologTerm CallQuery(string module, string goal)
         {
             PrologTerm retVal;
             using (var q = new PrologQuery(module, goal))
@@ -808,7 +796,7 @@ namespace Logic.Prolog
                 {
                     for (int i = 0; i < q._av.Size; i++)
                     {
-                        if (!q._av[i].IsVar) continue;
+                        if (!q._av[i].IsVariable) continue;
                         if (t == null)
                         {
                             t = new PrologTerm(q._av[i].TermRef);
