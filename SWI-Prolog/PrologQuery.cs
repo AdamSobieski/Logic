@@ -30,7 +30,7 @@ using System.Linq;
 
 namespace SWI_Prolog
 {
-    public enum QuerySwitch
+    internal enum QuerySwitch
     {
         /// <summary>The default value.</summary>
         None = 0,
@@ -544,8 +544,8 @@ namespace Logic.Prolog
         {
             if (0 == _qid)
             {
-                //Check.Require(!string.IsNullOrEmpty(_name), "PlQuery.NextSolution() _name is required");
-                Contract.Requires(!string.IsNullOrEmpty(_name), "PlQuery.NextSolution() _name is required");
+                //Check.Require(!string.IsNullOrEmpty(_name), "PrologQuery.NextSolution() _name is required");
+                Contract.Requires(!string.IsNullOrEmpty(_name), "PrologQuery.NextSolution() _name is required");
 
                 IntPtr p = libswipl.PL_predicate(_name, _av.Size, _module);
                 var atom = libswipl.PL_new_atom_wchars(_module);
@@ -618,6 +618,7 @@ namespace Logic.Prolog
         /// <example>
         ///     <code source="..\..\TestSwiPl\LinqSwiPl.cs" region="Test_multi_goal_ToList_doc" />
         /// </example>
+
         public ReadOnlyCollection<PrologQueryResult> ToList()
         {
             var list = new List<PrologQueryResult>();
@@ -664,7 +665,7 @@ namespace Logic.Prolog
         /// </example>
         /// <param name="queryType">A <see>PlQuerySwitch</see>.</param>
         /// <returns>A int depending on the given queryType</returns>
-        public static long Query(QuerySwitch queryType)
+        internal static long Query(QuerySwitch queryType)
         {
             //Check.Require(queryType != PlQuerySwitch.None, "PlQuerySwitch (None) is not valid");
             Contract.Requires(queryType != QuerySwitch.None, "PlQuerySwitch (None) is not valid");

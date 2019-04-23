@@ -367,8 +367,8 @@ namespace Logic.Prolog
         /// but as they can contain 0-bytes, they can be used to contain arbitrary C-data structures.
         /// </summary>
         /// <param name="text">the string</param>
-        /// <returns>a new PlTerm</returns>
-        /// <remarks>NOTE: this Method does *not* work with unicode characters. Concider to use new PlTerm(test) instead.</remarks>
+        /// <returns>a new PrologTerm</returns>
+        /// <remarks>NOTE: this Method does *not* work with unicode characters. Concider to use new PlTerm(text) instead.</remarks>
         public static PrologTerm String(string text)
         {
             var t = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
@@ -384,7 +384,7 @@ namespace Logic.Prolog
         }
         #endregion PlString Creation
 
-        #region PlCodeList Creation
+        #region CodeList Creation
         /// <summary>
         /// Create a Prolog list of ASCII codes from a 0-terminated C-string.
         /// </summary>
@@ -398,10 +398,10 @@ namespace Logic.Prolog
         }
         #endregion
 
-        #region PlCharList Creation
+        #region CharList Creation
         /// <overloads>
         /// <summary>
-        /// <para>These static methods creates a new PlCharList.</para>
+        /// <para>These static methods creates a new CharList.</para>
         /// </summary>
         /// </overloads>
         /// <summary>Create a Prolog list of one-character atoms from a C#-string.</summary>
@@ -725,14 +725,6 @@ namespace Logic.Prolog
             return sb.ToString();
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// <para>If PlTerm is a list the string is build by calling ToString() for each element in the list 
-        /// separated by ',' and put the brackets around '[' ']'.</para>
-        /// <para></para>
-        /// </summary>
-        /// <seealso cref="O:string"/>
-        /// <returns>A string representing the PlTerm.</returns>
         [ScriptMember("toString")]
         public override string ToString()
         {
@@ -796,9 +788,9 @@ namespace Logic.Prolog
         }
 
         [ScriptMember("unify")]
-        public bool Unify(string atom)
+        public bool Unify(string text)
         {
-            return 0 != libswipl.PL_unify_wchars(TermRef, PrologTermType.Atom, atom);
+            return 0 != libswipl.PL_unify_wchars(TermRef, PrologTermType.String /* was PrologTermType.Atom */, text);
         }
 
         [ScriptMember("unify")]

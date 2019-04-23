@@ -239,8 +239,6 @@ namespace SWI_Prolog
             libswipl.PL_halt(0);
         }
 
-        /// <summary>Stops the PlEngine and <b>the program</b></summary>
-        /// <remarks>SWI-Prolog calls internally pl_cleanup and than exit(0)</remarks>
         static public void Halt(int code)
         {
             libswipl.PL_halt(code);
