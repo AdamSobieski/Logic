@@ -22,7 +22,7 @@ using Logic.Prolog;
 using SWI_Prolog.Exceptions;
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices; // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace SWI_Prolog
@@ -240,18 +240,20 @@ namespace SWI_Prolog
         internal static int PL_destroy_engine(IntPtr engine)
         { return SafeNativeMethods.PL_destroy_engine(engine); }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_new_atom_wchars(string text)
         {
             int len = text.Length;
             return SafeNativeMethods.PL_new_atom_wchars(len, text);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static string PL_atom_wchars(uintptr_t tAtom)
         {
             // see http://www.mycsharp.de/wbb2/thread.php?threadid=51100
             int dummyLen = 0;
             return Marshal.PtrToStringUni(SafeNativeMethods.PL_atom_wchars(tAtom, ref dummyLen));
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unregister_atom(uintptr_t atom)
         {
             return SafeNativeMethods.PL_unregister_atom(atom);
@@ -285,16 +287,18 @@ namespace SWI_Prolog
         { return SafeNativeMethods.PL_query(queryType); }
 
 
-        // PlFrame
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_open_foreign_frame()
         { return SafeNativeMethods.PL_open_foreign_frame(); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_close_foreign_frame(uintptr_t fid_t)
         {
             if (IsValid)
                 SafeNativeMethods.PL_close_foreign_frame(fid_t);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_rewind_foreign_frame(uintptr_t fid_t)
         { SafeNativeMethods.PL_rewind_foreign_frame(fid_t); }
 
@@ -311,24 +315,31 @@ namespace SWI_Prolog
 
         // PlQuery
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_next_solution(uintptr_t qid_t)
         { return SafeNativeMethods.PL_next_solution(qid_t); }
 
         // TODO wchar
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IntPtr PL_predicate(string name, int arity, string module)
         { return SafeNativeMethods.PL_predicate(name, arity, module); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IntPtr PL_new_module(uintptr_t atom_t)
         { return SafeNativeMethods.PL_new_module(atom_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_open_query(IntPtr module, int flags, IntPtr pred, uintptr_t term)
         { return SafeNativeMethods.PL_open_query(module, flags, pred, term); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_cut_query(uintptr_t qid)
         {
             if (IsValid)
                 SafeNativeMethods.PL_cut_query(qid);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_close_query(uintptr_t qid)
         {
             if (IsValid)
@@ -336,16 +347,19 @@ namespace SWI_Prolog
         }
 
         // PlTerm
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_new_term_ref()
         { return SafeNativeMethods.PL_new_term_ref(); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_put_integer(uintptr_t term, int i)
         { SafeNativeMethods.PL_put_integer(term, i); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_put_float(uintptr_t term, double i)
         { SafeNativeMethods.PL_put_float(term, i); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_wchars(uintptr_t term, out string s, uint flags)
         {
             var dummyLen = 0;
@@ -355,89 +369,108 @@ namespace SWI_Prolog
             return iRet;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_long(uintptr_t term, ref int i)
         { return SafeNativeMethods.PL_get_long(term, ref i); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_float(uintptr_t term, ref double i)
         { return SafeNativeMethods.PL_get_float(term, ref i); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_term_type(uintptr_t t)
         { return SafeNativeMethods.PL_term_type(t); }
 
-        // COMPARE
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_compare(uintptr_t term1, uintptr_t term2)
         { return SafeNativeMethods.PL_compare(term1, term2); }
 
 
-
-        // PlTermV
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_new_term_refs(int n)
         { return SafeNativeMethods.PL_new_term_refs(n); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_put_term(uintptr_t t1, uintptr_t t2)
         { SafeNativeMethods.PL_put_term(t1, t2); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_wchars_to_term(string chars, uintptr_t term)
-        {
-            return SafeNativeMethods.PL_wchars_to_term(chars, term);
-        }
+        { return SafeNativeMethods.PL_wchars_to_term(chars, term); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void PL_cons_functor_v(uintptr_t term, uintptr_t functor_t, uintptr_t termA0)
         { SafeNativeMethods.PL_cons_functor_v(term, functor_t, termA0); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_new_functor(uintptr_t atomA, int a)
         { return SafeNativeMethods.PL_new_functor(atomA, a); }
 
 
         // Testing the type of a term
         // all return non zero if condition succeed
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_variable(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_variable(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_ground(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_ground(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_atom(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_atom(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_string(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_string(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_integer(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_integer(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_float(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_float(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_compound(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_compound(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_list(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_list(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_atomic(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_atomic(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_is_number(uintptr_t term_t)
         { return SafeNativeMethods.PL_is_number(term_t); }
 
         // LISTS (PlTail)
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static uintptr_t PL_copy_term_ref(uintptr_t term_t)
         { return SafeNativeMethods.PL_copy_term_ref(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unify_list(uintptr_t termL, uintptr_t termH, uintptr_t termT)
         { return SafeNativeMethods.PL_unify_list(termL, termH, termT); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unify_nil(uintptr_t term_t)
         { return SafeNativeMethods.PL_unify_nil(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_list(uintptr_t termL, uintptr_t termH, uintptr_t termT)
         { return SafeNativeMethods.PL_get_list(termL, termH, termT); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_nil(uintptr_t term_t)
         { return SafeNativeMethods.PL_get_nil(term_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unify(uintptr_t t1, uintptr_t t2)
         { return SafeNativeMethods.PL_unify(t1, t2); }
 
@@ -449,11 +482,11 @@ namespace SWI_Prolog
         /// <param name="type"></param>
         /// <param name="wchars"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unify_wchars(uintptr_t t1, PrologTermType type, string wchars)
-        {
-            return PL_unify_wchars(t1, type, wchars.Length, wchars);
-        }
+        { return PL_unify_wchars(t1, type, wchars.Length, wchars); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_unify_wchars(uintptr_t t1, PrologTermType type, int len, string wchars)
         {
             //Check.Require(type == PlType.PlAtom || type == PlType.PlString || type == PlType.PlCharList || type == PlType.PlCodeList);

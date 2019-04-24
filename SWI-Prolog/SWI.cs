@@ -161,6 +161,15 @@ namespace SWI_Prolog
             return Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
         }
 
+        public static object MarshalFromPrologTerm(Logic.Prolog.PrologTerm term)
+        {
+            throw new NotImplementedException();
+        }
+        public static Logic.Prolog.PrologTerm MarshalToPrologTerm(object term)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>To test if the prolog engine is up.</summary>
         public static bool IsInitialized
         {
@@ -314,7 +323,7 @@ namespace SWI_Prolog
         ///	<para>		If this Prolog is not compiled for multi-threading, -2 is returned.</para>
         /// </summary>
         /// <returns>A reference count of the engine</returns>
-        public static int PlThreadAttachEngine()
+        public static int ThreadAttachEngine()
         {
             return libswipl.PL_thread_attach_engine(IntPtr.Zero);
         }
@@ -324,7 +333,7 @@ namespace SWI_Prolog
         /// This method is also provided in the single-threaded version of SWI-Prolog, where it returns -2. 
         /// </summary>
         /// <returns>Returns the integer Prolog identifier of the engine or -1 if the calling thread has no Prolog engine. </returns>
-        public static int PlThreadSelf()
+        public static int ThreadSelf()
         {
             return libswipl.PL_thread_self();
         }
@@ -336,7 +345,7 @@ namespace SWI_Prolog
         /// <para>Please note that construction and destruction of engines are relatively expensive operations. Only destroy an engine if performance is not critical and memory is a critical resource.</para>
         /// </summary>
         /// <returns>Returns <c>true</c> on success and <c>false</c> if the calling thread has no engine or this Prolog does not support threads.</returns>
-        public static bool PlThreadDestroyEngine()
+        public static bool ThreadDestroyEngine()
         {
             return 0 != libswipl.PL_thread_destroy_engine();
         }
@@ -352,7 +361,6 @@ namespace SWI_Prolog
     {
         private IntPtr _iEngineNumber = IntPtr.Zero;
         // private IntPtr _iEngineNumberStore = IntPtr.Zero;
-
 
         #region IDisposable
         // see : "Implementing a Dispose Method  [C#]" in  ms-help://MS.VSCC/MS.MSDNVS/cpguide/html/cpconimplementingdisposemethod.htm
@@ -437,16 +445,16 @@ namespace SWI_Prolog
         /// <summary>
         /// 
         /// </summary>
-        public void PlSetEngine()
+        public void SetEngine()
         {
             IntPtr pNullPointer = IntPtr.Zero;
             int iRet = libswipl.PL_set_engine(_iEngineNumber, ref pNullPointer);
             switch (iRet)
             {
                 case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("PlSetEngine returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("PlSetEngine returns it is used by an other thread")); //break;
-                default: throw (new PlLibException("Unknown return from PlSetEngine"));
+                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("SetEngine returns Invalid")); //break;
+                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("SetEngine returns it is used by an other thread")); //break;
+                default: throw (new PlLibException("Unknown return from SetEngine"));
             }
         }
 
@@ -454,16 +462,16 @@ namespace SWI_Prolog
         /// 
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public void PlDetachEngine()
+        public void DetachEngine()
         {
             IntPtr pNullPointer = IntPtr.Zero;
             int iRet = libswipl.PL_set_engine(IntPtr.Zero, ref pNullPointer);
             switch (iRet)
             {
                 case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("PlSetEngine(detach) returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("PlSetEngine(detach) returns it is used by an other thread")); //break;
-                default: throw (new PlLibException("Unknown return from PlSetEngine(detach)"));
+                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("SetEngine(detach) returns Invalid")); //break;
+                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("SetEngine(detach) returns it is used by an other thread")); //break;
+                default: throw (new PlLibException("Unknown return from SetEngine(detach)"));
             }
         }
 

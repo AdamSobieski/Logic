@@ -26,6 +26,7 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Permissions;
 
 namespace SWI_Prolog
@@ -225,8 +226,6 @@ namespace SWI_Prolog
     }
     #endregion // Safe Handles and Native imports
 
-
-
     // for details see http://msdn2.microsoft.com/en-us/library/06686c8c-6ad3-42f7-a355-cbaefa347cfc(vs.80).aspx
     // and http://blogs.msdn.com/fxcop/archive/2007/01/14/faq-how-do-i-fix-a-violation-of-movepinvokestonativemethodsclass.aspx
 
@@ -244,8 +243,7 @@ namespace SWI_Prolog
     //    This class is for methods that are potentially dangerous. Any caller of these methods must do a 
     //    full security review to ensure that the usage is secure because no stack walk will be performed.
 
-
-    [System.Security.SuppressUnmanagedCodeSecurity]
+    [SuppressUnmanagedCodeSecurity]
     internal static class SafeNativeMethods
     {
         private const string DllFileName = "libswipl.dll";
@@ -1027,5 +1025,4 @@ typedef struct io_stream{
 
 
     } // class SafeNativeMethods
-
 }
