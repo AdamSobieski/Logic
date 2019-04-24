@@ -22,6 +22,7 @@ using Logic.Prolog;
 using SWI_Prolog.Exceptions;
 using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices; // [MethodImpl(MethodImplOptions.AggressiveInlining)]
 using System.Runtime.InteropServices;
 
 namespace SWI_Prolog
