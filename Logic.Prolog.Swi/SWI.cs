@@ -138,12 +138,12 @@ namespace Logic.Prolog.Swi
     /// The following sample show how a file is consult via comand-line options.
     /// <code source="..\..\TestSwiPl\PlEngine.cs" region="demo_consult_pl_file_by_param" />
     /// </example>
-    public static class SWI
+    internal static class SWI
     {
-        public static bool RegisterForeign(string module, string name, int arity, Delegate method)
-        {
-            return RegisterForeign(module, name, arity, method, ForeignSwitches.None);
-        }
+        //public static bool RegisterForeign(string module, string name, int arity, Delegate method)
+        //{
+        //    return RegisterForeign(module, name, arity, method, ForeignSwitches.None);
+        //}
         public static bool RegisterForeign(string module, string name, int arity, Delegate method, ForeignSwitches plForeign)
         {
             return Convert.ToBoolean(libswipl.PL_register_foreign_in_module(module, name, arity, method, (int)plForeign));
@@ -161,11 +161,11 @@ namespace Logic.Prolog.Swi
             return Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
         }
 
-        public static object MarshalFromPrologTerm(Logic.Prolog.Swi.PrologTerm term)
+        public static object MarshalFromPrologTerm(PrologTerm term)
         {
             throw new NotImplementedException();
         }
-        public static Logic.Prolog.Swi.PrologTerm MarshalToPrologTerm(object term)
+        public static PrologTerm MarshalToPrologTerm(object term)
         {
             throw new NotImplementedException();
         }
@@ -201,7 +201,7 @@ namespace Logic.Prolog.Swi
             if (argv == null)
                 throw new ArgumentNullException("argv", "Minimum is one empty string");
             if (IsInitialized)
-                throw new PlLibException("PlEngine is already initialized");
+                throw new PrologLibraryException("PlEngine is already initialized");
 
             libswipl.LoadLibPl();
             // redirect input and output stream to receive messages from prolog
@@ -220,7 +220,7 @@ namespace Logic.Prolog.Swi
 
             if (0 == libswipl.PL_initialise(localArgv.Length, localArgv))
             {
-                throw new PlLibException("failed to initialize");
+                throw new PrologLibraryException("failed to initialize");
             }
             if (!_isStreamFunctionReadModified)
             {
@@ -270,7 +270,7 @@ namespace Logic.Prolog.Swi
 
         static internal long Sread_function(IntPtr handle, IntPtr buf, long bufsize)
         {
-            throw new PlLibException("SwiPlCs: Prolog try to read from stdin");
+            throw new PrologLibraryException("SwiPlCs: Prolog try to read from stdin");
         }
         #endregion default_io_doc
 
@@ -357,7 +357,7 @@ namespace Logic.Prolog.Swi
     /// <summary>
     /// This class is experimental
     /// </summary>
-    public class SWI_MT : IDisposable
+    internal class SWI_MT : IDisposable
     {
         private IntPtr _iEngineNumber = IntPtr.Zero;
         // private IntPtr _iEngineNumberStore = IntPtr.Zero;
@@ -407,7 +407,7 @@ namespace Logic.Prolog.Swi
             if (IntPtr.Zero != _iEngineNumber && SWI.IsInitialized)
             {
                 if (0 == libswipl.PL_destroy_engine(_iEngineNumber))
-                    throw (new PlLibException("failed to destroy engine"));
+                    throw (new PrologLibraryException("failed to destroy engine"));
                 _iEngineNumber = IntPtr.Zero;
             }
         }
@@ -433,12 +433,12 @@ namespace Logic.Prolog.Swi
                 }
                 catch (Exception ex)
                 {
-                    throw (new PlLibException("PL_create_engine : " + ex.Message));
+                    throw (new PrologLibraryException("PL_create_engine : " + ex.Message));
                 }
             }
             else
             {
-                throw new PlLibException("There is no PlEngine initialized");
+                throw new PrologLibraryException("There is no PlEngine initialized");
             }
         }
 
@@ -452,9 +452,9 @@ namespace Logic.Prolog.Swi
             switch (iRet)
             {
                 case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("SetEngine returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("SetEngine returns it is used by an other thread")); //break;
-                default: throw (new PlLibException("Unknown return from SetEngine"));
+                case libswipl.PL_ENGINE_INVAL: throw (new PrologLibraryException("SetEngine returns Invalid")); //break;
+                case libswipl.PL_ENGINE_INUSE: throw (new PrologLibraryException("SetEngine returns it is used by an other thread")); //break;
+                default: throw (new PrologLibraryException("Unknown return from SetEngine"));
             }
         }
 
@@ -469,9 +469,9 @@ namespace Logic.Prolog.Swi
             switch (iRet)
             {
                 case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new PlLibException("SetEngine(detach) returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new PlLibException("SetEngine(detach) returns it is used by an other thread")); //break;
-                default: throw (new PlLibException("Unknown return from SetEngine(detach)"));
+                case libswipl.PL_ENGINE_INVAL: throw (new PrologLibraryException("SetEngine(detach) returns Invalid")); //break;
+                case libswipl.PL_ENGINE_INUSE: throw (new PrologLibraryException("SetEngine(detach) returns it is used by an other thread")); //break;
+                default: throw (new PrologLibraryException("Unknown return from SetEngine(detach)"));
             }
         }
 

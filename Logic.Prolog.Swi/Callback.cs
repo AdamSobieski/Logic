@@ -23,7 +23,7 @@ using System;
 namespace Logic.Prolog.Swi.Callback
 {
     [Flags]
-    public enum ForeignSwitches
+    internal enum ForeignSwitches
     {
         /// <summary>0 - PL_FA_NOTHING: No flags.</summary>
         None = 0,
@@ -38,30 +38,30 @@ namespace Logic.Prolog.Swi.Callback
         VarArgs = 8,
     }
 
-    public enum NondeterministicCalltype : int
+    internal enum NondeterministicCalltype : int
     {
         FirstCall = 0,
         Pruned = 1,
         Redo = 2
     }
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback0(IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback0(IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback1(PrologTerm term, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback1(PrologTerm term, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback2(PrologTerm term1, PrologTerm term2, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback2(PrologTerm term1, PrologTerm term2, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback3(PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback3(PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback4(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback4(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback5(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback5(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback6(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback6(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t);
 
-    public delegate IntPtr SwiForeignNondeterministicPredicateCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t);
 
 
 
@@ -82,6 +82,8 @@ namespace Logic.Prolog.Swi.Callback
     public delegate bool PrologCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7);
 
     public delegate bool PrologCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8);
+
+
 
     public delegate bool PrologNondeterministicCallback0(dynamic context);
 

@@ -191,7 +191,7 @@ namespace Logic.Prolog.Swi
             {
                 iRet = SafeNativeMethods.PL_halt(i);
                 if (0 == iRet)
-                    throw new PlLibException("PL_halt returned false");
+                    throw new PrologLibraryException("PL_halt returned false");
                 UnLoadUnmanagedLibrary();
             }
             return iRet;

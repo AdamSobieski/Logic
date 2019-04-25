@@ -245,7 +245,7 @@ namespace Logic.Prolog.Swi
             uintptr_t t = libswipl.PL_new_term_ref();
 
             if (0 == libswipl.PL_wchars_to_term(text, t))
-                throw new PlException(new PrologTerm(t));
+                throw new PrologException(new PrologTerm(t));
 
             _termRef = libswipl.PL_new_term_ref();
             libswipl.PL_put_term(TermRef, t);
@@ -313,7 +313,7 @@ namespace Logic.Prolog.Swi
             if (0 != libswipl.PL_is_variable(list.TermRef) || 0 != libswipl.PL_is_list(list.TermRef))
                 term._termRef = libswipl.PL_copy_term_ref(list.TermRef);
             else
-                throw new PlTypeException("list", list);
+                throw new PrologTypeException("list", list);
 
             return term;
         }
@@ -595,7 +595,7 @@ namespace Logic.Prolog.Swi
             {
                 return term;
             }
-            throw new PlTypeException("list", this);
+            throw new PrologTypeException("list", this);
         }
 
         /// <summary>
@@ -689,7 +689,7 @@ namespace Logic.Prolog.Swi
             {
                 return false;
             }
-            throw new PlTypeException("list", this);
+            throw new PrologTypeException("list", this);
         }
 
         private void BuildOpenList(out uintptr_t list, out uintptr_t head, out uintptr_t tail)
@@ -740,14 +740,14 @@ namespace Logic.Prolog.Swi
         /// with the CVT_WRITE_CANONICAL flag. If it fails PL_get_chars/3 is called again with REP_MB flag.
         /// </summary>
         /// <returns>return the string of a PlTerm</returns>
-        /// <exception cref="PlTypeException">Throws a PlTypeException if PL_get_chars/3 didn't succeeds.</exception>
+        /// <exception cref="PrologTypeException">Throws a PlTypeException if PL_get_chars/3 didn't succeeds.</exception>
         
         public string ToStringCanonical()
         {
             string s;
             if (0 != libswipl.PL_get_wchars(TermRef, out s, libswipl.CVT_WRITE_CANONICAL | libswipl.BUF_RING | libswipl.REP_UTF8))
                 return s;
-            throw new PlTypeException("text", this);
+            throw new PrologTypeException("text", this);
         }
 
         #endregion
@@ -905,14 +905,14 @@ namespace Logic.Prolog.Swi
         /// </remarks>
         /// <param name="term">A PlTerm that can be converted to a string</param>
         /// <returns>A C# string</returns>
-        /// <exception cref="PlTypeException">Throws a PlTypeException exception</exception>
+        /// <exception cref="PrologTypeException">Throws a PlTypeException exception</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
         public static explicit operator string(PrologTerm term)
         {
             string s;
             if (0 != libswipl.PL_get_wchars(term.TermRef, out s, libswipl.CVT_ALL | libswipl.CVT_WRITE | libswipl.BUF_RING | libswipl.REP_UTF8))
                 return s;
-            throw new PlTypeException("text", term);
+            throw new PrologTypeException("text", term);
         }
 
         /// <summary>
@@ -921,7 +921,7 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <param name="term">A PlTerm is a Prolog integer or float that can be converted without loss to a int.</param>
         /// <returns>A C# int</returns>
-        /// <exception cref="PlTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
+        /// <exception cref="PrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
         /// is not a <see langword="PlType.PlInteger"/> or a <see langword="PlType.PlFloat"/>.</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
         public static explicit operator int(PrologTerm term)
@@ -929,7 +929,7 @@ namespace Logic.Prolog.Swi
             int v = 0;
             if (0 != libswipl.PL_get_long(term.TermRef, ref v))
                 return v;
-            throw new PlTypeException("long", term);
+            throw new PrologTypeException("long", term);
         }
 
         /// <summary>
@@ -938,7 +938,7 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <param name="term">A PlTerm represents a Prolog integer or float</param>
         /// <returns>A C# double</returns>
-        /// <exception cref="PlTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
+        /// <exception cref="PrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
         /// is not a <see langword="PlType.PlInteger"/> or a <see langword="PlType.PlFloat"/>.</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
         public static explicit operator double(PrologTerm term)
@@ -946,7 +946,7 @@ namespace Logic.Prolog.Swi
             double v = 0;
             if (0 != libswipl.PL_get_float(term.TermRef, ref v))
                 return v;
-            throw new PlTypeException("float", term);
+            throw new PrologTypeException("float", term);
         }
 
         #endregion cast oprators

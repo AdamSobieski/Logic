@@ -457,7 +457,7 @@ namespace Logic.Prolog.Swi
                 l.Close();
                 var args = new PrologTermVector(atom, term, options);
                 if (!Call(module, "read_term_from_atom", args))
-                    throw new PlLibException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
+                    throw new PrologLibraryException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
 
                 // set list of variables and variable_names into _queryVariables
                 foreach (PrologTerm t in variablenames.ToList())
@@ -475,7 +475,7 @@ namespace Logic.Prolog.Swi
                 for (int index = 0; index < term.Arity; index++)
                 {
                     if (0 == libswipl.PL_get_arg(index + 1, term.TermRef, _av[index].TermRef))
-                        throw new PlException("PL_get_arg in PlQuery " + term.ToString());
+                        throw new PrologException("PL_get_arg in PlQuery " + term.ToString());
                 }
             }
 #if _DEBUG
@@ -538,7 +538,7 @@ namespace Logic.Prolog.Swi
         /// <para>If the query is closed it will be opened. If the last solution was generated the query will be closed.</para>
         /// <para>If an exception is thrown while parsing (open) the query the _qid is set to zero.</para>
         /// </remarks>
-        /// <exception cref="PlException">Is thrown if <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_next_solution()">SWI-Prolog Manual PL_next_solution()</see> returns false </exception>
+        /// <exception cref="PrologException">Is thrown if <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_next_solution()">SWI-Prolog Manual PL_next_solution()</see> returns false </exception>
         public bool NextSolution()
         {
             if (0 == _qid)
@@ -559,7 +559,7 @@ namespace Logic.Prolog.Swi
                 if ((ex = libswipl.PL_exception(_qid)) > 0)
                 {
                     _qid = 0;   // to avoid an AccessViolationException on Dispose. E.g. if the query is mispelled.
-                    var etmp = new PlException(new PrologTerm(ex));
+                    var etmp = new PrologException(new PrologTerm(ex));
                     etmp.Throw();
                 }
             }
