@@ -24,7 +24,7 @@ namespace Logic.Prolog.Swi
                     throw new Exception("This project presently is built for 64-bit Windows.");
 
                 bool is64bit = Environment.Is64BitOperatingSystem && Environment.Is64BitProcess;
-                if(!is64bit)
+                if (!is64bit)
                     throw new Exception("This project presently is built for 64-bit Windows.");
 
                 if (!System.IO.Directory.Exists(@"C:\Program Files\swipl"))
@@ -129,7 +129,7 @@ namespace Logic.Prolog.Swi
         [NoScriptAccess]
         void IScriptableObject.OnExposedToScriptCode(ScriptEngine engine)
         {
-            
+
         }
     }
 
@@ -216,7 +216,7 @@ namespace Logic.Prolog.Swi
             //return Query(query.ToString());
             var count = query.Arity;
             var array = new PrologTerm[count];
-            for(int index = 0; index < count; ++index)
+            for (int index = 0; index < count; ++index)
             {
                 array[index] = query[index + 1];
             }
@@ -298,7 +298,7 @@ namespace Logic.Prolog.Swi
             switch (arity)
             {
                 case 0:
-                    d = new SWIForeignNondeterministicPredicateCallback0((IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback0((IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -320,7 +320,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 1:
-                    d = new SWIForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -342,7 +342,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 2:
-                    d = new SWIForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -364,7 +364,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 3:
-                    d = new SWIForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -386,7 +386,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 4:
-                    d = new SWIForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -408,7 +408,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 5:
-                    d = new SWIForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -430,7 +430,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 6:
-                    d = new SWIForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -452,7 +452,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 7:
-                    d = new SWIForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -474,7 +474,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 8:
-                    d = new SWIForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -571,7 +571,7 @@ namespace Logic.Prolog.Swi
             {
                 case 0:
                     if (!(functor is PrologNondeterministicCallback0)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback0((IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback0((IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -594,7 +594,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 1:
                     if (!(functor is PrologNondeterministicCallback1)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -617,7 +617,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 2:
                     if (!(functor is PrologNondeterministicCallback2)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -640,7 +640,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 3:
                     if (!(functor is PrologNondeterministicCallback3)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -663,7 +663,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 4:
                     if (!(functor is PrologNondeterministicCallback4)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -686,7 +686,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 5:
                     if (!(functor is PrologNondeterministicCallback5)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -709,7 +709,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 6:
                     if (!(functor is PrologNondeterministicCallback6)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -732,7 +732,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 7:
                     if (!(functor is PrologNondeterministicCallback7)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -755,7 +755,7 @@ namespace Logic.Prolog.Swi
                     break;
                 case 8:
                     if (!(functor is PrologNondeterministicCallback8)) throw new ArgumentException(nameof(functor));
-                    d = new SWIForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
+                    d = new SwiForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
                     {
                         dynamic context;
 

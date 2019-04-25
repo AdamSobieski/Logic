@@ -52,6 +52,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="libswipl.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="PrologEngine.cs" />
     <Compile Include="PrologFrame.cs" />
     <Compile Include="PrologTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

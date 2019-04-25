@@ -21,7 +21,6 @@
 
 //#define USE_PRINT_MESSAGE
 
-using Logic.Prolog;
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;

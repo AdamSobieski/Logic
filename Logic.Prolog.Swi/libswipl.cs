@@ -18,7 +18,6 @@
 *
 *********************************************************/
 
-using Logic.Prolog;
 using Logic.Prolog.Swi.Exceptions;
 using System;
 using System.Diagnostics.Contracts;
