@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace SWI_Prolog
+namespace Logic.Prolog.Swi
 {
     [StructLayout(LayoutKind.Explicit)]
     internal struct uintptr_t

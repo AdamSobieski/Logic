@@ -19,13 +19,13 @@
 *********************************************************/
 
 using Logic.Prolog;
-using SWI_Prolog.Exceptions;
+using Logic.Prolog.Swi.Exceptions;
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace SWI_Prolog
+namespace Logic.Prolog.Swi
 {
     internal static class libswipl
     {

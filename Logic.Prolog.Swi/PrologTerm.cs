@@ -19,8 +19,7 @@
 *********************************************************/
 
 using Microsoft.ClearScript;
-using SWI_Prolog;
-using SWI_Prolog.Exceptions;
+using Logic.Prolog.Swi.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-namespace Logic.Prolog
+namespace Logic.Prolog.Swi
 {
     // from: http://www.swi-prolog.org/pldoc/doc_for?object=c(%27PL_term_type%27)
     //---------------------------------------------------------------------------

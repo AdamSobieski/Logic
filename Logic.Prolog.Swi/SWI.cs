@@ -18,9 +18,9 @@
 *
 *********************************************************/
 
-using SWI_Prolog.Callback;
-using SWI_Prolog.Exceptions;
-using SWI_Prolog.Streams;
+using Logic.Prolog.Swi.Callback;
+using Logic.Prolog.Swi.Exceptions;
+using Logic.Prolog.Swi.Streams;
 using System;
 using System.Runtime.InteropServices;
 
@@ -56,7 +56,7 @@ unsigned long	-  uint
 
 #endregion
 
-namespace SWI_Prolog.Streams
+namespace Logic.Prolog.Swi.Streams
 {
     /// <summary>
     /// The standard SWI-Prolog streams ( input output error )
@@ -118,7 +118,7 @@ namespace SWI_Prolog.Streams
      */
 }
 
-namespace SWI_Prolog
+namespace Logic.Prolog.Swi
 {
     /// <summary>
     /// This static class represents the prolog engine.
@@ -161,11 +161,11 @@ namespace SWI_Prolog
             return Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
         }
 
-        public static object MarshalFromPrologTerm(Logic.Prolog.PrologTerm term)
+        public static object MarshalFromPrologTerm(Logic.Prolog.Swi.PrologTerm term)
         {
             throw new NotImplementedException();
         }
-        public static Logic.Prolog.PrologTerm MarshalToPrologTerm(object term)
+        public static Logic.Prolog.Swi.PrologTerm MarshalToPrologTerm(object term)
         {
             throw new NotImplementedException();
         }

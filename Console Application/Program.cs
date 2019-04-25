@@ -4,7 +4,7 @@
 *
 *********************************************************/
 
-using Logic.Prolog;
+using Logic.Prolog.Swi;
 using Microsoft.ClearScript.V8;
 using System;
 

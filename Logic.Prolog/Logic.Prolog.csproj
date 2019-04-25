@@ -56,13 +56,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Logic.Prolog.Swi\Logic.Prolog.Swi.csproj">
+      <Project>{40b1b1d0-e2c4-4124-b323-70f8f20a87ec}</Project>
+      <Name>Logic.Prolog.Swi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{ff666a9b-081e-423a-bfaf-a05bd8a8665b}</Project>
       <Name>Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWI-Prolog\SWI-Prolog.csproj">
-      <Project>{40b1b1d0-e2c4-4124-b323-70f8f20a87ec}</Project>
-      <Name>SWI-Prolog</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

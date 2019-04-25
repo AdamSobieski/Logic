@@ -19,8 +19,7 @@
 *********************************************************/
 
 using Microsoft.ClearScript;
-using SWI_Prolog;
-using SWI_Prolog.Exceptions;
+using Logic.Prolog.Swi.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +27,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace SWI_Prolog
+namespace Logic.Prolog.Swi
 {
     internal enum QuerySwitch
     {
@@ -55,7 +54,7 @@ namespace SWI_Prolog
     }
 }
 
-namespace Logic.Prolog
+namespace Logic.Prolog.Swi
 {
     /// <summary>
     /// Represents one variable of a Query result.

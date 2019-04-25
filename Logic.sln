@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Prolog", "Logic.Prolog\Logic.Prolog.csproj", "{103E9AC8-D649-49F8-92ED-A2C46574206D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWI-Prolog", "SWI-Prolog\SWI-Prolog.csproj", "{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console Application", "Console Application\Console Application.csproj", "{6FA2BE87-81C2-4B86-B39E-AE1567FC9265}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit Tests", "Unit Tests\Unit Tests.csproj", "{8A407C20-18AB-42FB-A296-A7507970D5AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{FF666A9B-081E-423A-BFAF-A05BD8A8665B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Prolog.Swi", "Logic.Prolog.Swi\Logic.Prolog.Swi.csproj", "{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{103E9AC8-D649-49F8-92ED-A2C46574206D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{103E9AC8-D649-49F8-92ED-A2C46574206D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{103E9AC8-D649-49F8-92ED-A2C46574206D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FA2BE87-81C2-4B86-B39E-AE1567FC9265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FA2BE87-81C2-4B86-B39E-AE1567FC9265}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FA2BE87-81C2-4B86-B39E-AE1567FC9265}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{FF666A9B-081E-423A-BFAF-A05BD8A8665B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF666A9B-081E-423A-BFAF-A05BD8A8665B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF666A9B-081E-423A-BFAF-A05BD8A8665B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

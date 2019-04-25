@@ -4,7 +4,9 @@
 *
 *********************************************************/
 
-namespace Logic.Prolog.Callback
+using Logic.Prolog.Swi;
+
+namespace Logic.Prolog.Swi.Callback
 {
     public delegate bool PrologCallback0();
 

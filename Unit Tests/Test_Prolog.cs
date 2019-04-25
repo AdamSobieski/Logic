@@ -4,14 +4,14 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Callback;
+using Logic.Prolog.Swi.Callback;
 using Microsoft.ClearScript.V8;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Logic.Prolog
+namespace Logic.Prolog.Swi
 {
     [TestClass]
     public class Prolog_Tests

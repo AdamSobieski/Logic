@@ -4,16 +4,14 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Callback;
+using Logic.Prolog.Swi.Callback;
 using Microsoft.ClearScript;
-using SWI_Prolog;
-using SWI_Prolog.Callback;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.InteropServices;
 
-namespace Logic.Prolog
+namespace Logic.Prolog.Swi
 {
     public sealed class PrologEngine : IDisposable, IScriptableObject
     {

@@ -18,10 +18,9 @@
 *
 *********************************************************/
 
-using SWI_Prolog;
 using System;
 
-namespace Logic.Prolog
+namespace Logic.Prolog.Swi
 {
     #region public class PlFrame
 

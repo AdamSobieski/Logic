@@ -26,7 +26,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace SWI_Prolog.Exceptions
+namespace Logic.Prolog.Swi.Exceptions
 {
     #region class PlLibException
     /// <summary>This exception is thrown if something in the interface went wrong.</summary>

@@ -21,7 +21,7 @@
 using System;
 using Logic.Prolog;
 
-namespace SWI_Prolog.Callback
+namespace Logic.Prolog.Swi.Callback
 {
     [Flags]
     public enum ForeignSwitches

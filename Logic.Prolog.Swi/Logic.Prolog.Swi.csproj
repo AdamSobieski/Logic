@@ -7,8 +7,8 @@
     <ProjectGuid>{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SWI_Prolog</RootNamespace>
-    <AssemblyName>SWI-Prolog</AssemblyName>
+    <RootNamespace>Logic.Prolog.Swi</RootNamespace>
+    <AssemblyName>Logic.Prolog.Swi</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
