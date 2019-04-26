@@ -191,7 +191,7 @@ namespace Logic.Prolog.Swi
             {
                 iRet = SafeNativeMethods.PL_halt(i);
                 if (0 == iRet)
-                    throw new PrologLibraryException("PL_halt returned false");
+                    throw new SwiPrologLibraryException("PL_halt returned false");
                 UnLoadUnmanagedLibrary();
             }
             return iRet;
@@ -482,14 +482,14 @@ namespace Logic.Prolog.Swi
         /// <param name="wchars"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int PL_unify_wchars(uintptr_t t1, PrologTermType type, string wchars)
+        internal static int PL_unify_wchars(uintptr_t t1, SwiPrologTermType type, string wchars)
         { return PL_unify_wchars(t1, type, wchars.Length, wchars); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int PL_unify_wchars(uintptr_t t1, PrologTermType type, int len, string wchars)
+        internal static int PL_unify_wchars(uintptr_t t1, SwiPrologTermType type, int len, string wchars)
         {
             //Check.Require(type == PlType.PlAtom || type == PlType.PlString || type == PlType.PlCharList || type == PlType.PlCodeList);
-            Contract.Requires(type == PrologTermType.Atom || type == PrologTermType.String || type == PrologTermType.CharList || type == PrologTermType.CodeList);
+            Contract.Requires(type == SwiPrologTermType.Atom || type == SwiPrologTermType.String || type == SwiPrologTermType.CharList || type == SwiPrologTermType.CodeList);
             return SafeNativeMethods.PL_unify_wchars(t1, (int)type, len, wchars);
         }
 

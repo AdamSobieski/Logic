@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace Logic.Prolog.Swi
 {
-    internal enum QuerySwitch
+    internal enum SwiQuerySwitch
     {
         /// <summary>The default value.</summary>
         None = 0,
@@ -59,13 +59,13 @@ namespace Logic.Prolog.Swi
     /// <summary>
     /// Represents one variable of a Query result.
     /// </summary>
-    internal class PrologQueryVariable
+    internal class SwiPrologQueryVariable
     {
         /// <summary>The name of a variable in a Query</summary>
         public string Name { get; internal set; }
         /// <summary>The Value (PrologTerm) of a variable in a Query</summary>
-        public PrologTerm Value { get; internal set; }
-        internal PrologQueryVariable(string name, PrologTerm val)
+        public SwiPrologTerm Value { get; internal set; }
+        internal SwiPrologQueryVariable(string name, SwiPrologTerm val)
         {
             Name = name;
             Value = val;
@@ -74,19 +74,19 @@ namespace Logic.Prolog.Swi
 
     /// <summary>
     /// <para>Represents the set variables of a Query if it was created from a string.</para>
-    /// <para>This class is also used to represent the results of a PrologQuery after <see cref="PrologQuery.ToList()"/> or <see cref="PrologQuery.SolutionVariables"/> was called.</para>
+    /// <para>This class is also used to represent the results of a PrologQuery after <see cref="SwiPrologQuery.ToList()"/> or <see cref="SwiPrologQuery.SolutionVariables"/> was called.</para>
     /// </summary>
     /// <example>
-    ///     <para>This sample shows both <see cref="PrologQuery.Variables"/> is used to unify the variables of two nested queries
+    ///     <para>This sample shows both <see cref="SwiPrologQuery.Variables"/> is used to unify the variables of two nested queries
     ///     and the result </para>
     ///     <code source="..\..\TestSwiPl\LinqSwiPl.cs" region="compound_nested_query_with_variables_3_doc" />
     /// </example>
-    /// <seealso cref="PrologQuery.Variables"/>
-    public class PrologQueryResult : IPropertyBag
+    /// <seealso cref="SwiPrologQuery.Variables"/>
+    public class SwiPrologQueryResult : IPropertyBag
     {
-        private readonly List<PrologQueryVariable> _vars = new List<PrologQueryVariable>();
+        private readonly List<SwiPrologQueryVariable> _vars = new List<SwiPrologQueryVariable>();
 
-        internal void Add(PrologQueryVariable var)
+        internal void Add(SwiPrologQueryVariable var)
         {
             _vars.Add(var);
         }
@@ -99,7 +99,7 @@ namespace Logic.Prolog.Swi
         /// <returns></returns>
         public bool TryGetValue(string key, out object value)
         {
-            PrologQueryVariable v = _vars.Find(n1 => n1.Name == key);
+            SwiPrologQueryVariable v = _vars.Find(n1 => n1.Name == key);
             if (v == null)
             {
                 value = null;
@@ -174,7 +174,7 @@ namespace Logic.Prolog.Swi
         {
             get
             {
-                PrologQueryVariable v = _vars.Find(n1 => n1.Name == name);
+                SwiPrologQueryVariable v = _vars.Find(n1 => n1.Name == name);
                 if (v == null)
                     throw new ArgumentException("'" + name + "' is not a variable", "name");
                 return v.Value;
@@ -186,23 +186,23 @@ namespace Logic.Prolog.Swi
         }
 
         /// <summary>
-        /// Gets the <see cref="PrologTerm"/> of the given variable name or throw an ArgumentException.
+        /// Gets the <see cref="SwiPrologTerm"/> of the given variable name or throw an ArgumentException.
         /// </summary>
         /// <param name="name">The name of the variable</param>
         /// <returns>The PlTerm (value) of the variable </returns>
         /// <exception cref="ArgumentException">Is thrown if the name is not the name of a variable.</exception> 
-        public PrologTerm this[string name]
+        public SwiPrologTerm this[string name]
         {
             get
             {
-                PrologQueryVariable v = _vars.Find(n1 => n1.Name == name);
+                SwiPrologQueryVariable v = _vars.Find(n1 => n1.Name == name);
                 if (v == null)
                     throw new ArgumentException("'" + name + "' is not a variable", "name");
                 return v.Value;
             }
         }
 
-        internal PrologQueryVariable this[int idx]
+        internal SwiPrologQueryVariable this[int idx]
         {
             get
             {
@@ -231,16 +231,16 @@ namespace Logic.Prolog.Swi
     /// <item><term><see href="Overload_SbsSW_SwiPlCs_PlQuery__ctor.htm">Construct</see> a PlQuery object by compound terms.</term><description>The most flexible and fast (runtime) way.</description></item>  
     /// </list>   
     ///
-    /// <para>For examples see <see cref="PrologQuery(string)"/> and <see cref="PrologQuery(string, PrologTermVector)"/></para>
+    /// <para>For examples see <see cref="SwiPrologQuery(string)"/> and <see cref="SwiPrologQuery(string, SwiPrologTermVector)"/></para>
     /// </summary>
     /// <remarks>
     /// <para>The query will be opened by <see cref="NextSolution()"/> and will be closed if NextSolution() return false.</para>
     /// </remarks>
-    public class PrologQuery : IDisposable
+    public class SwiPrologQuery : IDisposable
     {
         #region public members
         /// <summary>
-        /// The List of <see cref="PrologQueryResult"/> of this PlQuery.
+        /// The List of <see cref="SwiPrologQueryResult"/> of this PlQuery.
         /// </summary>
         /// <example>
         ///     <para>In the following example you see how the query Variables can be used to set a variable.</para>
@@ -248,8 +248,8 @@ namespace Logic.Prolog.Swi
         ///     <para>Here is a more complex sample where the variables of two queries are connected.</para>
         ///     <code source="..\..\TestSwiPl\LinqSwiPl.cs" region="compound_nested_query_with_variables_doc" />
         /// </example>
-        /// <seealso cref="PrologQueryResult"/>
-        public PrologQueryResult Variables { get { return _queryVariables; } }
+        /// <seealso cref="SwiPrologQueryResult"/>
+        public SwiPrologQueryResult Variables { get { return _queryVariables; } }
 
         /// <summary>
         /// Gets a <see cref="Collection&lt;T&gt;"/> of the variable names if the query was built by a string.
@@ -274,11 +274,11 @@ namespace Logic.Prolog.Swi
         private readonly string _module = ModuleDefault;
         private readonly string _name;
         private uintptr_t _qid;		// <qid_t/>
-        private PrologTermVector _av;	// Argument vector
+        private SwiPrologTermVector _av;	// Argument vector
 
         /// <summary>the list of prolog record's (the copies to store the variable bindings over backtracking)</summary>
         private readonly List<uintptr_t> _records = new List<uintptr_t>();
-        private readonly PrologQueryResult _queryVariables = new PrologQueryResult();
+        private readonly SwiPrologQueryResult _queryVariables = new SwiPrologQueryResult();
 
         #endregion private members
 
@@ -351,7 +351,7 @@ namespace Logic.Prolog.Swi
 
         #region implementing Free
         /// <inheritdoc />
-        ~PrologQuery()
+        ~SwiPrologQuery()
         {
             Dispose(false);
         }
@@ -394,16 +394,16 @@ namespace Logic.Prolog.Swi
         /// <para>With these constructors a Prolog query can be created but not opened. To get the results see <see cref="NextSolution()"/></para>
         /// <para>A Query can be created from a string or by a name and PlTermV. The later is a native way and available for compatibility.</para>
         /// <para>If a Query is created from a string representing arbitrary prolog text 
-        /// the helper classes <see cref="PrologQueryVariable"/> and <see cref="PrologQueryResult"/> comes into the game.
+        /// the helper classes <see cref="SwiPrologQueryVariable"/> and <see cref="SwiPrologQueryResult"/> comes into the game.
         /// In this case the most convenient way to get the results is to use <see cref="SolutionVariables"/> or <see cref="ToList()"/>.
         /// </para>
-        /// <para>For examples see <see cref="PrologQuery(string)"/>.</para>
+        /// <para>For examples see <see cref="SwiPrologQuery(string)"/>.</para>
         /// 
         /// </overloads>
         /// <summary>
         /// <para>With this constructor a query is created from a string.</para>
         /// <para>Uppercase parameters are interpreted a variables but can't be nested in sub terms.
-        /// If you need a variable in a nested term use <see cref="PrologQuery(string, PrologTermVector)"/>.
+        /// If you need a variable in a nested term use <see cref="SwiPrologQuery(string, SwiPrologTermVector)"/>.
         /// See the examples for details.</para>
         /// </summary>
         /// <remarks>Muddy Waters sang:"I'am build for comfort, I ain't build for speed"</remarks>
@@ -420,16 +420,16 @@ namespace Logic.Prolog.Swi
         ///  </example>
         /// <param name="goal">A string for a prolog query</param>
 
-        public PrologQuery(string goal)
+        public SwiPrologQuery(string goal)
             : this(ModuleDefault, goal)
         {
         }
 
 #pragma warning disable 1573
-        /// <inheritdoc cref="PrologQuery(string)" />
+        /// <inheritdoc cref="SwiPrologQuery(string)" />
         /// <summary>locating the predicate in the named module.</summary>
         /// <param name="module">locating the predicate in the named module.</param>
-        public PrologQuery(string module, string goal)
+        public SwiPrologQuery(string module, string goal)
         {
             if (string.IsNullOrEmpty(goal))
                 throw new ArgumentNullException("goal");
@@ -448,22 +448,22 @@ namespace Logic.Prolog.Swi
                 // call read_term(Term_of_query_string, [variable_names(VN)]).
                 // read_term_from_atom('noun(ş,C)', T, [variable_names(Vars)]).
                 // befor 2014 with redirected IO-Streams (PlQuery_Old_Kill_unused)
-                var atom = new PrologTerm("'" + goal.Replace(@"\", @"\\").Replace("'", @"\'") + "'");
-                PrologTerm term = PrologTerm.Variable();
-                PrologTerm options = PrologTerm.Variable();
-                PrologTerm variablenames = PrologTerm.Variable();
-                PrologTerm l = PrologTerm.Tail(options);
-                l.Append(PrologTerm.Compound("variable_names", variablenames));
+                var atom = new SwiPrologTerm("'" + goal.Replace(@"\", @"\\").Replace("'", @"\'") + "'");
+                SwiPrologTerm term = SwiPrologTerm.Variable();
+                SwiPrologTerm options = SwiPrologTerm.Variable();
+                SwiPrologTerm variablenames = SwiPrologTerm.Variable();
+                SwiPrologTerm l = SwiPrologTerm.Tail(options);
+                l.Append(SwiPrologTerm.Compound("variable_names", variablenames));
                 l.Close();
-                var args = new PrologTermVector(atom, term, options);
+                var args = new SwiPrologTermVector(atom, term, options);
                 if (!Call(module, "read_term_from_atom", args))
-                    throw new PrologLibraryException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
+                    throw new SwiPrologLibraryException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
 
                 // set list of variables and variable_names into _queryVariables
-                foreach (PrologTerm t in variablenames.ToList())
+                foreach (SwiPrologTerm t in variablenames.ToList())
                 {
                     // t[0]='=' , t[1]='VN', t[2]=_G123
-                    _queryVariables.Add(new PrologQueryVariable(t[1].ToString(), t[2]));
+                    _queryVariables.Add(new SwiPrologQueryVariable(t[1].ToString(), t[2]));
                 }
 
                 // Build the query
@@ -471,11 +471,11 @@ namespace Logic.Prolog.Swi
 
                 // is ok e.g. for listing/0.
                 // Check.Require(term.Arity > 0, "PlQuery(PlTerm t): t.Arity must be greater than 0."); 
-                _av = new PrologTermVector(term.Arity);
+                _av = new SwiPrologTermVector(term.Arity);
                 for (int index = 0; index < term.Arity; index++)
                 {
                     if (0 == libswipl.PL_get_arg(index + 1, term.TermRef, _av[index].TermRef))
-                        throw new PrologException("PL_get_arg in PlQuery " + term.ToString());
+                        throw new SwiPrologException("PL_get_arg in PlQuery " + term.ToString());
                 }
             }
 #if _DEBUG
@@ -502,16 +502,16 @@ namespace Logic.Prolog.Swi
         ///  </example>
         /// <param name="name">the name of the predicate</param>
         /// <param name="termV">the argument vector containing the parameters</param>
-        public PrologQuery(string name, PrologTermVector termV)
+        public SwiPrologQuery(string name, SwiPrologTermVector termV)
             : this(ModuleDefault, name, termV)
         {
         }
 
 #pragma warning disable 1573
-        /// <inheritdoc cref="PrologQuery(string,PrologTermVector)" />
+        /// <inheritdoc cref="SwiPrologQuery(string,SwiPrologTermVector)" />
         /// <summary>locating the predicate in the named module.</summary>
         /// <param name="module">locating the predicate in the named module.</param>
-        public PrologQuery(string module, string name, PrologTermVector termV)
+        public SwiPrologQuery(string module, string name, SwiPrologTermVector termV)
         {
             //if (null == termV)
             //    throw new ArgumentNullException("termV");
@@ -528,7 +528,7 @@ namespace Logic.Prolog.Swi
 
 
         /// <summary>Provide access to the Argument vector for the query</summary>
-        public PrologTermVector Args { get { return _av; } }
+        public SwiPrologTermVector Args { get { return _av; } }
 
         /// <summary>
         /// Provide the next solution to the query. Prolog exceptions are mapped to C# exceptions.
@@ -538,7 +538,7 @@ namespace Logic.Prolog.Swi
         /// <para>If the query is closed it will be opened. If the last solution was generated the query will be closed.</para>
         /// <para>If an exception is thrown while parsing (open) the query the _qid is set to zero.</para>
         /// </remarks>
-        /// <exception cref="PrologException">Is thrown if <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_next_solution()">SWI-Prolog Manual PL_next_solution()</see> returns false </exception>
+        /// <exception cref="SwiPrologException">Is thrown if <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/foreigninclude.html#PL_next_solution()">SWI-Prolog Manual PL_next_solution()</see> returns false </exception>
         public bool NextSolution()
         {
             if (0 == _qid)
@@ -559,7 +559,7 @@ namespace Logic.Prolog.Swi
                 if ((ex = libswipl.PL_exception(_qid)) > 0)
                 {
                     _qid = 0;   // to avoid an AccessViolationException on Dispose. E.g. if the query is mispelled.
-                    var etmp = new PrologException(new PrologTerm(ex));
+                    var etmp = new SwiPrologException(new SwiPrologTerm(ex));
                     etmp.Throw();
                 }
             }
@@ -571,11 +571,11 @@ namespace Logic.Prolog.Swi
 
         /// <summary>
         /// <para>Enumerate the solutions.</para>
-        /// <para>For examples see <see cref="PrologQuery(string)"/></para>
+        /// <para>For examples see <see cref="SwiPrologQuery(string)"/></para>
         /// </summary>
         /// <seealso cref="NextSolution"/>
         /// <seealso href="Overload_SbsSW_SwiPlCs_PlQuery__ctor.htm">Constructors</seealso>
-        public IEnumerable<PrologTermVector> Solutions
+        public IEnumerable<SwiPrologTermVector> Solutions
         {
             get
             {
@@ -587,22 +587,22 @@ namespace Logic.Prolog.Swi
         }
 
         /// <summary>
-        /// <para>Enumerate the <see cref="PrologQueryResult"/> of one solution.</para>
+        /// <para>Enumerate the <see cref="SwiPrologQueryResult"/> of one solution.</para>
         /// </summary>
         /// <example>
         ///     <code source="..\..\TestSwiPl\LinqSwiPl.cs" region="compound_query_SolutionVariables_doc" />
         /// </example>
         /// <seealso cref="NextSolution"/>
-        public IEnumerable<PrologQueryResult> SolutionVariables
+        public IEnumerable<SwiPrologQueryResult> SolutionVariables
         {
             get
             {
                 while (NextSolution())
                 {
-                    var qv = new PrologQueryResult();
+                    var qv = new SwiPrologQueryResult();
                     for (int i = 0; i < _queryVariables.Count; i++)
                     {
-                        qv.Add(new PrologQueryVariable(_queryVariables[i].Name, _queryVariables[i].Value));
+                        qv.Add(new SwiPrologQueryVariable(_queryVariables[i].Name, _queryVariables[i].Value));
                     }
                     yield return qv;
                 }
@@ -610,7 +610,7 @@ namespace Logic.Prolog.Swi
         }
 
         /// <summary>
-        /// <para>Create a <see cref="ReadOnlyCollection&lt;T&gt;"/> of <see cref="PrologQueryResult"/>.</para>
+        /// <para>Create a <see cref="ReadOnlyCollection&lt;T&gt;"/> of <see cref="SwiPrologQueryResult"/>.</para>
         /// <para>If calling ToList() all solutions of the query are generated and stored in the Collection.</para>
         /// </summary>
         /// <returns>A ReadOnlyCollection of PlQueryVariables containing all solutions of the query.</returns>
@@ -618,9 +618,9 @@ namespace Logic.Prolog.Swi
         ///     <code source="..\..\TestSwiPl\LinqSwiPl.cs" region="Test_multi_goal_ToList_doc" />
         /// </example>
 
-        public ReadOnlyCollection<PrologQueryResult> ToList()
+        public ReadOnlyCollection<SwiPrologQueryResult> ToList()
         {
-            var list = new List<PrologQueryResult>();
+            var list = new List<SwiPrologQueryResult>();
             EraseRecords();
             while (NextSolution())
             {
@@ -630,7 +630,7 @@ namespace Logic.Prolog.Swi
                 }
             }
 
-            var qv = new PrologQueryResult(); // dummy to make the compiler happy
+            var qv = new SwiPrologQueryResult(); // dummy to make the compiler happy
             int avIdx = _queryVariables.Count;
             foreach (uintptr_t recordTerm in _records)
             {
@@ -638,16 +638,16 @@ namespace Logic.Prolog.Swi
                 libswipl.PL_recorded(recordTerm, ptrTerm);
                 if (avIdx == _queryVariables.Count)
                 {
-                    qv = new PrologQueryResult();
+                    qv = new SwiPrologQueryResult();
                     list.Add(qv);
                     avIdx = 0;
                 }
                 //qv.Add(new PlQueryVar(GetVariableName(avIdx), new PlTerm(term)));   // If this line is deleted -> update comment in PlTern(term_ref)
-                qv.Add(new PrologQueryVariable(_queryVariables[avIdx].Name, new PrologTerm(ptrTerm)));   // If this line is deleted -> update comment in PlTern(term_ref)
+                qv.Add(new SwiPrologQueryVariable(_queryVariables[avIdx].Name, new SwiPrologTerm(ptrTerm)));   // If this line is deleted -> update comment in PlTern(term_ref)
                 avIdx++;
                 //av[avIdx++].TermRef = term_t;
             }
-            return new ReadOnlyCollection<PrologQueryResult>(list);
+            return new ReadOnlyCollection<SwiPrologQueryResult>(list);
         }
 
         #region static Call
@@ -664,10 +664,10 @@ namespace Logic.Prolog.Swi
         /// </example>
         /// <param name="queryType">A <see>PlQuerySwitch</see>.</param>
         /// <returns>A int depending on the given queryType</returns>
-        internal static long Query(QuerySwitch queryType)
+        internal static long Query(SwiQuerySwitch queryType)
         {
             //Check.Require(queryType != PlQuerySwitch.None, "PlQuerySwitch (None) is not valid");
-            Contract.Requires(queryType != QuerySwitch.None, "PlQuerySwitch (None) is not valid");
+            Contract.Requires(queryType != SwiQuerySwitch.None, "PlQuerySwitch (None) is not valid");
             return libswipl.PL_query((uint)queryType);
         }
 
@@ -685,26 +685,26 @@ namespace Logic.Prolog.Swi
         /// </code>
         /// </example>
         /// </overloads>
-        /// <inheritdoc cref="PrologQuery(string,PrologTermVector)" />
+        /// <inheritdoc cref="SwiPrologQuery(string,SwiPrologTermVector)" />
         /// <remarks>
         /// <para>Create a PlQuery from the arguments, generates the first solution by NextSolution() and destroys the query.</para>
         /// </remarks>
         /// <param name="predicate">defines the name of the predicate</param>
-        /// <param name="args">Is a <see cref="PrologTermVector"/> of arguments for the predicate</param>
+        /// <param name="args">Is a <see cref="SwiPrologTermVector"/> of arguments for the predicate</param>
         /// <returns>Return true or false as the result of NextSolution() or throw an exception.</returns>
-        public static bool Call(string predicate, PrologTermVector args)
+        public static bool Call(string predicate, SwiPrologTermVector args)
         {
             return Call(ModuleDefault, predicate, args);
         }
 #pragma warning disable 1573
         // Parameter 'predicate' has no matching param tag in the XML comment for 'SbsSW.SwiPlCs.PlQuery.PlCall(string, string, SbsSW.SwiPlCs.PlTermV)' (but other parameters do)
-        /// <inheritdoc cref="Call(string, PrologTermVector)" />
-        /// <summary>As <see cref="Call(string, PrologTermVector)"/> but locating the predicate in the named module.</summary>
+        /// <inheritdoc cref="Call(string, SwiPrologTermVector)" />
+        /// <summary>As <see cref="Call(string, SwiPrologTermVector)"/> but locating the predicate in the named module.</summary>
         /// <param name="module">locating the predicate in the named module.</param>
-        public static bool Call(string module, string predicate, PrologTermVector args)
+        public static bool Call(string module, string predicate, SwiPrologTermVector args)
         {
             bool bRet;
-            using (var q = new PrologQuery(module, predicate, args))
+            using (var q = new SwiPrologQuery(module, predicate, args))
             {
                 bRet = q.NextSolution();
                 q.Free(false);
@@ -712,7 +712,7 @@ namespace Logic.Prolog.Swi
             return bRet;
         }
 #pragma warning restore 1573
-        /// <inheritdoc cref="Call(string, PrologTermVector)" />
+        /// <inheritdoc cref="Call(string, SwiPrologTermVector)" />
         /// <summary>Call a goal once.</summary>
         /// <example>
         /// <code>
@@ -726,7 +726,7 @@ namespace Logic.Prolog.Swi
         public static bool Call(string goal)
         {
             bool bRet;
-            using (var q = new PrologQuery("call", new PrologTermVector(new PrologTerm(goal))))
+            using (var q = new SwiPrologQuery("call", new SwiPrologTermVector(new SwiPrologTerm(goal))))
             {
                 bRet = q.NextSolution();
                 q.Free(true);
@@ -743,7 +743,7 @@ namespace Logic.Prolog.Swi
         public static bool Call(string module, string goal)
         {
             bool bRet;
-            using (var q = new PrologQuery(module, "call", new PrologTermVector(new PrologTerm(goal))))
+            using (var q = new SwiPrologQuery(module, "call", new SwiPrologTermVector(new SwiPrologTerm(goal))))
             {
                 bRet = q.NextSolution();
                 q.Free(true);
@@ -772,7 +772,7 @@ namespace Logic.Prolog.Swi
         ///     <para>This sample shows both how to get the working_directory from SWI-Prolog.</para>
         ///     <code source="..\..\TestSwiPl\PlQuery.cs" region="PlCallQuery_direct_3_doc" />
         /// </example>
-        public static PrologTerm CallQuery(string goal)
+        public static SwiPrologTerm CallQuery(string goal)
         {
             return CallQuery(ModuleDefault, goal);
         }
@@ -781,16 +781,16 @@ namespace Logic.Prolog.Swi
         /// <inheritdoc cref="CallQuery(System.String)" />
         /// <summary>As <see cref="CallQuery(string)"/> but executed in the named module.</summary>
         /// <param name="module">The modulename in which the query is executed</param>
-        public static PrologTerm CallQuery(string module, string goal)
+        public static SwiPrologTerm CallQuery(string module, string goal)
         {
-            PrologTerm retVal;
-            using (var q = new PrologQuery(module, goal))
+            SwiPrologTerm retVal;
+            using (var q = new SwiPrologQuery(module, goal))
             {
                 // find the variable or throw an exception
-                PrologTerm? t = null;
+                SwiPrologTerm? t = null;
                 if (q.Variables.Count == 1)
                 {
-                    t = new PrologTerm(q.Variables[0].Value.TermRef);
+                    t = new SwiPrologTerm(q.Variables[0].Value.TermRef);
                 }
                 else
                 {
@@ -799,7 +799,7 @@ namespace Logic.Prolog.Swi
                         if (!q._av[i].IsVariable) continue;
                         if (t == null)
                         {
-                            t = new PrologTerm(q._av[i].TermRef);
+                            t = new SwiPrologTerm(q._av[i].TermRef);
                         }
                         else
                             throw new ArgumentException("More than one Variable in " + goal);
@@ -810,10 +810,10 @@ namespace Logic.Prolog.Swi
 
                 if (q.NextSolution())
                 {
-                    retVal = (PrologTerm)t;
+                    retVal = (SwiPrologTerm)t;
                 }
                 else
-                    retVal = new PrologTerm();    // null
+                    retVal = new SwiPrologTerm();    // null
                 q.Free(false);
             }
             return retVal;

@@ -17,13 +17,13 @@ namespace Logic.Prolog.Swi
     public class Prolog_Tests
     {
         static V8ScriptEngine v8;
-        static PrologEngine prolog;
+        static SwiPrologEngine prolog;
 
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
             v8 = new V8ScriptEngine();
-            prolog = new PrologEngine();
+            prolog = new SwiPrologEngine();
             v8.AddHostType("Console", typeof(Console));
             v8.AddHostObject("prolog", prolog);
         }
@@ -169,7 +169,7 @@ namespace Logic.Prolog.Swi
         {
             var module = prolog.CreateModule();
 
-            module.AddPredicate("p", 2, new PrologCallback2((PrologTerm x, PrologTerm y) =>
+            module.AddPredicate("p", 2, new SwiPrologCallback2((SwiPrologTerm x, SwiPrologTerm y) =>
             {
                 return x.ToInteger() > y.ToInteger();
             }));
@@ -187,7 +187,7 @@ namespace Logic.Prolog.Swi
 
             var data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            module.AddPredicateNondeterministic("p", 1, new PrologNondeterministicCallback1((PrologTerm x, dynamic context) =>
+            module.AddPredicateNondeterministic("p", 1, new SwiPrologNondeterministicCallback1((SwiPrologTerm x, dynamic context) =>
             {
                 try
                 {
@@ -214,7 +214,7 @@ namespace Logic.Prolog.Swi
 
             var module = prolog.CreateModule();
 
-            module.AddPredicate("p", 1, new PrologCallback1((PrologTerm x) =>
+            module.AddPredicate("p", 1, new SwiPrologCallback1((SwiPrologTerm x) =>
             {
                 return x.Unify(prolog.Compound("z", prolog.Atom(1), prolog.Atom(2)));
             }));

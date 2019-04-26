@@ -16,7 +16,7 @@ namespace Application
         {
             using (var engine = new V8ScriptEngine())
             {
-                using (var prolog = new PrologEngine())
+                using (var prolog = new SwiPrologEngine())
                 {
                     engine.AddHostType("Console", typeof(Console));
                     engine.AddHostObject("prolog", prolog);

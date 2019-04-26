@@ -53,11 +53,11 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="libswipl.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="PrologEngine.cs" />
-    <Compile Include="PrologFrame.cs" />
-    <Compile Include="PrologTerm.cs" />
+    <Compile Include="SwiPrologEngine.cs" />
+    <Compile Include="SwiPrologFrame.cs" />
+    <Compile Include="SwiPrologTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PrologQuery.cs" />
+    <Compile Include="SwiPrologQuery.cs" />
     <Compile Include="SWI.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ namespace Logic.Prolog.Swi
     ///     <code source="..\..\TestSwiPl\PlFrame.cs" region="AssertWord_doc" />
     /// <b><note type="caution"> NOTE: in any case you have to destroy any query object used inside a PlFrame</note></b>
     /// </example>
-    public class PrologFrame : IDisposable
+    public class SwiPrologFrame : IDisposable
     {
         #region IDisposable
         // see : "Implementing a Dispose Method  [C#]" in  ms-help://MS.VSCC/MS.MSDNVS/cpguide/html/cpconimplementingdisposemethod.htm
@@ -84,7 +84,7 @@ namespace Logic.Prolog.Swi
         /// <summary>
         /// Creating an instance of this class marks all term-references created afterwards to be valid only in the scope of this instance.
         /// </summary>
-        public PrologFrame()
+        public SwiPrologFrame()
         {
             _fid = libswipl.PL_open_foreign_frame();
         }
@@ -92,7 +92,7 @@ namespace Logic.Prolog.Swi
         /// <summary>
         /// Reclaims all term-references created after constructing the instance.
         /// </summary>
-        ~PrologFrame()
+        ~SwiPrologFrame()
         {
             Dispose(false);
         }

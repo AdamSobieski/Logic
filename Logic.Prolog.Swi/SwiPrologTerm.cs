@@ -98,7 +98,7 @@ namespace Logic.Prolog.Swi
     //  /* dicts */
     //#define PL_DICT		 (44)
 
-    internal enum PrologTermType
+    internal enum SwiPrologTermType
     {
         Unknown = 0,
         Variable = 1,
@@ -154,7 +154,7 @@ namespace Logic.Prolog.Swi
     /// <summary>
     ///  <para>The PrologTerm <see langword="struct"/> plays a central role in operating on Prolog data.</para>
     /// </summary>
-    public struct PrologTerm : IComparable, IEnumerable<PrologTerm>// TODO, IList<PlTerm> // LISTS
+    public struct SwiPrologTerm : IComparable, IEnumerable<SwiPrologTerm>// TODO, IList<PlTerm> // LISTS
     {
         private uintptr_t _termRef;
 
@@ -174,8 +174,8 @@ namespace Logic.Prolog.Swi
         [NoScriptAccess]
         public int CompareTo(object obj)
         {
-            if (obj is PrologTerm)
-                return libswipl.PL_compare(TermRef, ((PrologTerm)obj).TermRef);
+            if (obj is SwiPrologTerm)
+                return libswipl.PL_compare(TermRef, ((SwiPrologTerm)obj).TermRef);
             throw new ArgumentException("object is not a PrologTerm");
         }
 
@@ -194,7 +194,7 @@ namespace Logic.Prolog.Swi
         /// <exception cref="NotSupportedException">Is thrown if PlTerm is not of Type PlCompound see <see cref="IsCompound"/></exception>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown if (pos &lt;  0 || pos >= Arity)</exception>
         /// <exception cref="InvalidOperationException">Is thrown if PL_get_arg returns 0.</exception>
-        public PrologTerm this[int position]
+        public SwiPrologTerm this[int position]
         {
             get
             {
@@ -206,11 +206,11 @@ namespace Logic.Prolog.Swi
 
                 if (0 == position)
                 {
-                    return IsList ? new PrologTerm("'.'") : new PrologTerm(Name);
+                    return IsList ? new SwiPrologTerm("'.'") : new SwiPrologTerm(Name);
                 }
                 uintptr_t a = libswipl.PL_new_term_ref();
                 if (0 != libswipl.PL_get_arg(position, TermRef, a))
-                    return new PrologTerm(a);
+                    return new SwiPrologTerm(a);
                 throw new InvalidOperationException("PrologTerm indexer: PL_get_arg return 0");
             }
             //set
@@ -232,12 +232,12 @@ namespace Logic.Prolog.Swi
         /// - PlTermV this[int index] indexer
         /// </summary>
         /// <param name="termRef"></param>
-        internal PrologTerm(uintptr_t termRef)
+        internal SwiPrologTerm(uintptr_t termRef)
         {
             _termRef = termRef;
         }
 
-        public PrologTerm(string text)
+        public SwiPrologTerm(string text)
         {
             if (string.IsNullOrEmpty(text))
                 text = "''";
@@ -245,19 +245,19 @@ namespace Logic.Prolog.Swi
             uintptr_t t = libswipl.PL_new_term_ref();
 
             if (0 == libswipl.PL_wchars_to_term(text, t))
-                throw new PrologException(new PrologTerm(t));
+                throw new SwiPrologException(new SwiPrologTerm(t));
 
             _termRef = libswipl.PL_new_term_ref();
             libswipl.PL_put_term(TermRef, t);
         }
 
-        public PrologTerm(int value)
+        public SwiPrologTerm(int value)
         {
             _termRef = libswipl.PL_new_term_ref();
             libswipl.PL_put_integer(TermRef, value);
         }
 
-        public PrologTerm(double value)
+        public SwiPrologTerm(double value)
         {
             _termRef = libswipl.PL_new_term_ref();
             libswipl.PL_put_float(TermRef, value);
@@ -276,9 +276,9 @@ namespace Logic.Prolog.Swi
         /// Creates a new initialised term (holding a Prolog variable).
         /// </summary>
         /// <returns>a PlTerm</returns>
-        public static PrologTerm Variable()
+        public static SwiPrologTerm Variable()
         {
-            return new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            return new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
         }
         #endregion
 
@@ -294,26 +294,26 @@ namespace Logic.Prolog.Swi
         /// term-reference keeps pointing to the head of the list.
         /// </para>
         /// </summary>
-        /// <inheritdoc cref="Append(PrologTerm)" select="example"/>
+        /// <inheritdoc cref="Append(SwiPrologTerm)" select="example"/>
         /// <param name="list">The initial PlTerm</param>
         /// <returns>A PlTerm for which is_list/1 succeed.</returns>
-        /// <seealso cref="Append(PrologTerm)"/>
-        /// <seealso cref="Add(PrologTerm)"/>
-        /// <seealso cref="AddList(PrologTerm)"/>
+        /// <seealso cref="Append(SwiPrologTerm)"/>
+        /// <seealso cref="Add(SwiPrologTerm)"/>
+        /// <seealso cref="AddList(SwiPrologTerm)"/>
         /// <seealso cref="Close()"/>
         /// <seealso cref="NextValue()"/>
-        public static PrologTerm Tail(PrologTerm list)
+        public static SwiPrologTerm Tail(SwiPrologTerm list)
         {
             //Check.Require(list != null);
             Contract.Requires(list != null);
             //Check.Require(list.IsList || list.IsVar);
             Contract.Requires(list.IsList || list.IsVariable);
 
-            var term = new PrologTerm();
+            var term = new SwiPrologTerm();
             if (0 != libswipl.PL_is_variable(list.TermRef) || 0 != libswipl.PL_is_list(list.TermRef))
                 term._termRef = libswipl.PL_copy_term_ref(list.TermRef);
             else
-                throw new PrologTypeException("list", list);
+                throw new SwiPrologTypeException("list", list);
 
             return term;
         }
@@ -321,37 +321,37 @@ namespace Logic.Prolog.Swi
 
         #region Compound Creation
         [Obsolete("PrologTerm.Compound(text) is deprecated, please use new PrologTerm(text) instead.")]
-        static internal PrologTerm Compound(string text)
+        static internal SwiPrologTerm Compound(string text)
         {
-            return new PrologTerm(text);
+            return new SwiPrologTerm(text);
         }
 
-        public static PrologTerm Compound(string functor, PrologTermVector args)
+        public static SwiPrologTerm Compound(string functor, SwiPrologTermVector args)
         {
             //Check.Require(args.A0 != 0);
             Contract.Requires(args.A0 != 0);
-            var term = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            var term = new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
             var atom = libswipl.PL_new_atom_wchars(functor);
             libswipl.PL_cons_functor_v(term.TermRef, libswipl.PL_new_functor(atom, args.Size), args.A0);
             libswipl.PL_unregister_atom(atom);
             return term;
         }
 
-        public static PrologTerm Compound(string functor, PrologTerm arg1)
+        public static SwiPrologTerm Compound(string functor, SwiPrologTerm arg1)
         {
-            var args = new PrologTermVector(arg1);
+            var args = new SwiPrologTermVector(arg1);
             return Compound(functor, args);
         }
 
-        public static PrologTerm Compound(string functor, PrologTerm arg1, PrologTerm arg2)
+        public static SwiPrologTerm Compound(string functor, SwiPrologTerm arg1, SwiPrologTerm arg2)
         {
-            var args = new PrologTermVector(arg1, arg2);
+            var args = new SwiPrologTermVector(arg1, arg2);
             return Compound(functor, args);
         }
 
-        public static PrologTerm Compound(string functor, PrologTerm arg1, PrologTerm arg2, PrologTerm arg3)
+        public static SwiPrologTerm Compound(string functor, SwiPrologTerm arg1, SwiPrologTerm arg2, SwiPrologTerm arg3)
         {
-            var args = new PrologTermVector(arg1, arg2, arg3);
+            var args = new SwiPrologTermVector(arg1, arg2, arg3);
             return Compound(functor, args);
         }
 
@@ -368,17 +368,17 @@ namespace Logic.Prolog.Swi
         /// <param name="text">the string</param>
         /// <returns>a new PrologTerm</returns>
         /// <remarks>NOTE: this Method does *not* work with unicode characters. Concider to use new PlTerm(text) instead.</remarks>
-        public static PrologTerm String(string text)
+        public static SwiPrologTerm String(string text)
         {
-            var t = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
-            libswipl.PL_unify_wchars(t.TermRef, PrologTermType.String, text);
+            var t = new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            libswipl.PL_unify_wchars(t.TermRef, SwiPrologTermType.String, text);
             return t;
         }
 
-        public static PrologTerm String(string text, int len)
+        public static SwiPrologTerm String(string text, int len)
         {
-            var t = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
-            libswipl.PL_unify_wchars(t.TermRef, PrologTermType.String, len, text);
+            var t = new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            libswipl.PL_unify_wchars(t.TermRef, SwiPrologTermType.String, len, text);
             return t;
         }
         #endregion PlString Creation
@@ -388,11 +388,11 @@ namespace Logic.Prolog.Swi
         /// Create a Prolog list of ASCII codes from a 0-terminated C-string.
         /// </summary>
         /// <param name="text">The text</param>
-        /// <returns>a new <see cref="PrologTerm"/></returns>
-        public static PrologTerm CodeList(string text)
+        /// <returns>a new <see cref="SwiPrologTerm"/></returns>
+        public static SwiPrologTerm CodeList(string text)
         {
-            var term = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
-            libswipl.PL_unify_wchars(term.TermRef, PrologTermType.CodeList, text);
+            var term = new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            libswipl.PL_unify_wchars(term.TermRef, SwiPrologTermType.CodeList, text);
             return term;
         }
         #endregion
@@ -407,10 +407,10 @@ namespace Logic.Prolog.Swi
         /// <remarks>Character lists are compliant to Prolog's <see href="http://gollem.science.uva.nl/SWI-Prolog/Manual/manipatom.html#atom_chars/2">atom_chars/2</see> predicate.</remarks>
         /// <param name="text">a string</param>
         /// <returns>A new PlTerm containing a prolog list of character</returns>
-        public static PrologTerm CharList(string text)
+        public static SwiPrologTerm CharList(string text)
         {
-            var term = new PrologTerm { _termRef = libswipl.PL_new_term_ref() };
-            libswipl.PL_unify_wchars(term.TermRef, PrologTermType.CharList, text);
+            var term = new SwiPrologTerm { _termRef = libswipl.PL_new_term_ref() };
+            libswipl.PL_unify_wchars(term.TermRef, SwiPrologTermType.CharList, text);
             return term;
         }
         #endregion
@@ -424,9 +424,9 @@ namespace Logic.Prolog.Swi
         [NoScriptAccess]
         public bool IsInitialized { get { return 0 != _termRef; } }
 
-        internal PrologTermType PrologTermType
+        internal SwiPrologTermType PrologTermType
         {
-            get { return (PrologTermType)libswipl.PL_term_type(TermRef); }
+            get { return (SwiPrologTermType)libswipl.PL_term_type(TermRef); }
         }
 
         // all return non zero if condition succeed
@@ -487,7 +487,7 @@ namespace Logic.Prolog.Swi
         /// <code source="..\..\TestSwiPl\LinqPlTail.cs" region="query_prologlist_PlTail_with_Linq_doc" />
         /// </example>
         [ScriptMember("append")]
-        public bool Append(PrologTerm term)
+        public bool Append(SwiPrologTerm term)
         {
             //Check.Require(IsList || IsVar);
             Contract.Requires(IsList || IsVariable);
@@ -509,7 +509,7 @@ namespace Logic.Prolog.Swi
         /// <param name="term">a closed list</param>
         /// <returns>True if Succeed</returns>
         [ScriptMember("add")]
-        public bool Add(PrologTerm term)
+        public bool Add(SwiPrologTerm term)
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
@@ -538,7 +538,7 @@ namespace Logic.Prolog.Swi
         /// <param name="listToAppend">a closed list</param>
         /// <returns>True if Succeed</returns>
         [ScriptMember("addList")]
-        public bool AddList(PrologTerm listToAppend)
+        public bool AddList(SwiPrologTerm listToAppend)
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
@@ -580,13 +580,13 @@ namespace Logic.Prolog.Swi
         /// Returns the element on success or a free PlTerm (Variable) if PlTail represents the empty list. 
         /// If PlTail is neither a list nor the empty list, a PlTypeException (type_error) is thrown. 
         /// </summary>
-        /// <inheritdoc cref="AddList(PrologTerm)" select="example"/>
+        /// <inheritdoc cref="AddList(SwiPrologTerm)" select="example"/>
         /// <returns>The Next element in the list as a PlTerm which is a variable for the last element or an empty list</returns>
-        public PrologTerm NextValue()
+        public SwiPrologTerm NextValue()
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
-            PrologTerm term = Variable();
+            SwiPrologTerm term = Variable();
             if (0 != libswipl.PL_get_list(TermRef, term.TermRef, TermRef))
             {
                 return term;
@@ -595,7 +595,7 @@ namespace Logic.Prolog.Swi
             {
                 return term;
             }
-            throw new PrologTypeException("list", this);
+            throw new SwiPrologTypeException("list", this);
         }
 
         /// <summary>
@@ -603,18 +603,18 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <returns>A strongly typed ReadOnlyCollection of PlTerm objects</returns>
         [NoScriptAccess]
-        public ReadOnlyCollection<PrologTerm> ToList()
+        public ReadOnlyCollection<SwiPrologTerm> ToList()
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
             // make a copy to keep the list
-            var tmp = new PrologTerm(libswipl.PL_copy_term_ref(TermRef));
-            var l = new List<PrologTerm>();
-            foreach (PrologTerm t in tmp)
+            var tmp = new SwiPrologTerm(libswipl.PL_copy_term_ref(TermRef));
+            var l = new List<SwiPrologTerm>();
+            foreach (SwiPrologTerm t in tmp)
             {
                 l.Add(t);
             }
-            return new ReadOnlyCollection<PrologTerm>(l);
+            return new ReadOnlyCollection<SwiPrologTerm>(l);
         }
 
         /// <summary>
@@ -627,9 +627,9 @@ namespace Logic.Prolog.Swi
             //Check.Require(IsList);
             Contract.Requires(IsList);
             // make a copy to keep the list
-            var tmp = new PrologTerm(libswipl.PL_copy_term_ref(TermRef));
+            var tmp = new SwiPrologTerm(libswipl.PL_copy_term_ref(TermRef));
             var l = new List<string>();
-            foreach (PrologTerm t in tmp)
+            foreach (SwiPrologTerm t in tmp)
             {
                 l.Add(t.ToString());
             }
@@ -641,11 +641,11 @@ namespace Logic.Prolog.Swi
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>A System.Collections.Generic.IEnumerator&lt;T that can be used to iterate through the collection.</returns>
-        public IEnumerator<PrologTerm> GetEnumerator()
+        public IEnumerator<SwiPrologTerm> GetEnumerator()
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
-            PrologTerm t; //null;
+            SwiPrologTerm t; //null;
             while (Next(out t))
             {
                 yield return t;
@@ -676,7 +676,7 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <param name="termRef"></param>
         /// <returns></returns>
-        private bool Next(out PrologTerm termRef)
+        private bool Next(out SwiPrologTerm termRef)
         {
             //Check.Require(IsList);
             Contract.Requires(IsList);
@@ -689,7 +689,7 @@ namespace Logic.Prolog.Swi
             {
                 return false;
             }
-            throw new PrologTypeException("list", this);
+            throw new SwiPrologTypeException("list", this);
         }
 
         private void BuildOpenList(out uintptr_t list, out uintptr_t head, out uintptr_t tail)
@@ -713,7 +713,7 @@ namespace Logic.Prolog.Swi
         {
             var sb = new StringBuilder("");
             var list = Tail(this);
-            foreach (PrologTerm t in list)
+            foreach (SwiPrologTerm t in list)
             {
                 if (0 < sb.Length)
                     sb.Append(',');
@@ -740,14 +740,14 @@ namespace Logic.Prolog.Swi
         /// with the CVT_WRITE_CANONICAL flag. If it fails PL_get_chars/3 is called again with REP_MB flag.
         /// </summary>
         /// <returns>return the string of a PlTerm</returns>
-        /// <exception cref="PrologTypeException">Throws a PlTypeException if PL_get_chars/3 didn't succeeds.</exception>
+        /// <exception cref="SwiPrologTypeException">Throws a PlTypeException if PL_get_chars/3 didn't succeeds.</exception>
         
         public string ToStringCanonical()
         {
             string s;
             if (0 != libswipl.PL_get_wchars(TermRef, out s, libswipl.CVT_WRITE_CANONICAL | libswipl.BUF_RING | libswipl.REP_UTF8))
                 return s;
-            throw new PrologTypeException("text", this);
+            throw new SwiPrologTypeException("text", this);
         }
 
         #endregion
@@ -768,7 +768,7 @@ namespace Logic.Prolog.Swi
         /// <overloads>
         /// This methods performs Prolog unification and returns true if successful and false otherwise.
         /// It is equal to the prolog =/2 operator.
-        /// <para>See <see cref="Unify(PrologTerm)"/> for an example.</para>
+        /// <para>See <see cref="Unify(SwiPrologTerm)"/> for an example.</para>
         /// <remarks>
         /// This methods are introduced for clear separation between the destructive assignment in C# using =
         /// and prolog unification.
@@ -781,7 +781,7 @@ namespace Logic.Prolog.Swi
         /// <param name="term">the second term for unification</param>
         /// <returns>true or false</returns>
         [ScriptMember("unify")]
-        public bool Unify(PrologTerm term)
+        public bool Unify(SwiPrologTerm term)
         {
             return 0 != libswipl.PL_unify(TermRef, term.TermRef);
         }
@@ -789,19 +789,19 @@ namespace Logic.Prolog.Swi
         [ScriptMember("unify")]
         public bool Unify(string text)
         {
-            return 0 != libswipl.PL_unify_wchars(TermRef, PrologTermType.String /* was PrologTermType.Atom */, text);
+            return 0 != libswipl.PL_unify_wchars(TermRef, SwiPrologTermType.String /* was PrologTermType.Atom */, text);
         }
 
         [ScriptMember("unify")]
         public bool Unify(int value)
         {
-            return 0 != libswipl.PL_unify(TermRef, new PrologTerm(value).TermRef);
+            return 0 != libswipl.PL_unify(TermRef, new SwiPrologTerm(value).TermRef);
         }
 
         [ScriptMember("unify")]
         public bool Unify(double value)
         {
-            return 0 != libswipl.PL_unify(TermRef, new PrologTerm(value).TermRef);
+            return 0 != libswipl.PL_unify(TermRef, new SwiPrologTerm(value).TermRef);
         }
 
         // <summary>
@@ -850,7 +850,7 @@ namespace Logic.Prolog.Swi
         #endregion unification
 
         #region Arity and Name
-        /// <summary><para>Get the arity of the functor if <see cref="PrologTerm"/> is a compound term.</para></summary>
+        /// <summary><para>Get the arity of the functor if <see cref="SwiPrologTerm"/> is a compound term.</para></summary>
         /// <remarks><para><see cref="Arity"/> and <see cref="Name"/> are for compound terms only</para></remarks>
         /// <exception cref="NotSupportedException">Is thrown if the term isn't compound</exception>
         [ScriptMember("arity")]
@@ -869,7 +869,7 @@ namespace Logic.Prolog.Swi
         }
 
         /// <summary>
-        /// <para>Get a holding the name of the functor if <see cref="PrologTerm"/> is a compound term.</para>
+        /// <para>Get a holding the name of the functor if <see cref="SwiPrologTerm"/> is a compound term.</para>
         /// </summary>
         /// <inheritdoc cref="Arity" />
         [ScriptMember("name")]
@@ -905,14 +905,14 @@ namespace Logic.Prolog.Swi
         /// </remarks>
         /// <param name="term">A PlTerm that can be converted to a string</param>
         /// <returns>A C# string</returns>
-        /// <exception cref="PrologTypeException">Throws a PlTypeException exception</exception>
+        /// <exception cref="SwiPrologTypeException">Throws a PlTypeException exception</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
-        public static explicit operator string(PrologTerm term)
+        public static explicit operator string(SwiPrologTerm term)
         {
             string s;
             if (0 != libswipl.PL_get_wchars(term.TermRef, out s, libswipl.CVT_ALL | libswipl.CVT_WRITE | libswipl.BUF_RING | libswipl.REP_UTF8))
                 return s;
-            throw new PrologTypeException("text", term);
+            throw new SwiPrologTypeException("text", term);
         }
 
         /// <summary>
@@ -921,15 +921,15 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <param name="term">A PlTerm is a Prolog integer or float that can be converted without loss to a int.</param>
         /// <returns>A C# int</returns>
-        /// <exception cref="PrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
+        /// <exception cref="SwiPrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
         /// is not a <see langword="PlType.PlInteger"/> or a <see langword="PlType.PlFloat"/>.</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
-        public static explicit operator int(PrologTerm term)
+        public static explicit operator int(SwiPrologTerm term)
         {
             int v = 0;
             if (0 != libswipl.PL_get_long(term.TermRef, ref v))
                 return v;
-            throw new PrologTypeException("long", term);
+            throw new SwiPrologTypeException("long", term);
         }
 
         /// <summary>
@@ -938,15 +938,15 @@ namespace Logic.Prolog.Swi
         /// </summary>
         /// <param name="term">A PlTerm represents a Prolog integer or float</param>
         /// <returns>A C# double</returns>
-        /// <exception cref="PrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
+        /// <exception cref="SwiPrologTypeException">Throws a PlTypeException exception if <see cref="PrologTermType"/> 
         /// is not a <see langword="PlType.PlInteger"/> or a <see langword="PlType.PlFloat"/>.</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
-        public static explicit operator double(PrologTerm term)
+        public static explicit operator double(SwiPrologTerm term)
         {
             double v = 0;
             if (0 != libswipl.PL_get_float(term.TermRef, ref v))
                 return v;
-            throw new PrologTypeException("float", term);
+            throw new SwiPrologTypeException("float", term);
         }
 
         #endregion cast oprators
@@ -962,8 +962,8 @@ namespace Logic.Prolog.Swi
         /// <inheritdoc />
         public override bool Equals(Object obj)
         {
-            if (obj is PrologTerm)
-                return this == ((PrologTerm)obj);
+            if (obj is SwiPrologTerm)
+                return this == ((SwiPrologTerm)obj);
             if (obj is int)
                 return this == ((int)obj);
             return false;
@@ -977,32 +977,32 @@ namespace Logic.Prolog.Swi
         /// <param name="term1">a PlTerm</param>
         /// <param name="term2">a PlTerm</param>
         /// <returns>true or false</returns>
-        public static bool operator ==(PrologTerm term1, PrologTerm term2)
+        public static bool operator ==(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) == 0;
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator !=(PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator !=(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) != 0;
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator <(PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator <(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) < 0;
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator >(PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator >(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) > 0;
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator <=(PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator <=(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) <= 0;
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator >=(PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator >=(SwiPrologTerm term1, SwiPrologTerm term2)
         {
             return libswipl.PL_compare(term1.TermRef, term2.TermRef) >= 0;
         }
@@ -1031,26 +1031,26 @@ namespace Logic.Prolog.Swi
         /// <param name="term">a PlTerm</param>
         /// <param name="value">a int</param>
         /// <returns>A bool</returns>
-        public static bool operator ==(PrologTerm term, int value)
+        public static bool operator ==(SwiPrologTerm term, int value)
         {
             int v0 = 0;
             if (0 != libswipl.PL_get_long(term.TermRef, ref v0))
                 return v0 == value;
             return false; // throw new PlTypeException("integer", term);
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator ==(int value, PrologTerm term)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator ==(int value, SwiPrologTerm term)
         {
             return term == value;
         }
         // comparison (string)
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator ==(PrologTerm term, string value)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator ==(SwiPrologTerm term, string value)
         {
             return ((string)term).Equals(value);
         }
-        /// <inheritdoc cref="op_Equality(PrologTerm, PrologTerm)" />
-        public static bool operator ==(string value, PrologTerm term)
+        /// <inheritdoc cref="op_Equality(SwiPrologTerm, SwiPrologTerm)" />
+        public static bool operator ==(string value, SwiPrologTerm term)
         {
             return term == value;
         }
@@ -1061,7 +1061,7 @@ namespace Logic.Prolog.Swi
         /// <overloads>
         /// <summary>
         /// <para>Inequality Method overload</para>
-        /// <see cref="op_Equality(PrologTerm, PrologTerm)"/>
+        /// <see cref="op_Equality(SwiPrologTerm, SwiPrologTerm)"/>
         /// a
         /// <see cref="M:SbsSW.SwiPlCs.PlTerm.op_Equality(SbsSW.SwiPlCs.PlTerm,System.Int32)"/>
         /// </summary>
@@ -1073,15 +1073,15 @@ namespace Logic.Prolog.Swi
         /// <param name="term"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool operator !=(PrologTerm term, int value)
+        public static bool operator !=(SwiPrologTerm term, int value)
         {
             int v0 = 0;
             if (0 != libswipl.PL_get_long(term.TermRef, ref v0))
                 return v0 != value;
             return true; // throw new PlTypeException("integer", term);
         }
-        /// <inheritdoc cref="op_Inequality(PrologTerm, int)" />
-        public static bool operator !=(int value, PrologTerm term)
+        /// <inheritdoc cref="op_Inequality(SwiPrologTerm, int)" />
+        public static bool operator !=(int value, SwiPrologTerm term)
         {
             return term != value;
         }
@@ -1091,12 +1091,12 @@ namespace Logic.Prolog.Swi
         /// <param name="term"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool operator !=(PrologTerm term, string value)
+        public static bool operator !=(SwiPrologTerm term, string value)
         {
             return !(term == value);
         }
-        /// <inheritdoc cref="op_Inequality(PrologTerm, string)" />
-        public static bool operator !=(string value, PrologTerm term)
+        /// <inheritdoc cref="op_Inequality(SwiPrologTerm, string)" />
+        public static bool operator !=(string value, SwiPrologTerm term)
         {
             return term != value;
         }
@@ -1109,13 +1109,13 @@ namespace Logic.Prolog.Swi
     /// <summary>
     /// <preliminary>The PrologTermVector <see langword="struct"/> represents an array of term references.</preliminary>
     /// <para>This type is used to pass the arguments to a foreign defined predicate (see <see cref="Callback.DelegateParameterVarArgs"/>), 
-    /// construct compound terms (see <see cref="PrologTerm.Compound(string, PrologTermVector)"/> 
+    /// construct compound terms (see <see cref="SwiPrologTerm.Compound(string, SwiPrologTermVector)"/> 
     /// and to create queries (see <see cref="T:SbsSW.SwiPlCs.PlQuery"/>).
     /// </para>
-    /// <para>The only useful member function is the overloading of [], providing (0-based) access to the elements. <see cref="PrologTermVector.this[Int32]"/> 
+    /// <para>The only useful member function is the overloading of [], providing (0-based) access to the elements. <see cref="SwiPrologTermVector.this[Int32]"/> 
     /// Range checking is performed and raises a ArgumentOutOfRangeException exception.</para> 
     /// </summary>
-    public struct PrologTermVector : IEquatable<PrologTermVector>
+    public struct SwiPrologTermVector : IEquatable<SwiPrologTermVector>
     {
 
         private readonly uintptr_t _a0; // term_t
@@ -1137,15 +1137,15 @@ namespace Logic.Prolog.Swi
         /// Create a vector of PlTerms with <paramref name="size"/> elements
         /// </summary>
         /// <param name="size">The amount of PlTerms in the vector</param>
-        public PrologTermVector(int size)
+        public SwiPrologTermVector(int size)
         {
             _a0 = libswipl.PL_new_term_refs(size);
             _size = size;
         }
 
-        /// <summary>Create a PlTermV from the given <see cref="PrologTerm"/>s.</summary>
-        /// <param name="term0">The first <see cref="PrologTerm"/> in the vector.</param>
-        public PrologTermVector(PrologTerm term0)
+        /// <summary>Create a PlTermV from the given <see cref="SwiPrologTerm"/>s.</summary>
+        /// <param name="term0">The first <see cref="SwiPrologTerm"/> in the vector.</param>
+        public SwiPrologTermVector(SwiPrologTerm term0)
         {
             _size = 1;
             _a0 = term0.TermRef;
@@ -1155,7 +1155,7 @@ namespace Logic.Prolog.Swi
 #pragma warning disable 1573
         /// <inheritdoc cref="PlTermV(PlTerm)" />
         /// <param name="term1">The second <see cref="PlTerm"/> in the vector.</param>
-        public PrologTermVector(PrologTerm term0, PrologTerm term1)
+        public SwiPrologTermVector(SwiPrologTerm term0, SwiPrologTerm term1)
         {
             _size = 2;
             _a0 = libswipl.PL_new_term_refs(2);
@@ -1163,9 +1163,9 @@ namespace Logic.Prolog.Swi
             libswipl.PL_put_term(_a0 + 1, term1.TermRef);
         }
 
-        /// <inheritdoc cref="PrologTermVector(PrologTerm, PrologTerm)" />
-        /// <param name="term2">The third <see cref="PrologTerm"/> in the vector.</param>
-        public PrologTermVector(PrologTerm term0, PrologTerm term1, PrologTerm term2)
+        /// <inheritdoc cref="SwiPrologTermVector(SwiPrologTerm, SwiPrologTerm)" />
+        /// <param name="term2">The third <see cref="SwiPrologTerm"/> in the vector.</param>
+        public SwiPrologTermVector(SwiPrologTerm term0, SwiPrologTerm term1, SwiPrologTerm term2)
         {
             _size = 3;
             _a0 = libswipl.PL_new_term_refs(3);
@@ -1174,7 +1174,7 @@ namespace Logic.Prolog.Swi
             libswipl.PL_put_term(_a0 + 2, term2.TermRef);
         }
 
-        public PrologTermVector(PrologTerm term0, PrologTerm term1, PrologTerm term2, PrologTerm term3)
+        public SwiPrologTermVector(SwiPrologTerm term0, SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3)
         {
             _size = 4;
             _a0 = libswipl.PL_new_term_refs(4);
@@ -1184,22 +1184,22 @@ namespace Logic.Prolog.Swi
             libswipl.PL_put_term(_a0 + 3, term3.TermRef);
         }
 
-        /// <summary>Create a PlTermV from the given <see cref="PrologTerm"/>[] array.</summary>
-        /// <param name="terms">An array of <see cref="PrologTerm"/>s to build the vector.</param>
+        /// <summary>Create a PlTermV from the given <see cref="SwiPrologTerm"/>[] array.</summary>
+        /// <param name="terms">An array of <see cref="SwiPrologTerm"/>s to build the vector.</param>
         /// <example>
         /// Use of Initializing an Array in CSharp
         /// <code>
         ///    PlTermV v = new PlTermV(new PlTerm[] {t1, t2, t3, t4});
         /// </code>
         /// </example>
-        public PrologTermVector(/*params*/ PrologTerm[] terms)
+        public SwiPrologTermVector(/*params*/ SwiPrologTerm[] terms)
         {
             if (null == terms)
                 throw new ArgumentNullException("terms");
             _size = terms.Length;
             _a0 = libswipl.PL_new_term_refs(terms.Length);
             ulong count = 0;
-            foreach (PrologTerm t in terms)
+            foreach (SwiPrologTerm t in terms)
             {
                 libswipl.PL_put_term(_a0 + count, t.TermRef);
                 count++;
@@ -1242,13 +1242,13 @@ namespace Logic.Prolog.Swi
         /// <returns>The PlTerm for the given index</returns>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown if (index &lt;  0 || index >= Size)</exception>
         /// <exception cref="SbsSW.DesignByContract.PreconditionException">Is thrown if the operator is used on an uninitialized PlTerm</exception>
-        public PrologTerm this[int index]
+        public SwiPrologTerm this[int index]
         {
             get
             {
                 if (index < 0 || index >= Size)
                     throw new ArgumentOutOfRangeException("index");
-                return new PrologTerm(A0 + (uint)index);  // If this line is deleted -> update comment in PlTern(term_ref)
+                return new SwiPrologTerm(A0 + (uint)index);  // If this line is deleted -> update comment in PlTern(term_ref)
             }
             set
             {
@@ -1272,9 +1272,9 @@ namespace Logic.Prolog.Swi
         ///<inheritdoc />
         public override bool Equals(object obj)
         {
-            if (!(obj is PrologTermVector))
+            if (!(obj is SwiPrologTermVector))
                 return false;
-            return Equals((PrologTermVector)obj);
+            return Equals((SwiPrologTermVector)obj);
         }
 
         ///<inheritdoc />
@@ -1284,7 +1284,7 @@ namespace Logic.Prolog.Swi
         /// <param name="other">The PlTermV to compare</param>
         /// <returns>Return <c>false</c> if size or A0 are not equal otherwise <c>true</c>.</returns>
         ///<remarks>// TODO compare each PlTerm in PlTermV not only the refereces in A0</remarks>
-        public bool Equals(PrologTermVector other)
+        public bool Equals(SwiPrologTermVector other)
         {
             if (_size != other._size)
                 return false;
@@ -1299,7 +1299,7 @@ namespace Logic.Prolog.Swi
         /// <param name="termVector1"></param>
         /// <param name="termVector2"></param>
         /// <returns></returns>
-        public static bool operator ==(PrologTermVector termVector1, PrologTermVector termVector2)
+        public static bool operator ==(SwiPrologTermVector termVector1, SwiPrologTermVector termVector2)
         {
             return termVector1.Equals(termVector2);
         }
@@ -1311,7 +1311,7 @@ namespace Logic.Prolog.Swi
         /// <param name="termVector1"></param>
         /// <param name="termVector2"></param>
         /// <returns></returns>
-        public static bool operator !=(PrologTermVector termVector1, PrologTermVector termVector2)
+        public static bool operator !=(SwiPrologTermVector termVector1, SwiPrologTermVector termVector2)
         {
             return !termVector1.Equals(termVector2);
         }

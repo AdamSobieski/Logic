@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 
 namespace Logic.Prolog.Swi
 {
-    public sealed class PrologEngine : IDisposable, IScriptableObject
+    public sealed class SwiPrologEngine : IDisposable, IScriptableObject
     {
-        public PrologEngine()
+        public SwiPrologEngine()
         {
             if (!SWI.IsInitialized)
             {
@@ -37,13 +37,13 @@ namespace Logic.Prolog.Swi
                 SWI.Initialize(parameters);
             }
 
-            modules = new List<PrologModule>();
+            modules = new List<SwiPrologModule>();
         }
 
-        private List<PrologModule> modules;
+        private List<SwiPrologModule> modules;
 
         [ScriptMember("createModule")]
-        public PrologModule CreateModule()
+        public SwiPrologModule CreateModule()
         {
             string name;
             var random = new Random((int)DateTime.Now.Ticks);
@@ -53,71 +53,71 @@ namespace Logic.Prolog.Swi
             }
             while (modules.Find(m => m.Name == name) != null);
 
-            var newModule = new PrologModule(this, name);
+            var newModule = new SwiPrologModule(this, name);
             modules.Add(newModule);
             return newModule;
         }
 
         [ScriptMember("createModule")]
-        public PrologModule CreateModule(string name)
+        public SwiPrologModule CreateModule(string name)
         {
             if (modules.Find(m => m.Name == name) != null) throw new ArgumentException("A module with that name already exists.", nameof(name));
 
-            var newModule = new PrologModule(this, name);
+            var newModule = new SwiPrologModule(this, name);
             modules.Add(newModule);
             return newModule;
         }
 
         [ScriptMember("createModule")]
-        public PrologModule CreateModule(string name, dynamic settings)
+        public SwiPrologModule CreateModule(string name, dynamic settings)
         {
             if (modules.Find(m => m.Name == name) != null) throw new ArgumentException("A module with that name already exists.", nameof(name));
 
-            var newModule = new PrologModule(this, name, settings);
+            var newModule = new SwiPrologModule(this, name, settings);
             modules.Add(newModule);
             return newModule;
         }
 
         [ScriptMember("atom")]
-        public PrologTerm Atom(string name)
+        public SwiPrologTerm Atom(string name)
         {
-            return new PrologTerm(name);
+            return new SwiPrologTerm(name);
         }
 
         [ScriptMember("atom")]
-        public PrologTerm Atom(int value)
+        public SwiPrologTerm Atom(int value)
         {
-            return new PrologTerm(value);
+            return new SwiPrologTerm(value);
         }
 
         [ScriptMember("atom")]
-        public PrologTerm Atom(double value)
+        public SwiPrologTerm Atom(double value)
         {
-            return new PrologTerm(value);
+            return new SwiPrologTerm(value);
         }
 
         [ScriptMember("variable")]
-        public PrologTerm Variable()
+        public SwiPrologTerm Variable()
         {
-            return PrologTerm.Variable();
+            return SwiPrologTerm.Variable();
         }
 
         [ScriptMember("compound")]
-        public PrologTerm Compound(string functor, params PrologTerm[] args)
+        public SwiPrologTerm Compound(string functor, params SwiPrologTerm[] args)
         {
-            return PrologTerm.Compound(functor, new PrologTermVector(args));
+            return SwiPrologTerm.Compound(functor, new SwiPrologTermVector(args));
         }
 
         [ScriptMember("list")]
-        public PrologTerm List(PrologTerm initial)
+        public SwiPrologTerm List(SwiPrologTerm initial)
         {
-            return PrologTerm.Tail(initial);
+            return SwiPrologTerm.Tail(initial);
         }
 
         [ScriptMember("string")]
-        public PrologTerm String(string text)
+        public SwiPrologTerm String(string text)
         {
-            return PrologTerm.String(text);
+            return SwiPrologTerm.String(text);
         }
 
         [NoScriptAccess]
@@ -133,15 +133,15 @@ namespace Logic.Prolog.Swi
         }
     }
 
-    public sealed class PrologModule : IDisposable
+    public sealed class SwiPrologModule : IDisposable
     {
-        internal PrologModule(PrologEngine prolog, string name)
+        internal SwiPrologModule(SwiPrologEngine prolog, string name)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             module = name;
             foreignPredicates = new List<Delegate>();
         }
-        internal PrologModule(PrologEngine prolog, string name, dynamic settings)
+        internal SwiPrologModule(SwiPrologEngine prolog, string name, dynamic settings)
             : this(prolog, name) { }
 
         private string module;
@@ -159,51 +159,51 @@ namespace Logic.Prolog.Swi
         [ScriptMember("assert")]
         public bool Assert(string term)
         {
-            return PrologQuery.Call(module, "assert(" + term + ")");
+            return SwiPrologQuery.Call(module, "assert(" + term + ")");
         }
 
         [ScriptMember("retract")]
         public bool Retract(string term)
         {
-            return PrologQuery.Call(module, "retract(" + term + ")");
+            return SwiPrologQuery.Call(module, "retract(" + term + ")");
         }
 
         [ScriptMember("contains")]
         public bool Contains(string term)
         {
-            return PrologQuery.Call(module, term);
+            return SwiPrologQuery.Call(module, term);
         }
 
         [ScriptMember("assertRule")]
         public bool AssertRule(string head, string body)
         {
-            return PrologQuery.Call(module, "assert((" + head + " :- " + body + "))");
+            return SwiPrologQuery.Call(module, "assert((" + head + " :- " + body + "))");
         }
 
         [ScriptMember("retractRule")]
         public bool RetractRule(string head, string body)
         {
-            return PrologQuery.Call(module, "retract((" + head + " :- " + body + "))");
+            return SwiPrologQuery.Call(module, "retract((" + head + " :- " + body + "))");
         }
 
         [ScriptMember("call")]
         public bool Call(string goal)
         {
-            return PrologQuery.Call(module, goal);
+            return SwiPrologQuery.Call(module, goal);
         }
 
         [ScriptMember("call")]
-        public bool Call(PrologTerm goal)
+        public bool Call(SwiPrologTerm goal)
         {
             return Call(goal.ToString());
         }
 
         [ScriptMember("query")]
-        public IEnumerable<PrologQueryResult> Query(string query)
+        public IEnumerable<SwiPrologQueryResult> Query(string query)
         {
-            using (var q = new PrologQuery(module, query))
+            using (var q = new SwiPrologQuery(module, query))
             {
-                foreach (PrologQueryResult v in q.SolutionVariables)
+                foreach (SwiPrologQueryResult v in q.SolutionVariables)
                 {
                     yield return v;
                 }
@@ -211,18 +211,18 @@ namespace Logic.Prolog.Swi
         }
 
         [ScriptMember("query")]
-        public IEnumerable<PrologQueryResult> Query(PrologTerm query)
+        public IEnumerable<SwiPrologQueryResult> Query(SwiPrologTerm query)
         {
             //return Query(query.ToString());
             var count = query.Arity;
-            var array = new PrologTerm[count];
+            var array = new SwiPrologTerm[count];
             for (int index = 0; index < count; ++index)
             {
                 array[index] = query[index + 1];
             }
-            using (var q = new PrologQuery(module, query.Name, new PrologTermVector(array)))
+            using (var q = new SwiPrologQuery(module, query.Name, new SwiPrologTermVector(array)))
             {
-                foreach (PrologQueryResult v in q.SolutionVariables)
+                foreach (SwiPrologQueryResult v in q.SolutionVariables)
                 {
                     yield return v;
                 }
@@ -243,31 +243,31 @@ namespace Logic.Prolog.Swi
             switch (arity)
             {
                 case 0:
-                    d = new PrologCallback0(() => functor());
+                    d = new SwiPrologCallback0(() => functor());
                     break;
                 case 1:
-                    d = new PrologCallback1((PrologTerm term1) => functor(term1));
+                    d = new SwiPrologCallback1((SwiPrologTerm term1) => functor(term1));
                     break;
                 case 2:
-                    d = new PrologCallback2((PrologTerm term1, PrologTerm term2) => functor(term1, term2));
+                    d = new SwiPrologCallback2((SwiPrologTerm term1, SwiPrologTerm term2) => functor(term1, term2));
                     break;
                 case 3:
-                    d = new PrologCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3) => functor(term1, term2, term3));
+                    d = new SwiPrologCallback3((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3) => functor(term1, term2, term3));
                     break;
                 case 4:
-                    d = new PrologCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4) => functor(term1, term2, term3, term4));
+                    d = new SwiPrologCallback4((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4) => functor(term1, term2, term3, term4));
                     break;
                 case 5:
-                    d = new PrologCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5) => functor(term1, term2, term3, term4, term5));
+                    d = new SwiPrologCallback5((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5) => functor(term1, term2, term3, term4, term5));
                     break;
                 case 6:
-                    d = new PrologCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6) => functor(term1, term2, term3, term4, term5, term6));
+                    d = new SwiPrologCallback6((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6) => functor(term1, term2, term3, term4, term5, term6));
                     break;
                 case 7:
-                    d = new PrologCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7) => functor(term1, term2, term3, term4, term5, term6, term7));
+                    d = new SwiPrologCallback7((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7) => functor(term1, term2, term3, term4, term5, term6, term7));
                     break;
                 case 8:
-                    d = new PrologCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8) => functor(term1, term2, term3, term4, term5, term6, term7, term8));
+                    d = new SwiPrologCallback8((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8) => functor(term1, term2, term3, term4, term5, term6, term7, term8));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -320,7 +320,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 1:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback1((SwiPrologTerm term1, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -342,7 +342,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 2:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback2((SwiPrologTerm term1, SwiPrologTerm term2, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -364,7 +364,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 3:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback3((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -386,7 +386,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 4:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback4((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -408,7 +408,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 5:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback5((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -430,7 +430,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 6:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback6((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -452,7 +452,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 7:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback7((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -474,7 +474,7 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 8:
-                    d = new SwiNativeForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
+                    d = new SwiNativeForeignNondeterministicPredicateCallback8((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -517,31 +517,31 @@ namespace Logic.Prolog.Swi
             switch (arity)
             {
                 case 0:
-                    if (!(functor is PrologCallback0)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback0)) throw new ArgumentException(nameof(functor));
                     break;
                 case 1:
-                    if (!(functor is PrologCallback1)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback1)) throw new ArgumentException(nameof(functor));
                     break;
                 case 2:
-                    if (!(functor is PrologCallback2)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback2)) throw new ArgumentException(nameof(functor));
                     break;
                 case 3:
-                    if (!(functor is PrologCallback3)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback3)) throw new ArgumentException(nameof(functor));
                     break;
                 case 4:
-                    if (!(functor is PrologCallback4)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback4)) throw new ArgumentException(nameof(functor));
                     break;
                 case 5:
-                    if (!(functor is PrologCallback5)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback5)) throw new ArgumentException(nameof(functor));
                     break;
                 case 6:
-                    if (!(functor is PrologCallback6)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback6)) throw new ArgumentException(nameof(functor));
                     break;
                 case 7:
-                    if (!(functor is PrologCallback7)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback7)) throw new ArgumentException(nameof(functor));
                     break;
                 case 8:
-                    if (!(functor is PrologCallback8)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologCallback8)) throw new ArgumentException(nameof(functor));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -570,7 +570,7 @@ namespace Logic.Prolog.Swi
             switch (arity)
             {
                 case 0:
-                    if (!(functor is PrologNondeterministicCallback0)) throw new ArgumentException(nameof(functor));
+                    if (!(functor is SwiPrologNondeterministicCallback0)) throw new ArgumentException(nameof(functor));
                     d = new SwiNativeForeignNondeterministicPredicateCallback0((IntPtr control_t) =>
                     {
                         dynamic context;
@@ -579,10 +579,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -593,8 +593,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 1:
-                    if (!(functor is PrologNondeterministicCallback1)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback1((PrologTerm term1, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback1)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback1((SwiPrologTerm term1, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -602,10 +602,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -616,8 +616,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 2:
-                    if (!(functor is PrologNondeterministicCallback2)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback2((PrologTerm term1, PrologTerm term2, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback2)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback2((SwiPrologTerm term1, SwiPrologTerm term2, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -625,10 +625,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -639,8 +639,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 3:
-                    if (!(functor is PrologNondeterministicCallback3)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback3((PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback3)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback3((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -648,10 +648,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -662,8 +662,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 4:
-                    if (!(functor is PrologNondeterministicCallback4)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback4((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback4)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback4((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -671,10 +671,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -685,8 +685,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 5:
-                    if (!(functor is PrologNondeterministicCallback5)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback5((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback5)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback5((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -694,10 +694,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -708,8 +708,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 6:
-                    if (!(functor is PrologNondeterministicCallback6)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback6((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback6)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback6((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -717,10 +717,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -731,8 +731,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 7:
-                    if (!(functor is PrologNondeterministicCallback7)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback7((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback7)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback7((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -740,10 +740,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -754,8 +754,8 @@ namespace Logic.Prolog.Swi
                     });
                     break;
                 case 8:
-                    if (!(functor is PrologNondeterministicCallback8)) throw new ArgumentException(nameof(functor));
-                    d = new SwiNativeForeignNondeterministicPredicateCallback8((PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t) =>
+                    if (!(functor is SwiPrologNondeterministicCallback8)) throw new ArgumentException(nameof(functor));
+                    d = new SwiNativeForeignNondeterministicPredicateCallback8((SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8, IntPtr control_t) =>
                     {
                         dynamic context;
 
@@ -763,10 +763,10 @@ namespace Logic.Prolog.Swi
                         {
                             case NondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
-                                return ((PrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
-                                return ((PrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
+                                return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
                             case NondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
@@ -789,7 +789,7 @@ namespace Logic.Prolog.Swi
         }
 
         [ScriptMember("getAssertions")]
-        public IEnumerable<PrologTerm> GetAssertions()
+        public IEnumerable<SwiPrologTerm> GetAssertions()
         {
             foreach (var r in Query("predicate_property(S, dynamic), clause(S, true)"))
             {
@@ -798,7 +798,7 @@ namespace Logic.Prolog.Swi
         }
 
         [ScriptMember("getRules")]
-        public IEnumerable<PrologTerm> GetRules()
+        public IEnumerable<SwiPrologTerm> GetRules()
         {
             foreach (var r in Query(@"predicate_property(S, dynamic), clause(S, T), T \= true, X=(S :- T)"))
             {

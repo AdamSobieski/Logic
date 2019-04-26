@@ -30,20 +30,20 @@ namespace Logic.Prolog.Swi.Exceptions
     #region class PlLibException
     /// <summary>This exception is thrown if something in the interface went wrong.</summary>
     [Serializable]
-    public class PrologLibraryException : Exception
+    public class SwiPrologLibraryException : Exception
     {
 
         /// <inheritdoc />
-        public PrologLibraryException()
+        public SwiPrologLibraryException()
         {
         }
         /// <inheritdoc />
-        public PrologLibraryException(string message)
+        public SwiPrologLibraryException(string message)
             : base(message)
         {
         }
         /// <inheritdoc />
-        public PrologLibraryException(string message, Exception innerException)
+        public SwiPrologLibraryException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
@@ -51,7 +51,7 @@ namespace Logic.Prolog.Swi.Exceptions
 
         // ISerializable Constructor
         /// <inheritdoc />
-        protected PrologLibraryException(SerializationInfo info, StreamingContext context)
+        protected SwiPrologLibraryException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -77,51 +77,51 @@ namespace Logic.Prolog.Swi.Exceptions
     /// <example>
     ///     <code source="..\..\TestSwiPl\PlException.cs" region="prolog_exception_sample_doc" />
     /// </example>
-    /// <seealso cref="PrologTypeException"/>
+    /// <seealso cref="SwiPrologTypeException"/>
     /// <seealso href="http://gollem.science.uva.nl/SWI-Prolog/Manual/exception.html">SWI-Prolog Manual - 4.9 ISO compliant Exception handling</seealso>
     [Serializable]
-    public class PrologException : Exception
+    public class SwiPrologException : Exception
     {
         private string _messagePl;
-        private PrologTerm _exTerm;
+        private SwiPrologTerm _exTerm;
 
         /// <summary>provide somtimes some additional information about the exceptions reason.</summary>
         public string MessagePl { get { return _messagePl; } }
 
 
         /// <inheritdoc />
-        public PrologException()
+        public SwiPrologException()
         {
-            _exTerm = PrologTerm.Variable();
+            _exTerm = SwiPrologTerm.Variable();
         }
         /// <inheritdoc />
-        public PrologException(string message)
+        public SwiPrologException(string message)
             : base(message)
         {
             _messagePl = message;
-            _exTerm = new PrologTerm(message);
+            _exTerm = new SwiPrologTerm(message);
         }
         /// <inheritdoc />
-        public PrologException(string message, Exception innerException)
+        public SwiPrologException(string message, Exception innerException)
             : base(message, innerException)
         {
             if (null == innerException)
                 throw new ArgumentNullException("innerException");
             _messagePl = message + "; innerExeption:" + innerException.Message;
-            _exTerm = new PrologTerm(message);
+            _exTerm = new SwiPrologTerm(message);
         }
 
         #region implementation of ISerializable
 
         // ISerializable Constructor
         /// <inheritdoc />
-        protected PrologException(SerializationInfo info, StreamingContext context)
+        protected SwiPrologException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             if (info == null)
                 throw new ArgumentNullException("info");
             _messagePl = (string)info.GetValue("_messagePl", typeof(string));
-            _exTerm = (PrologTerm)info.GetValue("_exTerm", typeof(PrologTerm));
+            _exTerm = (SwiPrologTerm)info.GetValue("_exTerm", typeof(SwiPrologTerm));
         }
 
         // see http://msdnwiki.microsoft.com/en-us/mtpswiki/f1d0010b-14fb-402f-974f-16318f0bc19f.aspx
@@ -140,19 +140,19 @@ namespace Logic.Prolog.Swi.Exceptions
 
         /// <summary>
         /// <para>To catch a exception thrown by prolog</para>
-        /// <para>For a example see <see cref="PrologException"/>.</para>
+        /// <para>For a example see <see cref="SwiPrologException"/>.</para>
         /// </summary>
         /// <param name="term">A PlTerm containing the Prolog exception</param>
-        /// <see cref="PrologException"/>
-        public PrologException(PrologTerm term)
+        /// <see cref="SwiPrologException"/>
+        public SwiPrologException(SwiPrologTerm term)
         {
-            _exTerm = new PrologTerm(term.TermRef);  // If this line is deleted -> update comment in PlTern(term_ref)
+            _exTerm = new SwiPrologTerm(term.TermRef);  // If this line is deleted -> update comment in PlTern(term_ref)
         }
 
         /// <summary>
-        /// Get the <see cref="PrologTerm"/> of this exception.
+        /// Get the <see cref="SwiPrologTerm"/> of this exception.
         /// </summary>
-        public PrologTerm Term { get { return _exTerm; } }
+        public SwiPrologTerm Term { get { return _exTerm; } }
 
         /// <inheritdoc />
 		public override string Message
@@ -172,7 +172,7 @@ namespace Logic.Prolog.Swi.Exceptions
                 return "A PlException was thrown but it can't formatted because PlEngine is not Initialized.";
 
             string strRet = "[ERROR: Failed to generate message.  Internal error]\n";
-            using (new PrologFrame())
+            using (new SwiPrologFrame())
             {
 
 #if USE_PRINT_MESSAGE
@@ -184,9 +184,9 @@ namespace Logic.Prolog.Swi.Exceptions
 					strRet = (string)av[1];
 				q.Free();
 #else
-                var av = new PrologTermVector(2);
-                av[0] = new PrologTerm(_exTerm.TermRef);
-                using (var q = new PrologQuery("$messages", "message_to_string", av))
+                var av = new SwiPrologTermVector(2);
+                av[0] = new SwiPrologTerm(_exTerm.TermRef);
+                using (var q = new SwiPrologQuery("$messages", "message_to_string", av))
                 {
                     if (q.NextSolution())
                         strRet = av[1].ToString();
@@ -223,9 +223,9 @@ namespace Logic.Prolog.Swi.Exceptions
                 string str = libswipl.PL_atom_wchars(name);
 
                 if (str == "type_error")
-                    throw new PrologTypeException(_exTerm);
+                    throw new SwiPrologTypeException(_exTerm);
                 if (str == "domain_error")
-                    throw new PrologDomainException(_exTerm);
+                    throw new SwiPrologDomainException(_exTerm);
             }
             _messagePl = Message;
             throw this;
@@ -244,31 +244,31 @@ namespace Logic.Prolog.Swi.Exceptions
     ///     <code source="..\..\TestSwiPl\PlException.cs" region="prolog_type_exception_sample_doc" />
     /// </example>
     [Serializable]
-    public class PrologTypeException : PrologException
+    public class SwiPrologTypeException : SwiPrologException
     {
         /// <inheritdoc />
-		public PrologTypeException()
+		public SwiPrologTypeException()
         {
         }
         /// <inheritdoc />
-        public PrologTypeException(string message)
+        public SwiPrologTypeException(string message)
             : base(message)
         {
         }
         /// <inheritdoc />
-        public PrologTypeException(string message, Exception innerException)
+        public SwiPrologTypeException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
         /// <inheritdoc />
-        protected PrologTypeException(SerializationInfo info, StreamingContext context)
+        protected SwiPrologTypeException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
 
         /// <inheritdoc />
-        public PrologTypeException(PrologTerm term)
+        public SwiPrologTypeException(SwiPrologTerm term)
             : base(term)
         {
         }
@@ -278,12 +278,12 @@ namespace Logic.Prolog.Swi.Exceptions
         /// </summary>
         /// <param name="expected">The type which was expected</param>
         /// <param name="actual">The actual term</param>
-		public PrologTypeException(string expected, PrologTerm actual)
+		public SwiPrologTypeException(string expected, SwiPrologTerm actual)
             : base(
-            PrologTerm.Compound("error",
-            new PrologTermVector(PrologTerm.Compound("type_error",
-            new PrologTermVector(new PrologTerm(expected), actual)),
-            PrologTerm.Variable())
+            SwiPrologTerm.Compound("error",
+            new SwiPrologTermVector(SwiPrologTerm.Compound("type_error",
+            new SwiPrologTermVector(new SwiPrologTerm(expected), actual)),
+            SwiPrologTerm.Variable())
             ))
         {
         }
@@ -301,33 +301,33 @@ namespace Logic.Prolog.Swi.Exceptions
     ///     <code source="..\..\TestSwiPl\PlException.cs" region="prolog_domain_exception_sample_doc" />
     /// </example>
     [Serializable]
-    public class PrologDomainException : PrologException
+    public class SwiPrologDomainException : SwiPrologException
     {
 
         /// <inheritdoc cref="T:SbsSW.SwiPlCs.Exceptions.PlException" />
-        public PrologDomainException()
+        public SwiPrologDomainException()
         { }
 
         /// <inheritdoc cref="T:SbsSW.SwiPlCs.Exceptions.PlException" />
-        public PrologDomainException(string message)
+        public SwiPrologDomainException(string message)
             : base(message)
         {
         }
 
         /// <inheritdoc cref="T:SbsSW.SwiPlCs.Exceptions.PlException" />
-        public PrologDomainException(string message, Exception innerException)
+        public SwiPrologDomainException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        /// <inheritdoc cref="PrologException" />
-        protected PrologDomainException(SerializationInfo info, StreamingContext context)
+        /// <inheritdoc cref="SwiPrologException" />
+        protected SwiPrologDomainException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
 
-        /// <inheritdoc cref="PrologException" />
-        public PrologDomainException(PrologTerm term)
+        /// <inheritdoc cref="SwiPrologException" />
+        public SwiPrologDomainException(SwiPrologTerm term)
             : base(term)
         { }
         /*

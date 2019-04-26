@@ -47,59 +47,59 @@ namespace Logic.Prolog.Swi.Callback
 
     internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback0(IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback1(PrologTerm term, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback1(SwiPrologTerm term, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback2(PrologTerm term1, PrologTerm term2, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback2(SwiPrologTerm term1, SwiPrologTerm term2, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback3(PrologTerm term1, PrologTerm term2, PrologTerm term3, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback3(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback4(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback4(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback5(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback5(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback6(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback6(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, IntPtr control_t);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback7(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, IntPtr control_t);
 
-    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, IntPtr control_t);
-
-
-
-    public delegate bool PrologCallback0();
-
-    public delegate bool PrologCallback1(PrologTerm term);
-
-    public delegate bool PrologCallback2(PrologTerm term1, PrologTerm term2);
-
-    public delegate bool PrologCallback3(PrologTerm term1, PrologTerm term2, PrologTerm term3);
-
-    public delegate bool PrologCallback4(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4);
-
-    public delegate bool PrologCallback5(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5);
-
-    public delegate bool PrologCallback6(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6);
-
-    public delegate bool PrologCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7);
-
-    public delegate bool PrologCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8);
+    internal delegate IntPtr SwiNativeForeignNondeterministicPredicateCallback8(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8, IntPtr control_t);
 
 
 
-    public delegate bool PrologNondeterministicCallback0(dynamic context);
+    public delegate bool SwiPrologCallback0();
 
-    public delegate bool PrologNondeterministicCallback1(PrologTerm term, dynamic context);
+    public delegate bool SwiPrologCallback1(SwiPrologTerm term);
 
-    public delegate bool PrologNondeterministicCallback2(PrologTerm term1, PrologTerm term2, dynamic context);
+    public delegate bool SwiPrologCallback2(SwiPrologTerm term1, SwiPrologTerm term2);
 
-    public delegate bool PrologNondeterministicCallback3(PrologTerm term1, PrologTerm term2, PrologTerm term3, dynamic context);
+    public delegate bool SwiPrologCallback3(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3);
 
-    public delegate bool PrologNondeterministicCallback4(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, dynamic context);
+    public delegate bool SwiPrologCallback4(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4);
 
-    public delegate bool PrologNondeterministicCallback5(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, dynamic context);
+    public delegate bool SwiPrologCallback5(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5);
 
-    public delegate bool PrologNondeterministicCallback6(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, dynamic context);
+    public delegate bool SwiPrologCallback6(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6);
 
-    public delegate bool PrologNondeterministicCallback7(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, dynamic context);
+    public delegate bool SwiPrologCallback7(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7);
 
-    public delegate bool PrologNondeterministicCallback8(PrologTerm term1, PrologTerm term2, PrologTerm term3, PrologTerm term4, PrologTerm term5, PrologTerm term6, PrologTerm term7, PrologTerm term8, dynamic context);
+    public delegate bool SwiPrologCallback8(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8);
+
+
+
+    public delegate bool SwiPrologNondeterministicCallback0(dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback1(SwiPrologTerm term, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback2(SwiPrologTerm term1, SwiPrologTerm term2, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback3(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback4(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback5(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback6(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback7(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, dynamic context);
+
+    public delegate bool SwiPrologNondeterministicCallback8(SwiPrologTerm term1, SwiPrologTerm term2, SwiPrologTerm term3, SwiPrologTerm term4, SwiPrologTerm term5, SwiPrologTerm term6, SwiPrologTerm term7, SwiPrologTerm term8, dynamic context);
 }
