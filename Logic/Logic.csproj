@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections.cs" />
     <Compile Include="Constraints.cs" />
     <Compile Include="Calculus.cs" />
+    <Compile Include="Incremental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
