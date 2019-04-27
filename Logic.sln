@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Prolog.Swi", "Logic.Prolog.Swi\Logic.Prolog.Swi.csproj", "{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Prolog.Xsb", "Logic.Prolog.Xsb\Logic.Prolog.Xsb.csproj", "{96F06122-8FED-41AF-AE39-C6EFA64E17B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B1B1D0-E2C4-4124-B323-70F8F20A87EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F06122-8FED-41AF-AE39-C6EFA64E17B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F06122-8FED-41AF-AE39-C6EFA64E17B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F06122-8FED-41AF-AE39-C6EFA64E17B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F06122-8FED-41AF-AE39-C6EFA64E17B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

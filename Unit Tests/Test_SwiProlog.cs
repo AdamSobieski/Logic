@@ -4,7 +4,7 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Swi.Callback;
+using Logic.Prolog.Swi.Callbacks;
 using Microsoft.ClearScript.V8;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 namespace Logic.Prolog.Swi
 {
     [TestClass]
-    public class Prolog_Tests
+    public class SwiProlog_Tests
     {
         static V8ScriptEngine v8;
         static SwiPrologEngine prolog;

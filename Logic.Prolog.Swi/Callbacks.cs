@@ -20,10 +20,10 @@
 
 using System;
 
-namespace Logic.Prolog.Swi.Callback
+namespace Logic.Prolog.Swi.Callbacks
 {
     [Flags]
-    internal enum ForeignSwitches
+    internal enum SwiForeignSwitches
     {
         /// <summary>0 - PL_FA_NOTHING: No flags.</summary>
         None = 0,
@@ -38,7 +38,7 @@ namespace Logic.Prolog.Swi.Callback
         VarArgs = 8,
     }
 
-    internal enum NondeterministicCalltype : int
+    internal enum SwiNondeterministicCalltype : int
     {
         FirstCall = 0,
         Pruned = 1,

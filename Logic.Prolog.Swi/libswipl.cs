@@ -119,7 +119,7 @@ namespace Logic.Prolog.Swi
         }
 
 
-        internal static void SetStreamFunction(Streams.StreamType streamType, StreamsFunction functionType, Delegate function)
+        internal static void SetStreamFunction(Streams.SwiStreamType streamType, StreamsFunction functionType, Delegate function)
         {
             // to calculate to following values use the C++ Project CalcStreamSize
 #if _PL_X64
@@ -214,15 +214,19 @@ namespace Logic.Prolog.Swi
             return iRet;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_register_foreign_in_module(string module, string name, int arity, Delegate function, int flags)
         { return SafeNativeMethods.PL_register_foreign_in_module(module, name, arity, function, flags); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_foreign_control(IntPtr control_t)
         { return SafeNativeMethods.PL_foreign_control(control_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IntPtr PL_foreign_context_address(IntPtr control_t)
         { return SafeNativeMethods.PL_foreign_context_address(control_t); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IntPtr PL_retry_address(IntPtr context)
         { return SafeNativeMethods._PL_retry_address(context); }
 

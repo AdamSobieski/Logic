@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test_Prolog.cs" />
+    <Compile Include="Test_SwiProlog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

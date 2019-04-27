@@ -4,7 +4,7 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Swi.Callback;
+using Logic.Prolog.Swi.Callbacks;
 using Microsoft.ClearScript;
 using System;
 using System.Collections.Generic;
@@ -272,7 +272,7 @@ namespace Logic.Prolog.Swi
                 default:
                     throw new NotImplementedException();
             }
-            if (SWI.RegisterForeign(module, name, arity, d, ForeignSwitches.None))
+            if (SWI.RegisterForeign(module, name, arity, d, SwiForeignSwitches.None))
             {
                 foreignPredicates.Add(d);
                 return true;
@@ -304,13 +304,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -326,13 +326,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -348,13 +348,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -370,13 +370,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -392,13 +392,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -414,13 +414,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -436,13 +436,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -458,13 +458,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -480,13 +480,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return functor(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -499,7 +499,7 @@ namespace Logic.Prolog.Swi
                     throw new NotImplementedException();
             }
 
-            if (SWI.RegisterForeign(module, name, arity, d, ForeignSwitches.Nondeterministic))
+            if (SWI.RegisterForeign(module, name, arity, d, SwiForeignSwitches.Nondeterministic))
             {
                 foreignPredicates.Add(d);
                 return true;
@@ -546,7 +546,7 @@ namespace Logic.Prolog.Swi
                 default:
                     throw new NotImplementedException();
             }
-            if (SWI.RegisterForeign(module, name, arity, functor, ForeignSwitches.None))
+            if (SWI.RegisterForeign(module, name, arity, functor, SwiForeignSwitches.None))
             {
                 foreignPredicates.Add(functor);
                 return true;
@@ -577,13 +577,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback0)functor)(context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -600,13 +600,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -623,13 +623,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -646,13 +646,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -669,13 +669,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -692,13 +692,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -715,13 +715,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -738,13 +738,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -761,13 +761,13 @@ namespace Logic.Prolog.Swi
 
                         switch (SWI.GetNondeterministicCallType(control_t))
                         {
-                            case NondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCalltype.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Redo:
+                            case SwiNondeterministicCalltype.Redo:
                                 context = SWI.GetContext(control_t);
                                 return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? SWI.Retry(context) : IntPtr.Zero;
-                            case NondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCalltype.Pruned:
                                 context = SWI.GetContext(control_t);
                                 context = null;
                                 return new IntPtr(1);
@@ -780,7 +780,7 @@ namespace Logic.Prolog.Swi
                     throw new NotImplementedException();
             }
 
-            if (SWI.RegisterForeign(module, name, arity, d, ForeignSwitches.Nondeterministic))
+            if (SWI.RegisterForeign(module, name, arity, d, SwiForeignSwitches.Nondeterministic))
             {
                 foreignPredicates.Add(d);
                 return true;

@@ -18,7 +18,7 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Swi.Callback;
+using Logic.Prolog.Swi.Callbacks;
 using Logic.Prolog.Swi.Exceptions;
 using Logic.Prolog.Swi.Streams;
 using System;
@@ -61,7 +61,7 @@ namespace Logic.Prolog.Swi.Streams
     /// <summary>
     /// The standard SWI-Prolog streams ( input output error )
     /// </summary>
-    public enum StreamType
+    public enum SwiStreamType
     {
         /// <summary>0 - The standard input stream.</summary>
         Input = 0,
@@ -140,17 +140,13 @@ namespace Logic.Prolog.Swi
     /// </example>
     internal static class SWI
     {
-        //public static bool RegisterForeign(string module, string name, int arity, Delegate method)
-        //{
-        //    return RegisterForeign(module, name, arity, method, ForeignSwitches.None);
-        //}
-        public static bool RegisterForeign(string module, string name, int arity, Delegate method, ForeignSwitches plForeign)
+        public static bool RegisterForeign(string module, string name, int arity, Delegate method, SwiForeignSwitches plForeign)
         {
             return Convert.ToBoolean(libswipl.PL_register_foreign_in_module(module, name, arity, method, (int)plForeign));
         }
-        public static NondeterministicCalltype GetNondeterministicCallType(IntPtr control_t)
+        public static SwiNondeterministicCalltype GetNondeterministicCallType(IntPtr control_t)
         {
-            return (NondeterministicCalltype)libswipl.PL_foreign_control(control_t);
+            return (SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t);
         }
         public static IntPtr Retry(object context)
         {
@@ -285,9 +281,9 @@ namespace Logic.Prolog.Swi
         /// <example>
         /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamWrite_doc" />
         /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.StreamType"/></param>
+        /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
         /// <param name="function">A <see cref="Streams.DelegateStreamWriteFunction"/></param>
-        static public void SetStreamFunctionWrite(StreamType streamType, DelegateStreamWriteFunction function)
+        static public void SetStreamFunctionWrite(SwiStreamType streamType, DelegateStreamWriteFunction function)
         {
             libswipl.LoadLibPl();
             libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Write, function);
@@ -300,9 +296,9 @@ namespace Logic.Prolog.Swi
         /// <example>
         /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamRead_doc" />
         /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.StreamType"/></param>
+        /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
         /// <param name="function">A <see cref="Streams.DelegateStreamReadFunction"/></param>
-        static public void SetStreamFunctionRead(StreamType streamType, DelegateStreamReadFunction function)
+        static public void SetStreamFunctionRead(SwiStreamType streamType, DelegateStreamReadFunction function)
         {
             libswipl.LoadLibPl();
             libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Read, function);
