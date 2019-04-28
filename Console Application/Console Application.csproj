@@ -61,6 +61,10 @@
       <Project>{40b1b1d0-e2c4-4124-b323-70f8f20a87ec}</Project>
       <Name>Logic.Prolog.Swi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logic.Prolog.Xsb\Logic.Prolog.Xsb.csproj">
+      <Project>{96f06122-8fed-41af-ae39-c6efa64e17b7}</Project>
+      <Name>Logic.Prolog.Xsb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{ff666a9b-081e-423a-bfaf-a05bd8a8665b}</Project>
       <Name>Logic</Name>

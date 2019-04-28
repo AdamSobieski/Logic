@@ -456,8 +456,8 @@ namespace Logic.Prolog.Swi
                 l.Append(SwiPrologTerm.Compound("variable_names", variablenames));
                 l.Close();
                 var args = new SwiPrologTermVector(atom, term, options);
-                if (!Call(module, "read_term_from_atom", args))
-                    throw new SwiPrologLibraryException("PlCall read_term_from_atom/3 fails! goal:" + queryString);
+                if (!Call(_module, "read_term_from_atom", args))
+                    throw new SwiPrologLibraryException("Call read_term_from_atom/3 fails! goal:" + queryString);
 
                 // set list of variables and variable_names into _queryVariables
                 foreach (SwiPrologTerm t in variablenames.ToList())
@@ -763,7 +763,7 @@ namespace Logic.Prolog.Swi
         /// <returns>the bound variable of the first solution</returns>
         /// <exception cref="ArgumentException">Throw an ArgumentException if there is no or more than one variable the goal.</exception>
         /// <example>
-        ///     <para>This sample shows simple unifikation.</para>
+        ///     <para>This sample shows simple unification.</para>
         ///     <code source="..\..\TestSwiPl\PlQuery.cs" region="PlCallQuery_direct_1_doc" />
         /// 
         ///     <para>This sample shows how a simple calculation can be done by a predicate.</para>

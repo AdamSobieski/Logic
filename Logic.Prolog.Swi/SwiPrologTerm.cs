@@ -889,7 +889,7 @@ namespace Logic.Prolog.Swi
         }
         #endregion Arity and Name
 
-        #region cast oprators
+        #region cast operators
         /// <summary>
         /// Converts the Prolog argument into a string which implies Prolog atoms and strings
         /// are converted to the represented text or throw a PlTypeException. 
