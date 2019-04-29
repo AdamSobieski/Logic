@@ -127,7 +127,14 @@ namespace Logic.Prolog.Swi.Initialization
 
 
 
-        internal bool SwiPrologHomeDirectoryIsDefault
+        internal bool HomeDirectoryIsDefault
+        {
+            get
+            {
+                return m_homedirectory_isdefault;
+            }
+        }
+        internal bool BinaryDirectoryIsDefault
         {
             get
             {
@@ -141,7 +148,7 @@ namespace Logic.Prolog.Swi.Initialization
                 return m_setenvironmentvariable_isdefault;
             }
         }
-        internal bool PrependSwiBinaryDirectoryToPathIsDefault
+        internal bool PrependBinaryDirectoryToPathIsDefault
         {
             get
             {
