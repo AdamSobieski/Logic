@@ -55,6 +55,7 @@
     <Compile Include="NativeMethods.cs" />
     <Compile Include="SwiPrologEngine.cs" />
     <Compile Include="SwiPrologFrame.cs" />
+    <Compile Include="Initialization.cs" />
     <Compile Include="SwiPrologTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SwiPrologQuery.cs" />

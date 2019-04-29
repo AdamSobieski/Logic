@@ -5,6 +5,7 @@
 *********************************************************/
 
 using Logic.Prolog.Swi.Callbacks;
+using Logic.Prolog.Swi.Initialization;
 using Microsoft.ClearScript;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,10 @@ namespace Logic.Prolog.Swi
 
             modules = new List<SwiPrologModule>();
         }
+        public SwiPrologEngine(SwiPrologInitializationSettings settings)
+        {
+            throw new NotImplementedException();
+        }
 
         private List<SwiPrologModule> modules;
 
@@ -57,7 +62,6 @@ namespace Logic.Prolog.Swi
             modules.Add(newModule);
             return newModule;
         }
-
         [ScriptMember("createModule")]
         public SwiPrologModule CreateModule(string name)
         {
@@ -67,7 +71,6 @@ namespace Logic.Prolog.Swi
             modules.Add(newModule);
             return newModule;
         }
-
         [ScriptMember("createModule")]
         public SwiPrologModule CreateModule(string name, dynamic settings)
         {
@@ -78,42 +81,41 @@ namespace Logic.Prolog.Swi
             return newModule;
         }
 
-        [ScriptMember("atom")]
-        public SwiPrologTerm Atom(string name)
-        {
-            return new SwiPrologTerm(name);
-        }
-
-        [ScriptMember("atom")]
-        public SwiPrologTerm Atom(int value)
-        {
-            return new SwiPrologTerm(value);
-        }
-
-        [ScriptMember("atom")]
-        public SwiPrologTerm Atom(double value)
-        {
-            return new SwiPrologTerm(value);
-        }
-
         [ScriptMember("variable")]
         public SwiPrologTerm Variable()
         {
             return SwiPrologTerm.Variable();
         }
-
+        [ScriptMember("atom")]
+        public SwiPrologTerm Atom(string name)
+        {
+            return new SwiPrologTerm(name);
+        }
+        [ScriptMember("integer")]
+        public SwiPrologTerm Integer(int value)
+        {
+            return new SwiPrologTerm(value);
+        }
+        [ScriptMember("float")]
+        public SwiPrologTerm Float(double value)
+        {
+            return new SwiPrologTerm(value);
+        }
         [ScriptMember("compound")]
         public SwiPrologTerm Compound(string functor, params SwiPrologTerm[] args)
         {
             return SwiPrologTerm.Compound(functor, new SwiPrologTermVector(args));
         }
-
         [ScriptMember("list")]
-        public SwiPrologTerm List(SwiPrologTerm initial)
+        public SwiPrologTerm List(SwiPrologTerm head, SwiPrologTerm tail)
         {
-            return SwiPrologTerm.Tail(initial);
+            throw new NotImplementedException();
         }
-
+        [ScriptMember("nil")]
+        public SwiPrologTerm Nil()
+        {
+            throw new NotImplementedException();
+        }
         [ScriptMember("string")]
         public SwiPrologTerm String(string text)
         {
