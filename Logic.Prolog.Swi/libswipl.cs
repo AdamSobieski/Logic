@@ -363,6 +363,10 @@ namespace Logic.Prolog.Swi
         { SafeNativeMethods.PL_put_float(term, i); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void PL_put_nil(uintptr_t term)
+        { SafeNativeMethods.PL_put_nil(term); }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_wchars(uintptr_t term, out string s, uint flags)
         {
             var dummyLen = 0;

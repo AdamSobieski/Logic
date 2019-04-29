@@ -114,7 +114,7 @@ namespace Logic.Prolog.Swi
         [ScriptMember("nil")]
         public SwiPrologTerm Nil()
         {
-            throw new NotImplementedException();
+            return SwiPrologTerm.Nil();
         }
         [ScriptMember("string")]
         public SwiPrologTerm String(string text)

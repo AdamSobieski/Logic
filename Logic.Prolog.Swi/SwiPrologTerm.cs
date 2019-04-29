@@ -317,6 +317,14 @@ namespace Logic.Prolog.Swi
 
             return term;
         }
+
+        public static SwiPrologTerm Nil()
+        {
+            var term = new SwiPrologTerm();
+            libswipl.PL_put_nil(term.TermRef);
+            return term;
+        }
+
         #endregion
 
         #region Compound Creation

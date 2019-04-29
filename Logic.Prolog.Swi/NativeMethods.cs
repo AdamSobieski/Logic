@@ -753,11 +753,14 @@ namespace Logic.Prolog.Swi
         //__pl_export term_t	PL_new_term_ref(void);
         [DllImport(DllFileName)] // return term_t
         internal static extern uintptr_t PL_new_term_ref();
+
         //__pl_export void	PL_put_integer(term_t term, long i);
         [DllImport(DllFileName)]
-        internal static extern void PL_put_integer(uintptr_t term, int i);
+        internal static extern int PL_put_integer(uintptr_t term, int i);
         [DllImport(DllFileName)]
-        internal static extern void PL_put_float(uintptr_t term, double i);
+        internal static extern int PL_put_float(uintptr_t term, double i);
+        [DllImport(DllFileName)]
+        internal static extern int PL_put_nil(uintptr_t term);
 
         [DllImport(DllFileName, CharSet = CharSet.Unicode, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         internal static extern int PL_get_wchars(uintptr_t term, [In, Out]ref int len, [In, Out]ref IntPtr s, uint flags);
