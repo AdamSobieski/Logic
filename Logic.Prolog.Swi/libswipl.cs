@@ -481,6 +481,10 @@ namespace Logic.Prolog.Swi
         internal static int PL_unify(uintptr_t t1, uintptr_t t2)
         { return SafeNativeMethods.PL_unify(t1, t2); }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int PL_cons_list(uintptr_t list, uintptr_t head, uintptr_t tail)
+        { return SafeNativeMethods.PL_cons_list(list, head, tail); }
+
         /// <summary>
         /// Unify t with a textual representation of the C wide-character array s. 
         /// The type argument defines the Prolog representation and is one of PL_ATOM, PL_STRING, PL_CODE_LIST or PL_CHAR_LIST.

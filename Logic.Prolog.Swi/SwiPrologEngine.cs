@@ -10,6 +10,7 @@ using Microsoft.ClearScript;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Logic.Prolog.Swi
@@ -17,8 +18,36 @@ namespace Logic.Prolog.Swi
     public sealed class SwiPrologEngine : IDisposable, IScriptableObject
     {
         public SwiPrologEngine()
+            : this(new SwiPrologInitializationSettings())
         {
-            if (!SWI.IsInitialized)
+            //if (!SWI.IsInitialized)
+            //{
+            //    bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            //    if (!isWindows)
+            //        throw new Exception("This project presently is built for 64-bit Windows.");
+
+            //    bool is64bit = Environment.Is64BitOperatingSystem && Environment.Is64BitProcess;
+            //    if (!is64bit)
+            //        throw new Exception("This project presently is built for 64-bit Windows.");
+
+            //    if (!Directory.Exists(@"C:\Program Files\swipl"))
+            //        throw new Exception("This project requites SWI-Prolog (64-bit Windows version) to be installed.");
+
+            //    Environment.SetEnvironmentVariable("SWI_HOME_DIR", @"C:\Program Files\swipl");
+            //    Environment.SetEnvironmentVariable("Path", @"C:\Program Files\swipl\bin;%Path%");
+
+            //    string[] parameters = { "-q", "-O", "--signals=false", "--debug=false" };
+            //    SWI.Initialize(parameters);
+            //}
+
+            //modules = new List<SwiPrologModule>();
+        }
+        public SwiPrologEngine(SwiPrologInitializationSettings settings)
+        {
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
+
+            if(!SWI.IsInitialized)
             {
                 bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                 if (!isWindows)
@@ -28,21 +57,21 @@ namespace Logic.Prolog.Swi
                 if (!is64bit)
                     throw new Exception("This project presently is built for 64-bit Windows.");
 
-                if (!System.IO.Directory.Exists(@"C:\Program Files\swipl"))
-                    throw new Exception("This project requites SWI-Prolog (64-bit Windows version) to be installed.");
+                if (!Directory.Exists(settings.HomeDirectory))
+                    throw new Exception("The specified home directory for SWI Prolog does not exist.");
 
-                Environment.SetEnvironmentVariable("SWI_HOME_DIR", @"C:\Program Files\swipl");
-                Environment.SetEnvironmentVariable("Path", @"C:\Program Files\swipl\bin;%Path%");
+                if (settings.SetHomeDirectoryEnvironmentVariable)
+                    Environment.SetEnvironmentVariable("SWI_HOME_DIR", settings.HomeDirectory);
 
-                string[] parameters = { "-q", "-O", "--nosignals", "--nodebug" };
+                if (settings.PrependBinaryDirectoryToPath)
+                    Environment.SetEnvironmentVariable("Path", settings.BinaryDirectory + Path.PathSeparator + "%Path%");
+
+                string[] parameters = settings.GenerateParameters();
+
                 SWI.Initialize(parameters);
             }
 
             modules = new List<SwiPrologModule>();
-        }
-        public SwiPrologEngine(SwiPrologInitializationSettings settings)
-        {
-            throw new NotImplementedException();
         }
 
         private List<SwiPrologModule> modules;
@@ -109,7 +138,7 @@ namespace Logic.Prolog.Swi
         [ScriptMember("list")]
         public SwiPrologTerm List(SwiPrologTerm head, SwiPrologTerm tail)
         {
-            throw new NotImplementedException();
+            return SwiPrologTerm.List(head, tail);
         }
         [ScriptMember("nil")]
         public SwiPrologTerm Nil()

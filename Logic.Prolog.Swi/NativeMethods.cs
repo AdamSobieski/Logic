@@ -789,7 +789,12 @@ namespace Logic.Prolog.Swi
         internal static extern uintptr_t PL_new_term_refs(int n);
         //__pl_export void	PL_put_term(term_t t1, term_t t2);
         [DllImport(DllFileName)]
-        internal static extern void PL_put_term(uintptr_t t1, uintptr_t t2);
+        internal static extern int PL_put_term(uintptr_t t1, uintptr_t t2);
+
+        // Lists
+        [DllImport(DllFileName)]
+        internal static extern int PL_cons_list(uintptr_t list, uintptr_t head, uintptr_t tail);
+
 
         // PlCompound
         // __pl_export int PL_wchars_to_term(const pl_wchar_t *chars, term_t term);

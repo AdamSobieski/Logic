@@ -318,6 +318,13 @@ namespace Logic.Prolog.Swi
             return term;
         }
 
+        public static SwiPrologTerm List(SwiPrologTerm head, SwiPrologTerm tail)
+        {
+            var list = new SwiPrologTerm();
+            libswipl.PL_cons_list(list.TermRef, head.TermRef, tail.TermRef);
+            return list;
+        }
+
         public static SwiPrologTerm Nil()
         {
             var term = new SwiPrologTerm();

@@ -5,6 +5,7 @@
 *********************************************************/
 
 using Logic.Prolog.Swi;
+using Logic.Prolog.Swi.Initialization;
 using Microsoft.ClearScript.V8;
 using System;
 using System.IO;
@@ -15,9 +16,17 @@ namespace Application
     {
         public static void Main(string[] args)
         {
+            var settings = new SwiPrologInitializationSettings
+            {
+                HomeDirectory = @"C:\Program Files\swipl",
+                SetHomeDirectoryEnvironmentVariable = true,
+                BinaryDirectory = @"C:\Program Files\swipl\bin",
+                PrependBinaryDirectoryToPath = true
+            };
+
             using (var engine = new V8ScriptEngine())
             {
-                using (var prolog = new SwiPrologEngine())
+                using (var prolog = new SwiPrologEngine(settings))
                 {
                     engine.AddHostType("Console", typeof(Console));
                     engine.AddHostObject("prolog", prolog);

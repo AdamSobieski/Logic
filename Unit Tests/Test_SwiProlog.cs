@@ -5,6 +5,7 @@
 *********************************************************/
 
 using Logic.Prolog.Swi.Callbacks;
+using Logic.Prolog.Swi.Initialization;
 using Microsoft.ClearScript.V8;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -22,8 +23,16 @@ namespace Logic.Prolog.Swi
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
+            var settings = new SwiPrologInitializationSettings
+            {
+                HomeDirectory = @"C:\Program Files\swipl",
+                SetHomeDirectoryEnvironmentVariable = true,
+                BinaryDirectory = @"C:\Program Files\swipl\bin",
+                PrependBinaryDirectoryToPath = true
+            };
+
             v8 = new V8ScriptEngine();
-            prolog = new SwiPrologEngine();
+            prolog = new SwiPrologEngine(settings);
             v8.AddHostType("Console", typeof(Console));
             v8.AddHostObject("prolog", prolog);
         }
