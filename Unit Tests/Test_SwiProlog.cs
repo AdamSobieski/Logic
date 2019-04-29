@@ -216,7 +216,7 @@ namespace Logic.Prolog.Swi
 
             module.AddPredicate("p", 1, new SwiPrologCallback1((SwiPrologTerm x) =>
             {
-                return x.Unify(prolog.Compound("z", prolog.Atom(1), prolog.Atom(2)));
+                return x.Unify(prolog.Compound("z", prolog.Integer(1), prolog.Integer(2)));
             }));
 
             Assert.IsTrue(module.Query("p(X)").Select(r => r["X"].ToString()).SequenceEqual(new string[] { "z(1,2)" }), ErrorMessage);
