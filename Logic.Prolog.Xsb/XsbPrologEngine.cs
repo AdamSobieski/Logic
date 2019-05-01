@@ -48,7 +48,11 @@ namespace Logic.Prolog.Xsb
             {
                 throw new XsbException("Failed to initialize XSB engine.\n" + "Error code: " + xsb.xsb_get_init_error_type() + "\n" + "Error message: " + xsb.xsb_get_init_error_message());
             }
+
+            foreignPredicates = new List<Delegate>();
         }
+
+        private List<Delegate> foreignPredicates;
 
         [ScriptMember("variable")]
         public XsbPrologTerm Variable()
@@ -186,9 +190,26 @@ namespace Logic.Prolog.Xsb
 
 
 
+        [ScriptMember("assertRule")]
+        public bool AssertRule(string head, string body)
+        {
+            return xsb.xsb_command_string("assert((" + head + " :- " + body + ")).") == 0;
+        }
+        [ScriptMember("retractRule")]
+        public bool RetractRule(string head, string body)
+        {
+            return xsb.xsb_command_string("retract((" + head + " :- " + body + ")).") == 0;
+        }
+
+
+
         [ScriptMember("addPredicate")]
         public bool AddPredicate(string name, int arity, dynamic functor)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (arity < 0) throw new ArgumentOutOfRangeException(nameof(arity));
+            if (functor == null) throw new ArgumentNullException(nameof(functor));
+
             throw new NotImplementedException();
         }
         [NoScriptAccess]
@@ -233,7 +254,12 @@ namespace Logic.Prolog.Xsb
                     throw new NotImplementedException();
             }
 
-            return xsb.xsb_add_c_predicate(null, name, arity, func) == 0;
+            if(xsb.xsb_add_c_predicate(null, name, arity, func) == 0)
+            {
+                foreignPredicates.Add(func);
+                return true;
+            }
+            return false;
         }
 
 

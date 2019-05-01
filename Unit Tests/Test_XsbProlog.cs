@@ -57,5 +57,25 @@ namespace Logic.Prolog.Xsb
             prolog.Retract("p1(2)");
             prolog.Retract("p1(3)");
         }
+
+        [TestMethod]
+        public void Retracting_Facts()
+        {
+            prolog.Assert("p2(1)");
+            prolog.Assert("p2(2)");
+            prolog.Assert("p2(3)");
+
+            Assert.IsTrue(prolog.Contains("p2(1)"));
+            Assert.IsTrue(prolog.Contains("p2(2)"));
+            Assert.IsTrue(prolog.Contains("p2(3)"));
+
+            prolog.Retract("p2(1)");
+            prolog.Retract("p2(2)");
+            prolog.Retract("p2(3)");
+
+            Assert.IsFalse(prolog.Contains("p2(1)"));
+            Assert.IsFalse(prolog.Contains("p2(2)"));
+            Assert.IsFalse(prolog.Contains("p2(3)"));
+        }
     }
 }

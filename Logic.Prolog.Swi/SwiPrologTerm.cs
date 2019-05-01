@@ -18,8 +18,8 @@
 *
 *********************************************************/
 
-using Microsoft.ClearScript;
 using Logic.Prolog.Swi.Exceptions;
+using Microsoft.ClearScript;
 using System;
 using System.Collections;
 using System.Collections.Generic;
