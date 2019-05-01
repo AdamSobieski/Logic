@@ -1,4 +1,9 @@
-﻿using Logic.Prolog.Xsb;
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
 using Logic.Prolog.Xsb.Initialization;
 using Microsoft.ClearScript.V8;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,9 +43,19 @@ namespace Logic.Prolog.Xsb
         }
 
         [TestMethod]
-        public void Function()
+        public void Asserting_Facts()
         {
+            prolog.Assert("p1(1)");
+            prolog.Assert("p1(2)");
+            prolog.Assert("p1(3)");
 
+            Assert.IsTrue(prolog.Contains("p1(1)"));
+            Assert.IsTrue(prolog.Contains("p1(2)"));
+            Assert.IsTrue(prolog.Contains("p1(3)"));
+
+            prolog.Retract("p1(1)");
+            prolog.Retract("p1(2)");
+            prolog.Retract("p1(3)");
         }
     }
 }

@@ -6,6 +6,8 @@
 
 using Logic.Prolog.Swi;
 using Logic.Prolog.Swi.Initialization;
+using Logic.Prolog.Xsb;
+using Logic.Prolog.Xsb.Initialization;
 using Microsoft.ClearScript.V8;
 using System;
 using System.IO;
@@ -24,21 +26,39 @@ namespace Application
                 PrependBinaryDirectoryToPath = true
             };
 
+            var xsb_settings = new XsbPrologInitializationSettings
+            {
+                HomeDirectory = @"C:\Program Files (x86)\XSB",
+                BinaryDirectory = @"C:\Program Files (x86)\XSB\config\x64-pc-windows\bin",
+                PrependBinaryDirectoryToPath = true
+            };
+
             using (var engine = new V8ScriptEngine())
             {
-                using (var swi = new SwiPrologEngine(swi_settings))
+                engine.AddHostType("Console", typeof(Console));
+
+                if (Directory.Exists(swi_settings.HomeDirectory))
                 {
-                    engine.AddHostType("Console", typeof(Console));
-                    engine.AddHostObject("prolog", swi);
+                    using (var swi = new SwiPrologEngine(swi_settings))
+                    {
+                        engine.AddHostObject("swi", swi);
 
-                    string script1 = File.OpenText("script1.js").ReadToEnd();
+                        string script1 = File.OpenText("script1.js").ReadToEnd();
 
-                    //var now = DateTime.Now;
+                        engine.Execute(script1);
+                    }
+                }
 
-                    engine.Execute(script1);
+                if (Directory.Exists(xsb_settings.HomeDirectory))
+                {
+                    using (var xsb = new XsbPrologEngine(xsb_settings))
+                    {
+                        engine.AddHostObject("xsb", xsb);
 
-                    //Console.WriteLine();
-                    //Console.WriteLine("Elapsed: {0}", DateTime.Now - now);
+                        string script2 = File.OpenText("script2.js").ReadToEnd();
+
+                        engine.Execute(script2);
+                    }
                 }
             }
         }

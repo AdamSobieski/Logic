@@ -1,5 +1,5 @@
-﻿var module1 = prolog.createModule('module1', { setting1: 'value', setting2: 'value' });
-var module2 = prolog.createModule('module2');
+﻿var module1 = swi.createModule('module1', { setting1: 'value', setting2: 'value' });
+var module2 = swi.createModule('module2');
 
 module1.assert('p(1, 1)');
 module1.assert('p(2, 1)');

@@ -4,9 +4,7 @@
 *
 *********************************************************/
 
-//using Logic.Prolog.Xsb.Exceptions;
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
