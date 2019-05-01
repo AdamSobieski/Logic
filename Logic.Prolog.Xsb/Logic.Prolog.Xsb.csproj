@@ -48,7 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callbacks.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Initialization.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="xsb.cs" />
+    <Compile Include="XsbPrologEngine.cs" />
+    <Compile Include="XsbPrologQuery.cs" />
+    <Compile Include="XsbPrologTerm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -164,6 +164,7 @@ namespace Logic.Prolog.Swi
         }
     }
 
+    // http://www.swi-prolog.org/pldoc/man?section=dynamic-modules
     public sealed class SwiPrologModule : IDisposable
     {
         internal SwiPrologModule(SwiPrologEngine prolog, string name)

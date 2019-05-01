@@ -16,7 +16,7 @@ namespace Application
     {
         public static void Main(string[] args)
         {
-            var settings = new SwiPrologInitializationSettings
+            var swi_settings = new SwiPrologInitializationSettings
             {
                 HomeDirectory = @"C:\Program Files\swipl",
                 SetHomeDirectoryEnvironmentVariable = true,
@@ -26,10 +26,10 @@ namespace Application
 
             using (var engine = new V8ScriptEngine())
             {
-                using (var prolog = new SwiPrologEngine(settings))
+                using (var swi = new SwiPrologEngine(swi_settings))
                 {
                     engine.AddHostType("Console", typeof(Console));
-                    engine.AddHostObject("prolog", prolog);
+                    engine.AddHostObject("prolog", swi);
 
                     string script1 = File.OpenText("script1.js").ReadToEnd();
 
