@@ -335,7 +335,7 @@ namespace Logic.Prolog.Swi
         #endregion
 
         #region Compound Creation
-        [Obsolete("PrologTerm.Compound(text) is deprecated, please use new PrologTerm(text) instead.")]
+        [Obsolete("PrologTerm.Compound(text) is deprecated, please use new SwiPrologTerm(text) instead.")]
         static internal SwiPrologTerm Compound(string text)
         {
             return new SwiPrologTerm(text);

@@ -226,7 +226,10 @@ namespace Logic.Prolog.Xsb
                 case 0:
                     func = new XsbForeignPredicateCallback(() =>
                     {
-                        return ((XsbPrologCallback0)functor)() ? 1 : 0;
+                        //xsb.xsb_query_save(0);
+                        bool retval = ((XsbPrologCallback0)functor)();
+                        //xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
                     });
                     break;
                 case 1:
@@ -246,6 +249,31 @@ namespace Logic.Prolog.Xsb
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
                         //xsb.xsb_query_save(2);
                         bool retval = ((XsbPrologCallback2)functor)(arg1, arg2);
+                        //xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 3:
+                    func = new XsbForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        //xsb.xsb_query_save(3);
+                        bool retval = ((XsbPrologCallback3)functor)(arg1, arg2, arg3);
+                        //xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 4:
+                    func = new XsbForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        //xsb.xsb_query_save(4);
+                        bool retval = ((XsbPrologCallback4)functor)(arg1, arg2, arg3, arg4);
                         //xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
