@@ -152,7 +152,7 @@ namespace Logic.Prolog.Swi
     #region public struct PrologTerm
 
     /// <summary>
-    ///  <para>The PrologTerm <see langword="struct"/> plays a central role in operating on Prolog data.</para>
+    ///  <para>The SwiPrologTerm <see langword="struct"/> plays a central role in operating on Prolog data.</para>
     /// </summary>
     public struct SwiPrologTerm : IComparable, IEnumerable<SwiPrologTerm>// TODO, IList<PlTerm> // LISTS
     {

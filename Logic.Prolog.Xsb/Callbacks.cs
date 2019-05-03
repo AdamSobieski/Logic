@@ -26,5 +26,5 @@ namespace Logic.Prolog.Xsb.Callbacks
 
 
 
-    internal delegate int XsbForeignPredicateCallback();
+    internal delegate int XsbNativeForeignPredicateCallback();
 }

@@ -220,8 +220,8 @@ namespace Logic.Prolog.Swi
         { return SafeNativeMethods.PL_register_foreign_in_module(module, name, arity, function, (int)flags); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int PL_foreign_control(IntPtr control_t)
-        { return SafeNativeMethods.PL_foreign_control(control_t); }
+        internal static SwiNondeterministicCallType PL_foreign_control(IntPtr control_t)
+        { return (SwiNondeterministicCallType)SafeNativeMethods.PL_foreign_control(control_t); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IntPtr PL_foreign_context_address(IntPtr control_t)

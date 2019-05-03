@@ -38,7 +38,7 @@ namespace Logic.Prolog.Swi.Callbacks
         VarArgs = 8,
     }
 
-    internal enum SwiNondeterministicCalltype : int
+    internal enum SwiNondeterministicCallType : int
     {
         FirstCall = 0,
         Pruned = 1,

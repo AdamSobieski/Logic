@@ -347,15 +347,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -369,15 +369,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -391,15 +391,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -413,15 +413,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -435,15 +435,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, term4, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -457,15 +457,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, term4, term5, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -479,15 +479,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, term4, term5, term6, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -501,15 +501,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, term7, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, term4, term5, term6, term7, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -523,15 +523,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return functor(term1, term2, term3, term4, term5, term6, term7, term8, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return functor(term1, term2, term3, term4, term5, term6, term7, term8, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -620,15 +620,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback0)functor)(context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback0)functor)(context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -643,15 +643,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback1)functor)(term1, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -666,15 +666,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback2)functor)(term1, term2, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -689,15 +689,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback3)functor)(term1, term2, term3, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -712,15 +712,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback4)functor)(term1, term2, term3, term4, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -735,15 +735,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback5)functor)(term1, term2, term3, term4, term5, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -758,15 +758,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback6)functor)(term1, term2, term3, term4, term5, term6, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -781,15 +781,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback7)functor)(term1, term2, term3, term4, term5, term6, term7, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);
@@ -804,15 +804,15 @@ namespace Logic.Prolog.Swi
                     {
                         dynamic context;
 
-                        switch ((SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t))
+                        switch (libswipl.PL_foreign_control(control_t))
                         {
-                            case SwiNondeterministicCalltype.FirstCall:
+                            case SwiNondeterministicCallType.FirstCall:
                                 context = new ExpandoObject();
                                 return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Redo:
+                            case SwiNondeterministicCallType.Redo:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 return ((SwiPrologNondeterministicCallback8)functor)(term1, term2, term3, term4, term5, term6, term7, term8, context) ? libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context)) : IntPtr.Zero;
-                            case SwiNondeterministicCalltype.Pruned:
+                            case SwiNondeterministicCallType.Pruned:
                                 context = Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
                                 context = null;
                                 return new IntPtr(1);

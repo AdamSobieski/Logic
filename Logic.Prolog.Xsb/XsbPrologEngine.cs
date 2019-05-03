@@ -219,12 +219,12 @@ namespace Logic.Prolog.Xsb
             if (arity < 0) throw new ArgumentOutOfRangeException(nameof(arity));
             if (functor == null) throw new ArgumentNullException(nameof(functor));
 
-            XsbForeignPredicateCallback func;
+            XsbNativeForeignPredicateCallback d;
 
             switch (arity)
             {
                 case 0:
-                    func = new XsbForeignPredicateCallback(() =>
+                    d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         //xsb.xsb_query_save(0);
                         bool retval = ((XsbPrologCallback0)functor)();
@@ -233,7 +233,7 @@ namespace Logic.Prolog.Xsb
                     });
                     break;
                 case 1:
-                    func = new XsbForeignPredicateCallback(() =>
+                    d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         //xsb.xsb_query_save(1);
@@ -243,7 +243,7 @@ namespace Logic.Prolog.Xsb
                     });
                     break;
                 case 2:
-                    func = new XsbForeignPredicateCallback(() =>
+                    d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
@@ -254,7 +254,7 @@ namespace Logic.Prolog.Xsb
                     });
                     break;
                 case 3:
-                    func = new XsbForeignPredicateCallback(() =>
+                    d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
@@ -266,7 +266,7 @@ namespace Logic.Prolog.Xsb
                     });
                     break;
                 case 4:
-                    func = new XsbForeignPredicateCallback(() =>
+                    d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
@@ -282,9 +282,9 @@ namespace Logic.Prolog.Xsb
                     throw new NotImplementedException();
             }
 
-            if(xsb.xsb_add_c_predicate(null, name, arity, func) == 0)
+            if(xsb.xsb_add_c_predicate(null, name, arity, d) == 0)
             {
-                foreignPredicates.Add(func);
+                foreignPredicates.Add(d);
                 return true;
             }
             return false;
@@ -300,7 +300,6 @@ namespace Logic.Prolog.Xsb
                 yield return r.Answer[1];
             }
         }
-
         [ScriptMember("getRules")]
         public IEnumerable<XsbPrologTerm> GetRules()
         {

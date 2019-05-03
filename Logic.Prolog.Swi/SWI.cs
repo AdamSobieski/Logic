@@ -18,7 +18,6 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Swi.Exceptions;
 using System;
 
 /********************************
@@ -252,134 +251,134 @@ namespace Logic.Prolog.Swi
 
     //}
 
-    /// <summary>
-    /// This class is experimental
-    /// </summary>
-    internal class SWI_MT : IDisposable
-    {
-        private IntPtr _iEngineNumber = IntPtr.Zero;
-        // private IntPtr _iEngineNumberStore = IntPtr.Zero;
+    ///// <summary>
+    ///// This class is experimental
+    ///// </summary>
+    //internal class SWI_MT : IDisposable
+    //{
+    //    private IntPtr _iEngineNumber = IntPtr.Zero;
+    //    // private IntPtr _iEngineNumberStore = IntPtr.Zero;
 
-        #region IDisposable
-        // see : "Implementing a Dispose Method  [C#]" in  ms-help://MS.VSCC/MS.MSDNVS/cpguide/html/cpconimplementingdisposemethod.htm
-        // and IDisposable in class PlQuery
+    //    #region IDisposable
+    //    // see : "Implementing a Dispose Method  [C#]" in  ms-help://MS.VSCC/MS.MSDNVS/cpguide/html/cpconimplementingdisposemethod.htm
+    //    // and IDisposable in class PlQuery
 
-        // Implement IDisposable.
-        // Do not make this method virtual.
-        // A derived class should not be able to override this method.
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            // Take yourself off of the Finalization queue 
-            // to prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
-        }
+    //    // Implement IDisposable.
+    //    // Do not make this method virtual.
+    //    // A derived class should not be able to override this method.
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    public void Dispose()
+    //    {
+    //        Dispose(true);
+    //        // Take yourself off of the Finalization queue 
+    //        // to prevent finalization code for this object
+    //        // from executing a second time.
+    //        GC.SuppressFinalize(this);
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Free other state (managed objects).
-            }
-            // Free your own state (unmanaged objects).
-            // Set large fields to null.
-            Free();
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <param name="disposing"></param>
+    //    protected virtual void Dispose(bool disposing)
+    //    {
+    //        if (disposing)
+    //        {
+    //            // Free other state (managed objects).
+    //        }
+    //        // Free your own state (unmanaged objects).
+    //        // Set large fields to null.
+    //        Free();
+    //    }
 
 
-        #endregion
+    //    #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Free()
-        {
-            if (IntPtr.Zero != _iEngineNumber && libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
-            {
-                if (0 == libswipl.PL_destroy_engine(_iEngineNumber))
-                    throw (new SwiPrologLibraryException("failed to destroy engine"));
-                _iEngineNumber = IntPtr.Zero;
-            }
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    public void Free()
+    //    {
+    //        if (IntPtr.Zero != _iEngineNumber && libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
+    //        {
+    //            if (0 == libswipl.PL_destroy_engine(_iEngineNumber))
+    //                throw (new SwiPrologLibraryException("failed to destroy engine"));
+    //            _iEngineNumber = IntPtr.Zero;
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        ~SWI_MT()
-        {
-            Dispose(false);
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    ~SWI_MT()
+    //    {
+    //        Dispose(false);
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public SWI_MT()
-        {
-            if (0 != libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero))
-            {
-                try
-                {
-                    _iEngineNumber = libswipl.PL_create_engine(IntPtr.Zero);
-                }
-                catch (Exception ex)
-                {
-                    throw (new SwiPrologLibraryException("PL_create_engine : " + ex.Message));
-                }
-            }
-            else
-            {
-                throw new SwiPrologLibraryException("There is no PlEngine initialized");
-            }
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    public SWI_MT()
+    //    {
+    //        if (0 != libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero))
+    //        {
+    //            try
+    //            {
+    //                _iEngineNumber = libswipl.PL_create_engine(IntPtr.Zero);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                throw (new SwiPrologLibraryException("PL_create_engine : " + ex.Message));
+    //            }
+    //        }
+    //        else
+    //        {
+    //            throw new SwiPrologLibraryException("There is no PlEngine initialized");
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void SetEngine()
-        {
-            IntPtr pNullPointer = IntPtr.Zero;
-            int iRet = libswipl.PL_set_engine(_iEngineNumber, ref pNullPointer);
-            switch (iRet)
-            {
-                case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new SwiPrologLibraryException("SetEngine returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new SwiPrologLibraryException("SetEngine returns it is used by an other thread")); //break;
-                default: throw (new SwiPrologLibraryException("Unknown return from SetEngine"));
-            }
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    public void SetEngine()
+    //    {
+    //        IntPtr pNullPointer = IntPtr.Zero;
+    //        int iRet = libswipl.PL_set_engine(_iEngineNumber, ref pNullPointer);
+    //        switch (iRet)
+    //        {
+    //            case libswipl.PL_ENGINE_SET: break; // all is fine
+    //            case libswipl.PL_ENGINE_INVAL: throw (new SwiPrologLibraryException("SetEngine returns Invalid")); //break;
+    //            case libswipl.PL_ENGINE_INUSE: throw (new SwiPrologLibraryException("SetEngine returns it is used by an other thread")); //break;
+    //            default: throw (new SwiPrologLibraryException("Unknown return from SetEngine"));
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public void DetachEngine()
-        {
-            IntPtr pNullPointer = IntPtr.Zero;
-            int iRet = libswipl.PL_set_engine(IntPtr.Zero, ref pNullPointer);
-            switch (iRet)
-            {
-                case libswipl.PL_ENGINE_SET: break; // all is fine
-                case libswipl.PL_ENGINE_INVAL: throw (new SwiPrologLibraryException("SetEngine(detach) returns Invalid")); //break;
-                case libswipl.PL_ENGINE_INUSE: throw (new SwiPrologLibraryException("SetEngine(detach) returns it is used by an other thread")); //break;
-                default: throw (new SwiPrologLibraryException("Unknown return from SetEngine(detach)"));
-            }
-        }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+    //    public void DetachEngine()
+    //    {
+    //        IntPtr pNullPointer = IntPtr.Zero;
+    //        int iRet = libswipl.PL_set_engine(IntPtr.Zero, ref pNullPointer);
+    //        switch (iRet)
+    //        {
+    //            case libswipl.PL_ENGINE_SET: break; // all is fine
+    //            case libswipl.PL_ENGINE_INVAL: throw (new SwiPrologLibraryException("SetEngine(detach) returns Invalid")); //break;
+    //            case libswipl.PL_ENGINE_INUSE: throw (new SwiPrologLibraryException("SetEngine(detach) returns it is used by an other thread")); //break;
+    //            default: throw (new SwiPrologLibraryException("Unknown return from SetEngine(detach)"));
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        override public string ToString()
-        {
-            return _iEngineNumber.ToString();
-        }
-    }
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <returns></returns>
+    //    override public string ToString()
+    //    {
+    //        return _iEngineNumber.ToString();
+    //    }
+    //}
 }
