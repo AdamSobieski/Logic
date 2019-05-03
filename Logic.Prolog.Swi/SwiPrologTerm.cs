@@ -176,7 +176,7 @@ namespace Logic.Prolog.Swi
         {
             if (obj is SwiPrologTerm)
                 return libswipl.PL_compare(TermRef, ((SwiPrologTerm)obj).TermRef);
-            throw new ArgumentException("object is not a PrologTerm");
+            throw new ArgumentException("obj is not a SwiPrologTerm");
         }
 
         #endregion
@@ -336,7 +336,7 @@ namespace Logic.Prolog.Swi
 
         #region Compound Creation
         [Obsolete("PrologTerm.Compound(text) is deprecated, please use new SwiPrologTerm(text) instead.")]
-        static internal SwiPrologTerm Compound(string text)
+        internal static SwiPrologTerm Compound(string text)
         {
             return new SwiPrologTerm(text);
         }

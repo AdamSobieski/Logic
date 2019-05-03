@@ -18,11 +18,8 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Swi.Callbacks;
 using Logic.Prolog.Swi.Exceptions;
-using Logic.Prolog.Swi.Streams;
 using System;
-using System.Runtime.InteropServices;
 
 /********************************
 *	       TYPES	Comment     *
@@ -120,235 +117,140 @@ namespace Logic.Prolog.Swi.Streams
 
 namespace Logic.Prolog.Swi
 {
-    /// <summary>
-    /// This static class represents the prolog engine.
-    /// </summary>
-    /// <example>
-    /// A sample
-    /// <code>
-    ///    if (!PlEngine.IsInitialized)
-    ///    {
-    ///        String[] empty_param = { "" };
-    ///        PlEngine.Initialize(empty_param);
-    ///        // do some funny things ...
-    ///        PlEngine.PlCleanup();
-    ///    } 
-    ///    // program ends here
-    /// </code>
-    /// The following sample show how a file is consult via comand-line options.
-    /// <code source="..\..\TestSwiPl\PlEngine.cs" region="demo_consult_pl_file_by_param" />
-    /// </example>
-    internal static class SWI
-    {
-        public static bool RegisterForeign(string module, string name, int arity, Delegate method, SwiForeignSwitches plForeign)
-        {
-            return Convert.ToBoolean(libswipl.PL_register_foreign_in_module(module, name, arity, method, (int)plForeign));
-        }
-        public static SwiNondeterministicCalltype GetNondeterministicCallType(IntPtr control_t)
-        {
-            return (SwiNondeterministicCalltype)libswipl.PL_foreign_control(control_t);
-        }
-        public static IntPtr Retry(object context)
-        {
-            return libswipl.PL_retry_address(Marshal.GetIUnknownForObject(context));
-        }
-        public static object GetContext(IntPtr control_t)
-        {
-            return Marshal.GetObjectForIUnknown(libswipl.PL_foreign_context_address(control_t));
-        }
+    //internal static class SWI
+    //{
+    //    //public static void Initialize(string[] argv)
+    //    //{
+    //    //    if (argv == null)
+    //    //        throw new ArgumentNullException("argv", "Minimum is one empty string");
+    //    //    if (libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
+    //    //        throw new SwiPrologLibraryException("SwiPrologEngine is already initialized");
 
-        public static object MarshalFromPrologTerm(SwiPrologTerm term)
-        {
-            throw new NotImplementedException();
-        }
-        public static SwiPrologTerm MarshalToPrologTerm(object term)
-        {
-            throw new NotImplementedException();
-        }
+    //    //    libswipl.LoadLibPl();
+    //    //    // redirect input and output stream to receive messages from prolog
+    //    //    var wf = new DelegateStreamWriteFunction(Swrite_function);
+    //    //    if (!_isStreamFunctionWriteModified)
+    //    //    {
+    //    //        // TO DO
+    //    //        //SetStreamFunctionWrite(PlStreamType.Output, wf);
+    //    //        _isStreamFunctionWriteModified = false;
+    //    //    }
+    //    //    var localArgv = new string[argv.Length + 1];
+    //    //    int idx = 0;
+    //    //    localArgv[idx++] = "";
+    //    //    foreach (var s in argv)
+    //    //        localArgv[idx++] = s;
 
-        /// <summary>To test if the prolog engine is up.</summary>
-        public static bool IsInitialized
-        {
-            get
-            {
-                var i = libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero);
-                return 0 != i;
-            }
-        }
+    //    //    if (0 == libswipl.PL_initialise(localArgv.Length, localArgv))
+    //    //    {
+    //    //        throw new SwiPrologLibraryException("failed to initialize");
+    //    //    }
+    //    //    if (!_isStreamFunctionReadModified)
+    //    //    {
+    //    //        var rf = new DelegateStreamReadFunction(Sread_function);
+    //    //        // TO DO
+    //    //        //SetStreamFunctionRead(PlStreamType.Input, rf);
+    //    //        _isStreamFunctionReadModified = false;
+    //    //    }
+    //    //}
 
-        /// <summary>
-        /// <para>Initialise SWI-Prolog</para>
-        /// <para>The write method of the output stream is redirected to <see cref="SbsSW.SwiPlCs.Streams"/> 
-        /// before Initialize. The read method of the input stream just after Initialize.</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>A known bug: Initialize work *not* as expected if there are e.g. German umlauts in the parameters
-        /// See marshalling in the sorce NativeMethods.cs</para>
-        /// </remarks>
-        /// <param name="argv">
-        /// <para>For a complete parameter description see the <a href="http://gollem.science.uva.nl/SWI-Prolog/Manual/cmdline.html" target="_new">SWI-Prolog reference manual section 2.4 Command-line options</a>.</para>
-        /// <para>sample parameter: <code>String[] param = { "-q", "-f", @"some\filename" };</code>
-        /// At the first position a parameter "" is added in this method. <see href="http://www.swi-prolog.org/pldoc/doc_for?object=section(3%2C%20%279.6.20%27%2C%20swi(%27%2Fdoc%2FManual%2Fforeigninclude.html%27))">PL_initialise</see>
-        /// </para>
-        /// </param>
-        /// <example>For an example see <see cref="T:SbsSW.SwiPlCs.PlEngine"/> </example>
-        public static void Initialize(string[] argv)
-        {
-            if (argv == null)
-                throw new ArgumentNullException("argv", "Minimum is one empty string");
-            if (IsInitialized)
-                throw new SwiPrologLibraryException("PlEngine is already initialized");
-
-            libswipl.LoadLibPl();
-            // redirect input and output stream to receive messages from prolog
-            var wf = new DelegateStreamWriteFunction(Swrite_function);
-            if (!_isStreamFunctionWriteModified)
-            {
-                // TO DO
-                //SetStreamFunctionWrite(PlStreamType.Output, wf);
-                _isStreamFunctionWriteModified = false;
-            }
-            var localArgv = new string[argv.Length + 1];
-            int idx = 0;
-            localArgv[idx++] = "";
-            foreach (var s in argv)
-                localArgv[idx++] = s;
-
-            if (0 == libswipl.PL_initialise(localArgv.Length, localArgv))
-            {
-                throw new SwiPrologLibraryException("failed to initialize");
-            }
-            if (!_isStreamFunctionReadModified)
-            {
-                var rf = new DelegateStreamReadFunction(Sread_function);
-                // TO DO
-                //SetStreamFunctionRead(PlStreamType.Input, rf);
-                _isStreamFunctionReadModified = false;
-            }
-        }
-
-        /// <summary>
-        /// Try a clean up but it is buggy
-        /// search the web for "possible regression from pl-5.4.7 to pl-5.6.27" to see reasons
-        /// </summary>
-        /// <remarks>Use this method only at the last call before run program ends</remarks>
-        static public void Cleanup()
-        {
-            libswipl.PL_cleanup(0);
-        }
-
-        /// <summary>Stops the PlEngine and <b>the program</b></summary>
-        /// <remarks>SWI-Prolog calls internally pl_cleanup and than exit(0)</remarks>
-        static public void Halt()
-        {
-            libswipl.PL_halt(0);
-        }
-
-        static public void Halt(int code)
-        {
-            libswipl.PL_halt(code);
-        }
-
-        // *****************************
-        // STATICs for STREAMS
-        // *****************************
-        #region stream IO
+    //    #region stream IO
 
 
-        #region default_io_doc
-        static internal long Swrite_function(IntPtr handle, string buf, long bufsize)
-        {
-            string s = buf.Substring(0, (int)bufsize);
-            Console.Write(s);
-            System.Diagnostics.Trace.WriteLine(s);
-            return bufsize;
-        }
+    //    #region default_io_doc
+    //    static internal long Swrite_function(IntPtr handle, string buf, long bufsize)
+    //    {
+    //        string s = buf.Substring(0, (int)bufsize);
+    //        Console.Write(s);
+    //        System.Diagnostics.Trace.WriteLine(s);
+    //        return bufsize;
+    //    }
 
-        static internal long Sread_function(IntPtr handle, IntPtr buf, long bufsize)
-        {
-            throw new SwiPrologLibraryException("SwiPlCs: Prolog try to read from stdin");
-        }
-        #endregion default_io_doc
+    //    static internal long Sread_function(IntPtr handle, IntPtr buf, long bufsize)
+    //    {
+    //        throw new SwiPrologLibraryException("SwiPlCs: Prolog try to read from stdin");
+    //    }
+    //    #endregion default_io_doc
 
 
 
-        static bool _isStreamFunctionWriteModified;  // default = false;
-        static bool _isStreamFunctionReadModified;   // default = false;
+    //    static bool _isStreamFunctionWriteModified;  // default = false;
+    //    static bool _isStreamFunctionReadModified;   // default = false;
 
-        /// <summary>
-        /// This is a primitive approach to enter the output from a stream.
-        /// </summary>
-        /// <example>
-        /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamWrite_doc" />
-        /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
-        /// <param name="function">A <see cref="Streams.DelegateStreamWriteFunction"/></param>
-        static public void SetStreamFunctionWrite(SwiStreamType streamType, DelegateStreamWriteFunction function)
-        {
-            libswipl.LoadLibPl();
-            libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Write, function);
-            _isStreamFunctionWriteModified = true;
-        }
+    //    /// <summary>
+    //    /// This is a primitive approach to enter the output from a stream.
+    //    /// </summary>
+    //    /// <example>
+    //    /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamWrite_doc" />
+    //    /// </example>
+    //    /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
+    //    /// <param name="function">A <see cref="Streams.DelegateStreamWriteFunction"/></param>
+    //    static public void SetStreamFunctionWrite(SwiStreamType streamType, DelegateStreamWriteFunction function)
+    //    {
+    //        libswipl.LoadLibPl();
+    //        libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Write, function);
+    //        _isStreamFunctionWriteModified = true;
+    //    }
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <example>
-        /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamRead_doc" />
-        /// </example>
-        /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
-        /// <param name="function">A <see cref="Streams.DelegateStreamReadFunction"/></param>
-        static public void SetStreamFunctionRead(SwiStreamType streamType, DelegateStreamReadFunction function)
-        {
-            libswipl.LoadLibPl();
-            libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Read, function);
-            _isStreamFunctionReadModified = true;
-        }
-
-
-        #endregion stream IO
-
-        // *****************************
-        // STATICs for MULTI THreading
-        // *****************************
-        #region STATICs for MULTI THreading
-
-        /// <summary>
-        /// <para>return : reference count of the engine</para>
-        ///	<para>		If an error occurs, -1 is returned.</para>
-        ///	<para>		If this Prolog is not compiled for multi-threading, -2 is returned.</para>
-        /// </summary>
-        /// <returns>A reference count of the engine</returns>
-        public static int ThreadAttachEngine()
-        {
-            return libswipl.PL_thread_attach_engine(IntPtr.Zero);
-        }
+    //    /// <summary>
+    //    /// TODO
+    //    /// </summary>
+    //    /// <example>
+    //    /// <code source="..\..\TestSwiPl\StreamIO.cs" region="StreamRead_doc" />
+    //    /// </example>
+    //    /// <param name="streamType">Determine which stream to use <see cref="Streams.SwiStreamType"/></param>
+    //    /// <param name="function">A <see cref="Streams.DelegateStreamReadFunction"/></param>
+    //    static public void SetStreamFunctionRead(SwiStreamType streamType, DelegateStreamReadFunction function)
+    //    {
+    //        libswipl.LoadLibPl();
+    //        libswipl.SetStreamFunction(streamType, libswipl.StreamsFunction.Read, function);
+    //        _isStreamFunctionReadModified = true;
+    //    }
 
 
-        /// <summary>
-        /// This method is also provided in the single-threaded version of SWI-Prolog, where it returns -2. 
-        /// </summary>
-        /// <returns>Returns the integer Prolog identifier of the engine or -1 if the calling thread has no Prolog engine. </returns>
-        public static int ThreadSelf()
-        {
-            return libswipl.PL_thread_self();
-        }
+    //    #endregion stream IO
+
+    //    // *****************************
+    //    // STATICs for MULTI THreading
+    //    // *****************************
+    //    #region STATICs for MULTI THreading
+
+    //    /// <summary>
+    //    /// <para>return : reference count of the engine</para>
+    //    ///	<para>		If an error occurs, -1 is returned.</para>
+    //    ///	<para>		If this Prolog is not compiled for multi-threading, -2 is returned.</para>
+    //    /// </summary>
+    //    /// <returns>A reference count of the engine</returns>
+    //    public static int ThreadAttachEngine()
+    //    {
+    //        return libswipl.PL_thread_attach_engine(IntPtr.Zero);
+    //    }
 
 
-        /// <summary>
-        /// Destroy the Prolog engine in the calling thread. 
-        /// Only takes effect if <c>PL_thread_destroy_engine()</c> is called as many times as <c>PL_thread_attach_engine()</c> in this thread.
-        /// <para>Please note that construction and destruction of engines are relatively expensive operations. Only destroy an engine if performance is not critical and memory is a critical resource.</para>
-        /// </summary>
-        /// <returns>Returns <c>true</c> on success and <c>false</c> if the calling thread has no engine or this Prolog does not support threads.</returns>
-        public static bool ThreadDestroyEngine()
-        {
-            return 0 != libswipl.PL_thread_destroy_engine();
-        }
+    //    /// <summary>
+    //    /// This method is also provided in the single-threaded version of SWI-Prolog, where it returns -2. 
+    //    /// </summary>
+    //    /// <returns>Returns the integer Prolog identifier of the engine or -1 if the calling thread has no Prolog engine. </returns>
+    //    public static int ThreadSelf()
+    //    {
+    //        return libswipl.PL_thread_self();
+    //    }
 
-        #endregion
 
-    }
+    //    /// <summary>
+    //    /// Destroy the Prolog engine in the calling thread. 
+    //    /// Only takes effect if <c>PL_thread_destroy_engine()</c> is called as many times as <c>PL_thread_attach_engine()</c> in this thread.
+    //    /// <para>Please note that construction and destruction of engines are relatively expensive operations. Only destroy an engine if performance is not critical and memory is a critical resource.</para>
+    //    /// </summary>
+    //    /// <returns>Returns <c>true</c> on success and <c>false</c> if the calling thread has no engine or this Prolog does not support threads.</returns>
+    //    public static bool ThreadDestroyEngine()
+    //    {
+    //        return 0 != libswipl.PL_thread_destroy_engine();
+    //    }
+
+    //    #endregion
+
+    //}
 
     /// <summary>
     /// This class is experimental
@@ -400,7 +302,7 @@ namespace Logic.Prolog.Swi
         /// </summary>
         public void Free()
         {
-            if (IntPtr.Zero != _iEngineNumber && SWI.IsInitialized)
+            if (IntPtr.Zero != _iEngineNumber && libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
             {
                 if (0 == libswipl.PL_destroy_engine(_iEngineNumber))
                     throw (new SwiPrologLibraryException("failed to destroy engine"));

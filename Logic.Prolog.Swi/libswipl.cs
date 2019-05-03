@@ -18,6 +18,7 @@
 *
 *********************************************************/
 
+using Logic.Prolog.Swi.Callbacks;
 using Logic.Prolog.Swi.Exceptions;
 using System;
 using System.Diagnostics.Contracts;
@@ -215,8 +216,8 @@ namespace Logic.Prolog.Swi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int PL_register_foreign_in_module(string module, string name, int arity, Delegate function, int flags)
-        { return SafeNativeMethods.PL_register_foreign_in_module(module, name, arity, function, flags); }
+        internal static int PL_register_foreign_in_module(string module, string name, int arity, Delegate function, SwiForeignSwitches flags)
+        { return SafeNativeMethods.PL_register_foreign_in_module(module, name, arity, function, (int)flags); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_foreign_control(IntPtr control_t)

@@ -168,8 +168,8 @@ namespace Logic.Prolog.Swi.Exceptions
         /// <returns>A textual description of the Exception</returns>
         override public string ToString()
         {
-            if (!SWI.IsInitialized)
-                return "A PlException was thrown but it can't formatted because PlEngine is not Initialized.";
+            if (libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) == 0)
+                return "A PlException was thrown but it can't formatted because SwiPrologEngine is not Initialized.";
 
             string strRet = "[ERROR: Failed to generate message.  Internal error]\n";
             using (new SwiPrologFrame())

@@ -292,6 +292,26 @@ namespace Logic.Prolog.Xsb
 
 
 
+        [ScriptMember("getAssertions")]
+        public IEnumerable<XsbPrologTerm> GetAssertions()
+        {
+            foreach (var r in Query("predicate_property(S, dynamic), clause(S, true)"))
+            {
+                yield return r.Answer[1];
+            }
+        }
+
+        [ScriptMember("getRules")]
+        public IEnumerable<XsbPrologTerm> GetRules()
+        {
+            foreach (var r in Query(@"predicate_property(S, dynamic), clause(S, T), T \= true, X=(S :- T)"))
+            {
+                yield return r.Answer[3];
+            }
+        }
+
+
+
         [NoScriptAccess]
         void IDisposable.Dispose()
         {

@@ -364,7 +364,7 @@ namespace Logic.Prolog.Swi
         /// <param name="discardData">if true all bindings of the query are destroyed</param>
         private void Free(bool discardData)
         {
-            if (_qid > 0 && SWI.IsInitialized)
+            if (_qid > 0 && libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
             {
                 try
                 {
@@ -502,7 +502,7 @@ namespace Logic.Prolog.Swi
         ///  </example>
         /// <param name="name">the name of the predicate</param>
         /// <param name="termV">the argument vector containing the parameters</param>
-        public SwiPrologQuery(string name, SwiPrologTermVector termV)
+        internal SwiPrologQuery(string name, SwiPrologTermVector termV)
             : this(ModuleDefault, name, termV)
         {
         }
@@ -511,7 +511,7 @@ namespace Logic.Prolog.Swi
         /// <inheritdoc cref="SwiPrologQuery(string,SwiPrologTermVector)" />
         /// <summary>locating the predicate in the named module.</summary>
         /// <param name="module">locating the predicate in the named module.</param>
-        public SwiPrologQuery(string module, string name, SwiPrologTermVector termV)
+        internal SwiPrologQuery(string module, string name, SwiPrologTermVector termV)
         {
             //if (null == termV)
             //    throw new ArgumentNullException("termV");

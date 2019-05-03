@@ -108,7 +108,7 @@ namespace Logic.Prolog.Swi
         /// <summary>called by Dispose</summary>
         private void Free()
         {
-            if (_fid > 0 && SWI.IsInitialized)
+            if (_fid > 0 && libswipl.PL_is_initialised(IntPtr.Zero, IntPtr.Zero) != 0)
             {
                 libswipl.PL_close_foreign_frame(_fid);
             }
