@@ -54,6 +54,22 @@ namespace Logic.Prolog.Xsb
 
         private List<Delegate> foreignPredicates;
 
+        [ScriptMember("version")]
+        public string Version
+        {
+            get
+            {
+                foreach(var r in Query("current_prolog_flag(version_data, X)"))
+                {
+                    int major = r.Answer[1][1].ToInteger();
+                    int minor = r.Answer[1][2].ToInteger();
+                    int patch = r.Answer[1][3].ToInteger();
+                    return major.ToString() + "." + minor.ToString() + "." + patch.ToString();
+                }
+                throw new Exception("current_prolog_flag(version_data, X) did not return a value.");
+            }
+        }
+
         [ScriptMember("variable")]
         public XsbPrologTerm Variable()
         {

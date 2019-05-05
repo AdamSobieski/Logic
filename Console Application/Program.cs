@@ -41,11 +41,15 @@ namespace Application
                 {
                     using (var swi = new SwiPrologEngine(swi_settings))
                     {
+                        Console.WriteLine("SWI Prolog " + swi.Version);
+
                         engine.AddHostObject("swi", swi);
 
                         string script1 = File.OpenText("script1.js").ReadToEnd();
 
                         engine.Execute(script1);
+
+                        Console.WriteLine();
                     }
                 }
 
@@ -53,11 +57,15 @@ namespace Application
                 {
                     using (var xsb = new XsbPrologEngine(xsb_settings))
                     {
+                        Console.WriteLine("XSB Prolog " + xsb.Version);
+
                         engine.AddHostObject("xsb", xsb);
 
                         string script2 = File.OpenText("script2.js").ReadToEnd();
 
                         engine.Execute(script2);
+
+                        Console.WriteLine();
                     }
                 }
             }

@@ -89,6 +89,19 @@ namespace Logic.Prolog.Swi
 
         private List<SwiPrologModule> modules;
 
+        [ScriptMember("version")]
+        public string Version
+        {
+            get
+            {
+                int x = libswipl.PL_query(libswipl.PL_QUERY_VERSION);
+                int major = x / 10000;
+                int minor = (x - (major * 10000)) / 100;
+                int patch = x - (major * 10000) - (minor * 100);
+                return major.ToString() + "." + minor.ToString() + "." + patch;
+            }
+        }
+
         [ScriptMember("createModule")]
         public SwiPrologModule CreateModule()
         {
