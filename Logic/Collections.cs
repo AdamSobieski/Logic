@@ -4,11 +4,15 @@ using System.Collections.Generic;
 
 namespace Logic.Collections
 {
-    public interface ICompoundExpressionCollection
+    public interface ICompoundExpressionContainer
     {
-        bool Add(CompoundExpression value);
-        bool Remove(CompoundExpression value);
-        bool Contains(CompoundExpression value);
+        bool Contains(CompoundExpression expression);
+    }
+
+    public interface ICompoundExpressionCollection : ICompoundExpressionContainer
+    {
+        bool Add(CompoundExpression expression);
+        bool Remove(CompoundExpression expression);
     }
 
     public interface ICompoundExpressionList : ICompoundExpressionCollection, IEnumerable<CompoundExpression>
@@ -22,9 +26,10 @@ namespace Logic.Collections
     {
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
+        bool ContainsRule(CompoundExpression rule);
 
-        bool AddAll(IEnumerable<CompoundExpression> values);
-        bool RemoveAll(IEnumerable<CompoundExpression> values);
+        bool AddAll(IEnumerable<CompoundExpression> expressions);
+        bool RemoveAll(IEnumerable<CompoundExpression> expressions);
 
         bool ProcessDelta(ICompoundExpressionDelta delta);
     }

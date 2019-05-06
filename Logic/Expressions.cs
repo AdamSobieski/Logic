@@ -41,7 +41,7 @@ namespace Logic.Expressions
             throw new NotImplementedException();
         }
 
-        public static CompoundEvaluationExpression Evaluate(IKnowledgebase kb, CompoundExpression expression)
+        public static CompoundEvaluationExpression Evaluate(ICompoundExpressionContainer container, CompoundExpression expression)
         {
             throw new NotImplementedException();
         }
@@ -84,7 +84,7 @@ namespace Logic.Expressions
 
     public class CompoundEvaluationExpression : Expression
     {
-        public IKnowledgebase Knowledgebase { get; }
+        public ICompoundExpressionContainer Container { get; }
         public CompoundExpression Expression { get; }
     }
 
