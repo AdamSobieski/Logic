@@ -226,7 +226,137 @@ namespace Logic.Prolog.Xsb
             if (arity < 0) throw new ArgumentOutOfRangeException(nameof(arity));
             if (functor == null) throw new ArgumentNullException(nameof(functor));
 
-            throw new NotImplementedException();
+            XsbNativeForeignPredicateCallback d;
+
+            switch (arity)
+            {
+                case 0:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        xsb.xsb_query_save(0);
+                        bool retval = functor();
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 1:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        xsb.xsb_query_save(1);
+                        bool retval = functor(arg1);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 2:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        xsb.xsb_query_save(2);
+                        bool retval = functor(arg1, arg2);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 3:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        xsb.xsb_query_save(3);
+                        bool retval = functor(arg1, arg2, arg3);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 4:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        xsb.xsb_query_save(4);
+                        bool retval = functor(arg1, arg2, arg3, arg4);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 5:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        xsb.xsb_query_save(5);
+                        bool retval = functor(arg1, arg2, arg3, arg4, arg5);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 6:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        xsb.xsb_query_save(6);
+                        bool retval = functor(arg1, arg2, arg3, arg4, arg5, arg6);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 7:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        XsbPrologTerm arg7 = new XsbPrologTerm(xsb.reg_term(7));
+                        xsb.xsb_query_save(7);
+                        bool retval = functor(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 8:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        XsbPrologTerm arg7 = new XsbPrologTerm(xsb.reg_term(7));
+                        XsbPrologTerm arg8 = new XsbPrologTerm(xsb.reg_term(8));
+                        xsb.xsb_query_save(8);
+                        bool retval = functor(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            if (xsb.xsb_add_c_predicate(null, name, arity, d) == 0)
+            {
+                foreignPredicates.Add(d);
+                return true;
+            }
+            return false;
         }
         [NoScriptAccess]
         public bool AddPredicate(string name, int arity, Delegate functor)
@@ -242,9 +372,9 @@ namespace Logic.Prolog.Xsb
                 case 0:
                     d = new XsbNativeForeignPredicateCallback(() =>
                     {
-                        //xsb.xsb_query_save(0);
+                        xsb.xsb_query_save(0);
                         bool retval = ((XsbPrologCallback0)functor)();
-                        //xsb.xsb_query_restore();
+                        xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
                     break;
@@ -252,9 +382,9 @@ namespace Logic.Prolog.Xsb
                     d = new XsbNativeForeignPredicateCallback(() =>
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
-                        //xsb.xsb_query_save(1);
+                        xsb.xsb_query_save(1);
                         bool retval = ((XsbPrologCallback1)functor)(arg1);
-                        //xsb.xsb_query_restore();
+                        xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
                     break;
@@ -263,9 +393,9 @@ namespace Logic.Prolog.Xsb
                     {
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
-                        //xsb.xsb_query_save(2);
+                        xsb.xsb_query_save(2);
                         bool retval = ((XsbPrologCallback2)functor)(arg1, arg2);
-                        //xsb.xsb_query_restore();
+                        xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
                     break;
@@ -275,9 +405,9 @@ namespace Logic.Prolog.Xsb
                         XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
                         XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
-                        //xsb.xsb_query_save(3);
+                        xsb.xsb_query_save(3);
                         bool retval = ((XsbPrologCallback3)functor)(arg1, arg2, arg3);
-                        //xsb.xsb_query_restore();
+                        xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
                     break;
@@ -288,9 +418,71 @@ namespace Logic.Prolog.Xsb
                         XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
                         XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
                         XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
-                        //xsb.xsb_query_save(4);
+                        xsb.xsb_query_save(4);
                         bool retval = ((XsbPrologCallback4)functor)(arg1, arg2, arg3, arg4);
-                        //xsb.xsb_query_restore();
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 5:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        xsb.xsb_query_save(5);
+                        bool retval = ((XsbPrologCallback5)functor)(arg1, arg2, arg3, arg4, arg5);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 6:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        xsb.xsb_query_save(6);
+                        bool retval = ((XsbPrologCallback6)functor)(arg1, arg2, arg3, arg4, arg5, arg6);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 7:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        XsbPrologTerm arg7 = new XsbPrologTerm(xsb.reg_term(7));
+                        xsb.xsb_query_save(7);
+                        bool retval = ((XsbPrologCallback7)functor)(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+                        xsb.xsb_query_restore();
+                        return retval ? 1 : 0;
+                    });
+                    break;
+                case 8:
+                    d = new XsbNativeForeignPredicateCallback(() =>
+                    {
+                        XsbPrologTerm arg1 = new XsbPrologTerm(xsb.reg_term(1));
+                        XsbPrologTerm arg2 = new XsbPrologTerm(xsb.reg_term(2));
+                        XsbPrologTerm arg3 = new XsbPrologTerm(xsb.reg_term(3));
+                        XsbPrologTerm arg4 = new XsbPrologTerm(xsb.reg_term(4));
+                        XsbPrologTerm arg5 = new XsbPrologTerm(xsb.reg_term(5));
+                        XsbPrologTerm arg6 = new XsbPrologTerm(xsb.reg_term(6));
+                        XsbPrologTerm arg7 = new XsbPrologTerm(xsb.reg_term(7));
+                        XsbPrologTerm arg8 = new XsbPrologTerm(xsb.reg_term(8));
+                        xsb.xsb_query_save(8);
+                        bool retval = ((XsbPrologCallback8)functor)(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+                        xsb.xsb_query_restore();
                         return retval ? 1 : 0;
                     });
                     break;
