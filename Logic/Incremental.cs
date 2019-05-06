@@ -4,7 +4,7 @@ namespace Logic.Incremental
 {
     public interface ICompoundExpressionDelta
     {
-        ICompoundExpressionList Retractions { get; }
-        ICompoundExpressionList Assertions { get; }
+        ICompoundExpressionList Removals { get; }
+        ICompoundExpressionList Additions { get; }
     }
 }

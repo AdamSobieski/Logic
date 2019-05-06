@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace Logic.Expressions
@@ -22,6 +23,10 @@ namespace Logic.Expressions
         {
             throw new NotImplementedException();
         }
+        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<VariableExpression> parameters)
+        {
+            throw new NotImplementedException();
+        }
         public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<Expression> preconditions, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
@@ -32,6 +37,11 @@ namespace Logic.Expressions
             throw new NotImplementedException();
         }
         public static CompoundExpression Compound(Expression predicate, IEnumerable<Expression> arguments)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static CompoundEvaluationExpression Evaluate(IKnowledgebase kb, CompoundExpression expression)
         {
             throw new NotImplementedException();
         }
@@ -70,6 +80,12 @@ namespace Logic.Expressions
     {
         public new Expression Predicate { get; }
         public IReadOnlyList<Expression> Arguments { get; }
+    }
+
+    public class CompoundEvaluationExpression : Expression
+    {
+        public IKnowledgebase Knowledgebase { get; }
+        public CompoundExpression Expression { get; }
     }
 
     public class LambdaExpression : Expression
