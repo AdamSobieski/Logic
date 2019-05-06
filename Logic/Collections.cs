@@ -11,8 +11,11 @@ namespace Logic.Collections
 
     public interface ICompoundExpressionCollection : ICompoundExpressionContainer
     {
+        bool IsReadOnly { get; }
+
         bool Add(CompoundExpression expression);
         bool Remove(CompoundExpression expression);
+        bool Update(CompoundExpression remove, CompoundExpression add);
     }
 
     public interface ICompoundExpressionList : ICompoundExpressionCollection, IEnumerable<CompoundExpression>
@@ -28,9 +31,10 @@ namespace Logic.Collections
         bool RemoveRule(CompoundExpression rule);
         bool ContainsRule(CompoundExpression rule);
 
-        bool AddAll(IEnumerable<CompoundExpression> expressions);
-        bool RemoveAll(IEnumerable<CompoundExpression> expressions);
+        bool Add(IEnumerable<CompoundExpression> expressions);
+        bool Remove(IEnumerable<CompoundExpression> expressions);
 
-        bool ProcessDelta(ICompoundExpressionDelta delta);
+        bool Update(IEnumerable<CompoundExpression> removals, IEnumerable<CompoundExpression> additions);
+        bool Update(ICompoundExpressionDelta delta);
     }
 }

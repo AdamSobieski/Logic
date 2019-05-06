@@ -1,4 +1,6 @@
 ﻿using Logic.Collections;
+using Logic.Incremental;
+using Logic.Planning;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +8,15 @@ namespace Logic.Expressions
 {
     public abstract class Expression
     {
+        public static Expression Constant(int value)
+        {
+            throw new NotImplementedException();
+        }
+        public static Expression Constant(double value)
+        {
+            throw new NotImplementedException();
+        }
+
         public static VariableExpression Variable(string name)
         {
             throw new NotImplementedException();
@@ -27,7 +38,7 @@ namespace Logic.Expressions
         {
             throw new NotImplementedException();
         }
-        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<Expression> preconditions, IEnumerable<VariableExpression> parameters)
+        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
         }
@@ -41,12 +52,12 @@ namespace Logic.Expressions
             throw new NotImplementedException();
         }
 
-        public static CompoundEvaluationExpression Evaluate(ICompoundExpressionContainer container, CompoundExpression expression)
+        public static Expression Evaluate(ICompoundExpressionContainer set, CompoundExpression expression)
         {
             throw new NotImplementedException();
         }
 
-        public static LambdaExpression Lambda(string name, IEnumerable<Expression> preconditions, Expression body, IEnumerable<Expression> postconditions, IEnumerable<VariableExpression> parameters)
+        public static LambdaExpression Lambda(string name, IEnumerable<CompoundExpression> preconditions, Expression body, ICompoundExpressionDelta effects, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
         }
@@ -73,7 +84,7 @@ namespace Logic.Expressions
         public int Arity { get; }
 
         public IReadOnlyList<VariableExpression> Parameters { get; }
-        public IReadOnlyList<Expression> Preconditions { get; }
+        public ICompoundExpressionList Preconditions { get; }
     }
 
     public class CompoundExpression : Expression
@@ -82,18 +93,13 @@ namespace Logic.Expressions
         public IReadOnlyList<Expression> Arguments { get; }
     }
 
-    public class CompoundEvaluationExpression : Expression
+    public class LambdaExpression : Expression, IAction
     {
-        public ICompoundExpressionContainer Container { get; }
-        public CompoundExpression Expression { get; }
-    }
-
-    public class LambdaExpression : Expression
-    {
+        public string Name { get; }
         public IReadOnlyList<VariableExpression> Parameters { get; }
-        public IReadOnlyList<Expression> Preconditions { get; }
+        public ICompoundExpressionList Preconditions { get; }
         public Expression Body { get; }
-        public IReadOnlyList<Expression> Postconditions { get; }
+        public ICompoundExpressionDelta Effects { get; }
 
         public LambdaExpression Reparameterize(params VariableExpression[] parameters)
         {
