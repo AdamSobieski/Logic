@@ -50,8 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections.cs" />
-    <Compile Include="Constraints.cs" />
-    <Compile Include="Calculus.cs" />
+    <Compile Include="Expressions.cs" />
     <Compile Include="Incremental.cs" />
     <Compile Include="Planning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
