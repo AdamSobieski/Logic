@@ -20,16 +20,20 @@ namespace Logic.Expressions
         {
             throw new NotImplementedException();
         }
+        public static Expression Constant(object value, Type type)
+        {
+            throw new NotImplementedException();
+        }
 
         public static VariableExpression Variable(string name)
         {
             throw new NotImplementedException();
         }
-        public static VariableExpression Variable(string name, params Expression[] constraints)
+        public static VariableExpression Variable(string name, params LambdaExpression[] constraints)
         {
             throw new NotImplementedException();
         }
-        public static VariableExpression Variable(string name, IEnumerable<Expression> constraints)
+        public static VariableExpression Variable(string name, IEnumerable<LambdaExpression> constraints)
         {
             throw new NotImplementedException();
         }
@@ -68,6 +72,10 @@ namespace Logic.Expressions
 
 
 
+        public virtual Type Type { get; }
+
+
+
         public virtual Expression Replace(VariableExpression[] from, Expression[] to)
         {
             throw new NotImplementedException();
@@ -78,11 +86,11 @@ namespace Logic.Expressions
     {
         public IReadOnlyList<Expression> Constraints { get; }
 
-        public VariableExpression AddConstraint(Expression constraint)
+        public VariableExpression AddConstraint(LambdaExpression constraint)
         {
             throw new NotImplementedException();
         }
-        public VariableExpression RemoveConstraint(Expression constraint)
+        public VariableExpression RemoveConstraint(LambdaExpression constraint)
         {
             throw new NotImplementedException();
         }
