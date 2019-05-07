@@ -1,6 +1,7 @@
 ﻿using Logic.Expressions;
 using Logic.Incremental;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace Logic.Collections
 {
@@ -15,7 +16,7 @@ namespace Logic.Collections
 
         bool Add(CompoundExpression expression);
         bool Remove(CompoundExpression expression);
-        bool Update(CompoundExpression remove, CompoundExpression add);
+        bool Replace(CompoundExpression remove, CompoundExpression add);
     }
 
     public interface ICompoundExpressionList : ICompoundExpressionCollection, IEnumerable<CompoundExpression>
@@ -25,8 +26,18 @@ namespace Logic.Collections
         CompoundExpression this[int index] { get; }
     }
 
-    public interface IKnowledgebase : ICompoundExpressionCollection
+    public interface IKnowledgebase
     {
+        IKnowledgebaseModule CreateModule();
+        IKnowledgebaseModule CreateModule(string name);
+    }
+
+    public interface IKnowledgebaseModule : ICompoundExpressionCollection
+    {
+        string Name { get; }
+
+        IKnowledgebaseTable Table(PredicateExpression predicate);
+
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
         bool ContainsRule(CompoundExpression rule);
@@ -34,7 +45,14 @@ namespace Logic.Collections
         bool Add(IEnumerable<CompoundExpression> expressions);
         bool Remove(IEnumerable<CompoundExpression> expressions);
 
-        bool Update(IEnumerable<CompoundExpression> removals, IEnumerable<CompoundExpression> additions);
-        bool Update(ICompoundExpressionDelta delta);
+        bool Replace(IEnumerable<CompoundExpression> removals, IEnumerable<CompoundExpression> additions);
+        bool Replace(ICompoundExpressionDelta delta);
+    }
+
+    public delegate void KnowledgebaseTableChangedEventHandler(object sender, ICompoundExpressionDelta delta);
+
+    public interface IKnowledgebaseTable : ICompoundExpressionList, INotifyCollectionChanged
+    {
+        event KnowledgebaseTableChangedEventHandler OnTableChanged;
     }
 }

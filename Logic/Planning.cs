@@ -7,6 +7,7 @@ namespace Logic.Planning
 {
     public interface IAction
     {
+        string Module { get; }
         string Name { get; }
 
         IReadOnlyList<VariableExpression> Parameters { get; }

@@ -16,6 +16,10 @@ namespace Logic.Expressions
         {
             throw new NotImplementedException();
         }
+        public static Expression Constant(object value)
+        {
+            throw new NotImplementedException();
+        }
 
         public static VariableExpression Variable(string name)
         {
@@ -52,12 +56,19 @@ namespace Logic.Expressions
             throw new NotImplementedException();
         }
 
-        public static Expression Evaluate(ICompoundExpressionContainer set, CompoundExpression expression)
+        public static Expression Evaluate(Expression /*ICompoundExpressionContainer*/ set, CompoundExpression expression)
         {
             throw new NotImplementedException();
         }
 
-        public static LambdaExpression Lambda(string name, IEnumerable<CompoundExpression> preconditions, Expression body, ICompoundExpressionDelta effects, IEnumerable<VariableExpression> parameters)
+        public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, ICompoundExpressionDelta effects, IEnumerable<VariableExpression> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        public virtual Expression Replace(VariableExpression[] from, Expression[] to)
         {
             throw new NotImplementedException();
         }
@@ -95,19 +106,20 @@ namespace Logic.Expressions
 
     public class LambdaExpression : Expression, IAction
     {
+        public string Module { get; }
         public string Name { get; }
         public IReadOnlyList<VariableExpression> Parameters { get; }
         public ICompoundExpressionList Preconditions { get; }
         public Expression Body { get; }
         public ICompoundExpressionDelta Effects { get; }
 
-        public LambdaExpression Reparameterize(params VariableExpression[] parameters)
-        {
-            throw new NotImplementedException();
-        }
-        public LambdaExpression Reparameterize(IEnumerable<VariableExpression> parameters)
-        {
-            throw new NotImplementedException();
-        }
+        //public LambdaExpression Reparameterize(params VariableExpression[] parameters)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //public LambdaExpression Reparameterize(IEnumerable<VariableExpression> parameters)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
