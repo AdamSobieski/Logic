@@ -8,19 +8,11 @@ namespace Logic.Expressions
 {
     public abstract class Expression
     {
-        public static Expression Constant(int value)
+        public static ConstantExpression Constant(object value)
         {
             throw new NotImplementedException();
         }
-        public static Expression Constant(double value)
-        {
-            throw new NotImplementedException();
-        }
-        public static Expression Constant(object value)
-        {
-            throw new NotImplementedException();
-        }
-        public static Expression Constant(object value, Type type)
+        public static ConstantExpression Constant(object value, Type type)
         {
             throw new NotImplementedException();
         }
@@ -72,14 +64,26 @@ namespace Logic.Expressions
 
 
 
-        public virtual Type Type { get; }
-
-
-
-        public virtual Expression Replace(VariableExpression[] from, Expression[] to)
+        public virtual Type Type
         {
-            throw new NotImplementedException();
+            get
+            {
+                return typeof(object);
+            }
         }
+
+
+
+        internal virtual Expression Replace(Expression[] from, Expression[] to)
+        {
+            int index = Array.IndexOf(from, this);
+            return (index >= 0) ? to[index] : this;
+        }
+    }
+
+    public class ConstantExpression : Expression
+    {
+
     }
 
     public class VariableExpression : Expression
@@ -104,12 +108,45 @@ namespace Logic.Expressions
 
         public IReadOnlyList<VariableExpression> Parameters { get; }
         public ICompoundExpressionList Preconditions { get; }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CompoundExpression : Expression
     {
         public new Expression Predicate { get; }
         public IReadOnlyList<Expression> Arguments { get; }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            bool any = false;
+            Expression p = Predicate;
+            Expression p2 = p.Replace(from, to);
+            Expression a;
+            Expression a2;
+
+            if (!object.ReferenceEquals(p, p2))
+            {
+                any = true;
+            }
+            int count = Arguments.Count;
+            List<Expression> args = new List<Expression>(count);
+            for (int x = 0; x < count; ++x)
+            {
+                a = Arguments[x];
+                a2 = a.Replace(from, to);
+                if (!object.ReferenceEquals(a, a2))
+                {
+                    any = true;
+                }
+                args.Add(a2);
+            }
+            if (!any) return this;
+            else return Expression.Compound(p2, args);
+        }
     }
 
     public class LambdaExpression : Expression, IAction
@@ -121,13 +158,17 @@ namespace Logic.Expressions
         public Expression Body { get; }
         public ICompoundExpressionDelta Effects { get; }
 
-        //public LambdaExpression Reparameterize(params VariableExpression[] parameters)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        //public LambdaExpression Reparameterize(IEnumerable<VariableExpression> parameters)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public Type ReturnType
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

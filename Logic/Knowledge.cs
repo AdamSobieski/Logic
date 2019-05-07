@@ -21,12 +21,6 @@ namespace Logic.Knowledge
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
         bool ContainsRule(CompoundExpression rule);
-
-        bool Add(IEnumerable<CompoundExpression> expressions);
-        bool Remove(IEnumerable<CompoundExpression> expressions);
-
-        bool Replace(IEnumerable<CompoundExpression> removals, IEnumerable<CompoundExpression> additions);
-        bool Replace(ICompoundExpressionDelta delta);
     }
 
     public delegate void KnowledgebaseTableChangedEventHandler(object sender, ICompoundExpressionDelta delta);
