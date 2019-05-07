@@ -111,7 +111,47 @@ namespace Logic.Expressions
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
-            throw new NotImplementedException();
+            bool any = false;
+            Expression e;
+            Expression n;
+            List<VariableExpression> p;
+            List<CompoundExpression> c;
+            int index;
+            int count;
+
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            count = Parameters.Count;
+            p = new List<VariableExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Parameters[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                p.Add((VariableExpression)n);
+            }
+
+            count = Preconditions.Count;
+            c = new List<CompoundExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Preconditions[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                c.Add((CompoundExpression)n);
+            }
+
+            if (!any) return this;
+            return Expression.Predicate(Module, Name, Arity, c, p);
         }
     }
 
@@ -123,29 +163,38 @@ namespace Logic.Expressions
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
             bool any = false;
-            Expression p = Predicate;
-            Expression p2 = p.Replace(from, to);
-            Expression a;
-            Expression a2;
+            Expression e;
+            Expression n;
+            Expression p;
+            List<Expression> args;
+            int index;
+            int count;
 
-            if (!object.ReferenceEquals(p, p2))
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            e = Predicate;
+            p = e.Replace(from, to);
+
+            if (!object.ReferenceEquals(e, p))
             {
                 any = true;
             }
-            int count = Arguments.Count;
-            List<Expression> args = new List<Expression>(count);
-            for (int x = 0; x < count; ++x)
+
+            count = Arguments.Count;
+            args = new List<Expression>(count);
+            for (index = 0; index < count; ++index)
             {
-                a = Arguments[x];
-                a2 = a.Replace(from, to);
-                if (!object.ReferenceEquals(a, a2))
+                e = Arguments[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
                 {
                     any = true;
                 }
-                args.Add(a2);
+                args.Add(n);
             }
             if (!any) return this;
-            else return Expression.Compound(p2, args);
+            else return Expression.Compound(p, args);
         }
     }
 

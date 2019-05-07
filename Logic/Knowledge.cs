@@ -21,6 +21,9 @@ namespace Logic.Knowledge
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
         bool ContainsRule(CompoundExpression rule);
+
+        IKnowledgebaseModule Clone();
+        IKnowledgebaseModule Clone(string name);
     }
 
     public delegate void KnowledgebaseTableChangedEventHandler(object sender, ICompoundExpressionDelta delta);
