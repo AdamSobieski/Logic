@@ -3,6 +3,7 @@ using Logic.Incremental;
 using Logic.Planning;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace Logic.Expressions
 {
@@ -10,11 +11,20 @@ namespace Logic.Expressions
     {
         public static ConstantExpression Constant(object value)
         {
-            throw new NotImplementedException();
+            return new ConstantExpression(value, value != null ? value.GetType() : typeof(object));
         }
         public static ConstantExpression Constant(object value, Type type)
         {
-            throw new NotImplementedException();
+            Contract.Requires(type != null);
+            if (value == null && type.IsValueType && !(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)))
+            {
+                throw new ArgumentException();
+            }
+            if (value != null && !type.IsAssignableFrom(value.GetType()))
+            {
+                throw new ArgumentException();
+            }
+            return new ConstantExpression(value, type);
         }
 
         public static VariableExpression Variable(string name)
@@ -75,14 +85,23 @@ namespace Logic.Expressions
 
     public class ConstantExpression : Expression
     {
+        internal ConstantExpression(object value, Type type)
+        {
+            m_value = value;
+            m_type = type;
+        }
+        object m_value;
+        Type m_type;
 
+        public object Value => m_value;
+        public override Type Type => m_type;
     }
 
     public class VariableExpression : Expression
     {
         public string Name { get; }
 
-        public IReadOnlyList<CompoundExpression> Constraints { get; }
+        public ICompoundExpressionList Constraints { get; }
 
         public VariableExpression AddConstraint(CompoundExpression constraint)
         {
