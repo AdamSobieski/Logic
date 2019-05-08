@@ -21,20 +21,12 @@ namespace Logic.Expressions
         {
             throw new NotImplementedException();
         }
-        public static VariableExpression Variable(string name, params LambdaExpression[] constraints)
-        {
-            throw new NotImplementedException();
-        }
-        public static VariableExpression Variable(string name, IEnumerable<LambdaExpression> constraints)
+        public static VariableExpression Variable(string name, IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
         {
             throw new NotImplementedException();
         }
 
         public static PredicateExpression Predicate(string module, string name, int arity)
-        {
-            throw new NotImplementedException();
-        }
-        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
         }
@@ -88,13 +80,15 @@ namespace Logic.Expressions
 
     public class VariableExpression : Expression
     {
-        public IReadOnlyList<Expression> Constraints { get; }
+        public string Name { get; }
 
-        public VariableExpression AddConstraint(LambdaExpression constraint)
+        public IReadOnlyList<CompoundExpression> Constraints { get; }
+
+        public VariableExpression AddConstraint(CompoundExpression constraint)
         {
             throw new NotImplementedException();
         }
-        public VariableExpression RemoveConstraint(LambdaExpression constraint)
+        public VariableExpression RemoveConstraint(CompoundExpression constraint)
         {
             throw new NotImplementedException();
         }
