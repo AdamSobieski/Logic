@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="Incremental.cs" />
     <Compile Include="Knowledge.cs" />

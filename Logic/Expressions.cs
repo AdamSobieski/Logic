@@ -1,5 +1,4 @@
 ﻿using Logic.Planning;
-using Logic.Prolog.Collections;
 using Logic.Prolog.Incremental;
 using Logic.Prolog.Knowledge;
 using System;
@@ -134,7 +133,7 @@ namespace Logic.Prolog.Expressions
     {
         public string Name { get; }
 
-        public ICompoundExpressionList Constraints { get; }
+        public IReadOnlyList<CompoundExpression> Constraints { get; }
 
         public VariableExpression AddConstraint(CompoundExpression constraint)
         {
@@ -153,7 +152,7 @@ namespace Logic.Prolog.Expressions
         public int Arity { get; }
 
         public IReadOnlyList<VariableExpression> Parameters { get; }
-        public ICompoundExpressionList Preconditions { get; }
+        public IReadOnlyList<CompoundExpression> Preconditions { get; }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
@@ -275,7 +274,7 @@ namespace Logic.Prolog.Expressions
         public string Name { get; }
 
         public IReadOnlyList<VariableExpression> Parameters { get; }
-        public ICompoundExpressionList Preconditions { get; }
+        public IReadOnlyList<CompoundExpression> Preconditions { get; }
         public Expression Body { get; }
         public ICompoundExpressionDelta Effects { get; }
 

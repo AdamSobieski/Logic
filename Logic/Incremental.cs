@@ -1,10 +1,11 @@
-﻿using Logic.Prolog.Collections;
+﻿using System.Collections.Generic;
+using Logic.Prolog.Expressions;
 
 namespace Logic.Prolog.Incremental
 {
     public interface ICompoundExpressionDelta
     {
-        ICompoundExpressionList Removals { get; }
-        ICompoundExpressionList Additions { get; }
+        IReadOnlyList<CompoundExpression> Removals { get; }
+        IReadOnlyList<CompoundExpression> Additions { get; }
     }
 }
