@@ -1,8 +1,8 @@
-﻿using Logic.Expressions;
-using Logic.Incremental;
+﻿using Logic.Prolog.Expressions;
+using Logic.Prolog.Incremental;
 using System.Collections.Generic;
 
-namespace Logic.Collections
+namespace Logic.Prolog.Collections
 {
     public interface ICompoundExpressionContainer
     {

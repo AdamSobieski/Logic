@@ -1,12 +1,32 @@
-﻿using Logic.Collections;
-using Logic.Incremental;
-using Logic.Planning;
+﻿using Logic.Planning;
+using Logic.Prolog.Collections;
+using Logic.Prolog.Incremental;
+using Logic.Prolog.Knowledge;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
-namespace Logic.Expressions
+namespace Logic.Prolog.Expressions
 {
+    internal struct Atom
+    {
+        public Atom(string name)
+        {
+            m_name = name;
+        }
+
+        string m_name;
+
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+        }
+    }
+
     public abstract class Expression
     {
         public static ConstantExpression Constant(object value)
@@ -25,6 +45,19 @@ namespace Logic.Expressions
                 throw new ArgumentException();
             }
             return new ConstantExpression(value, type);
+        }
+
+        public static ConstantExpression Integer(int value)
+        {
+            return new ConstantExpression(value, typeof(int));
+        }
+        public static ConstantExpression Float(double value)
+        {
+            return new ConstantExpression(value, typeof(double));
+        }
+        public static ConstantExpression Atom(string name)
+        {
+            return new ConstantExpression(new Atom(name), typeof(Atom));
         }
 
         public static VariableExpression Variable(string name)
@@ -166,6 +199,18 @@ namespace Logic.Expressions
             if (!any) return this;
             return Expression.Predicate(Module, Name, Arity, c, p);
         }
+
+        public bool IsValid(IKnowledgebaseModule module, IReadOnlyList<Expression> arguments)
+        {
+            if (Parameters.Count != arguments.Count) return false;
+
+            foreach (var condition in Preconditions)
+            {
+                if (!module.Contains(condition.Replace(Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
+                    return false;
+            }
+            return true;
+        }
     }
 
     public class CompoundExpression : Expression
@@ -209,12 +254,26 @@ namespace Logic.Expressions
             if (!any) return this;
             else return Expression.Compound(p, args);
         }
+
+        public bool IsValid(IKnowledgebaseModule module)
+        {
+            PredicateExpression p = Predicate as PredicateExpression;
+            if (p != null)
+            {
+                return p.IsValid(module, Arguments);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 
     public class LambdaExpression : Expression, IAction
     {
         public string Module { get; }
         public string Name { get; }
+
         public IReadOnlyList<VariableExpression> Parameters { get; }
         public ICompoundExpressionList Preconditions { get; }
         public Expression Body { get; }

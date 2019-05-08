@@ -1,10 +1,9 @@
-﻿using Logic.Collections;
-using Logic.Expressions;
-using Logic.Incremental;
-using System.Collections.Generic;
+﻿using Logic.Prolog.Collections;
+using Logic.Prolog.Expressions;
+using Logic.Prolog.Incremental;
 using System.Collections.Specialized;
 
-namespace Logic.Knowledge
+namespace Logic.Prolog.Knowledge
 {
     public interface IKnowledgebase
     {

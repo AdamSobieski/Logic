@@ -1,6 +1,6 @@
-﻿using Logic.Collections;
+﻿using Logic.Prolog.Collections;
 
-namespace Logic.Incremental
+namespace Logic.Prolog.Incremental
 {
     public interface ICompoundExpressionDelta
     {

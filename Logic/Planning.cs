@@ -1,6 +1,6 @@
-﻿using Logic.Collections;
-using Logic.Expressions;
-using Logic.Incremental;
+﻿using Logic.Prolog.Collections;
+using Logic.Prolog.Expressions;
+using Logic.Prolog.Incremental;
 using System.Collections.Generic;
 
 namespace Logic.Planning
