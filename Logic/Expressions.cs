@@ -1,6 +1,5 @@
 ﻿using Logic.Incremental;
 using Logic.Planning;
-using Logic.Prolog.Knowledge;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -85,11 +84,6 @@ namespace Logic.Prolog.Expressions
             throw new NotImplementedException();
         }
 
-        public static Expression Evaluate(Expression /* IKnowledgebaseModule */ set, CompoundExpression expression)
-        {
-            throw new NotImplementedException();
-        }
-
         public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
@@ -134,23 +128,9 @@ namespace Logic.Prolog.Expressions
 
         public IReadOnlyList<CompoundExpression> Constraints { get; }
 
-        public VariableExpression AddConstraint(CompoundExpression constraint)
+        internal override Expression Replace(Expression[] from, Expression[] to)
         {
-            throw new NotImplementedException();
-        }
-        public VariableExpression RemoveConstraint(CompoundExpression constraint)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CanUnify(IKnowledgebaseModule module, Expression value)
-        {
-            foreach (var constraint in Constraints)
-            {
-                if (!module.Contains(constraint.Replace(new Expression[] { this }, new Expression[] { value }) as CompoundExpression))
-                    return false;
-            }
-            return true;
+            return base.Replace(from, to);
         }
     }
 
