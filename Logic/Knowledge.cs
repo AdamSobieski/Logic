@@ -5,21 +5,19 @@ using System.Collections.Specialized;
 
 namespace Logic.Prolog.Knowledge
 {
-    public interface IKnowledgebase
+    public interface IKnowledgebaseEngine
     {
         IKnowledgebaseModule CreateModule();
         IKnowledgebaseModule CreateModule(string name);
     }
 
-    public interface IKnowledgebaseModule
+    public interface IKnowledgebaseModule : IContainer<CompoundExpression>
     {
         string Name { get; }
 
         IKnowledgebaseTable Table(PredicateExpression predicate);
 
         bool IsReadOnly { get; }
-
-        bool Contains(CompoundExpression expression);
 
         bool Add(CompoundExpression expression);
         bool Remove(CompoundExpression expression);

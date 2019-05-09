@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IContainer.cs" />
     <Compile Include="Expressions.cs" />
-    <Compile Include="Incremental.cs" />
+    <Compile Include="IDelta.cs" />
+    <Compile Include="IntensionalSet.cs" />
     <Compile Include="Knowledge.cs" />
     <Compile Include="Planning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

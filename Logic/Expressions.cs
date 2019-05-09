@@ -4,7 +4,6 @@ using Logic.Prolog.Knowledge;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 namespace Logic.Prolog.Expressions
 {
@@ -208,18 +207,6 @@ namespace Logic.Prolog.Expressions
             if (!any) return this;
             return Expression.Predicate(Module, Name, Arity, c, p);
         }
-
-        public bool IsValid(IKnowledgebaseModule module, IReadOnlyList<Expression> arguments)
-        {
-            if (Parameters.Count != arguments.Count) return false;
-
-            foreach (var condition in Preconditions)
-            {
-                if (!module.Contains(condition.Replace(Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
-                    return false;
-            }
-            return true;
-        }
     }
 
     public class CompoundExpression : Expression
@@ -262,19 +249,6 @@ namespace Logic.Prolog.Expressions
             }
             if (!any) return this;
             else return Expression.Compound(p, args);
-        }
-
-        public bool IsValid(IKnowledgebaseModule module)
-        {
-            PredicateExpression p = Predicate as PredicateExpression;
-            if (p != null)
-            {
-                return p.IsValid(module, Arguments);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 
