@@ -8,22 +8,31 @@ namespace Logic
 {
     public static class Extensions
     {
+        public static VariableExpression CreateVariable(this IntensionalSet set)
+        {
+            return Expression.Variable(set.Definition, set.Parameter);
+        }
         public static VariableExpression AddConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            throw new NotImplementedException();
+            return Expression.Variable(variable.Constraints.Append(constraint), variable);
         }
         public static VariableExpression RemoveConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            throw new NotImplementedException();
+            return Expression.Variable(variable.Constraints.Except(new CompoundExpression[] { constraint }), variable);
         }
 
         public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> expressionSet)
         {
+            if (variable.Parameter != null)
+                if (!variable.Parameter.CanUnify(value, expressionSet))
+                    return false;
+
             foreach (var constraint in variable.Constraints)
             {
-                if (!expressionSet.Contains(constraint.Replace(new Expression[] { variable }, new Expression[] { value }) as CompoundExpression))
+                if (!expressionSet.Contains(constraint.Replace(new Expression[] { variable.Parameter }, new Expression[] { value }) as CompoundExpression))
                     return false;
             }
+
             return true;
         }
         internal static bool CanUnify(this IEnumerable<VariableExpression> variables, IEnumerable<Expression> values, IContainer<CompoundExpression> expressionSet)
@@ -54,19 +63,6 @@ namespace Logic
             }
         }
 
-        public static bool Contains(this IntensionalSet set, Expression element, IContainer<CompoundExpression> expressionSet)
-        {
-            if (!set.Parameter.CanUnify(element, expressionSet))
-                return false;
-
-            foreach (var constraint in set.Definition)
-            {
-                if (!expressionSet.Contains(constraint.Replace(new Expression[] { set.Parameter }, new Expression[] { element }) as CompoundExpression))
-                    return false;
-            }
-            return true;
-        }
-
         public static bool IsValid(this PredicateExpression predicate, IEnumerable<Expression> arguments, IContainer<CompoundExpression> expressionSet)
         {
             if (!predicate.Parameters.CanUnify(arguments, expressionSet))
@@ -79,7 +75,6 @@ namespace Logic
             }
             return true;
         }
-
         public static bool IsValid(this CompoundExpression expression, IContainer<CompoundExpression> expressionSet)
         {
             PredicateExpression predicate = expression.Predicate as PredicateExpression;
@@ -91,6 +86,21 @@ namespace Logic
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public static bool Contains(this IntensionalSet set, Expression element, IContainer<CompoundExpression> expressionSet)
+        {
+            if (set.Parameter != null)
+                if (!set.Parameter.CanUnify(element, expressionSet))
+                    return false;
+
+            foreach (var constraint in set.Definition)
+            {
+                if (!expressionSet.Contains(constraint.Replace(new Expression[] { set.Parameter }, new Expression[] { element }) as CompoundExpression))
+                    return false;
+            }
+
+            return true;
         }
 
         public static IntensionalSet Intersection(this IntensionalSet set, IntensionalSet other, IContainer<CompoundExpression> expressionSet)

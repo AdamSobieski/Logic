@@ -57,11 +57,11 @@ namespace Logic.Prolog.Expressions
             return new ConstantExpression(new Atom(name), typeof(Atom));
         }
 
-        public static VariableExpression Variable(string name)
+        public static VariableExpression Variable()
         {
             throw new NotImplementedException();
         }
-        public static VariableExpression Variable(string name, IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        public static VariableExpression Variable(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
         {
             throw new NotImplementedException();
         }
@@ -124,13 +124,51 @@ namespace Logic.Prolog.Expressions
 
     public class VariableExpression : Expression
     {
-        public string Name { get; }
-
         public IReadOnlyList<CompoundExpression> Constraints { get; }
+        public VariableExpression Parameter { get; }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
-            return base.Replace(from, to);
+            bool any = false;
+            Expression e;
+            CompoundExpression n;
+            VariableExpression p;
+            VariableExpression pn;
+            int index;
+            int count = Constraints.Count;
+            List<CompoundExpression> nc = new List<CompoundExpression>(count);
+
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            if(count > 0)
+            {
+                p = Parameter;
+                pn = p.Replace(from, to) as VariableExpression;
+                if (!object.ReferenceEquals(p, pn))
+                {
+                    any = true;
+                }
+            }
+            else
+            {
+                pn = Parameter;
+            }
+
+            for (index = 0; index < count; index++)
+            {
+                e = Constraints[index];
+                n = e.Replace(from, to) as CompoundExpression;
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                nc.Add(n);
+            }
+
+            if (!any) return this;
+
+            return Expression.Variable(nc, pn);
         }
     }
 
