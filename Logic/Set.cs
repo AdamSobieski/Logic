@@ -1,5 +1,6 @@
 ﻿using Logic.Prolog.Expressions;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Logic.Collections
@@ -12,7 +13,9 @@ namespace Logic.Collections
             this.m_parameter = parameter;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<CompoundExpression> m_definition;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         VariableExpression m_parameter;
 
         public IReadOnlyList<CompoundExpression> Definition

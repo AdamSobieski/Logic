@@ -14,11 +14,11 @@ namespace Logic
         }
         public static VariableExpression AddConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            return Expression.Variable(variable.Constraints.Append(constraint), variable);
+            return Expression.Variable(variable.Constraints.Append(constraint), variable.Parameter);
         }
         public static VariableExpression RemoveConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            return Expression.Variable(variable.Constraints.Except(new CompoundExpression[] { constraint }), variable);
+            return Expression.Variable(variable.Constraints.Except(new CompoundExpression[] { constraint }), variable.Parameter);
         }
 
         public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> expressionSet)

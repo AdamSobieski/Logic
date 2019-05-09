@@ -24,7 +24,9 @@ namespace Logic.Prolog.Expressions
             var y = Expression.Variable();
 
             var p = Expression.Predicate(null, "p", 2);
-            var c = Expression.Compound(p, x, y);
+            var c = Expression.Compound(p, x.Parameter, y);
+
+            var x2 = x.AddConstraint(c);
         }
     }
 }

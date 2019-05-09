@@ -3,6 +3,7 @@ using Logic.Incremental;
 using Logic.Planning;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -159,7 +160,10 @@ namespace Logic.Prolog.Expressions
             m_value = value;
             m_type = type;
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         object m_value;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Type m_type;
 
         public object Value => m_value;
@@ -184,7 +188,9 @@ namespace Logic.Prolog.Expressions
             m_parameter = Expression.m_trueVariable;
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<CompoundExpression> m_constraints;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         VariableExpression m_parameter;
 
         public IReadOnlyList<CompoundExpression> Constraints
@@ -304,10 +310,15 @@ namespace Logic.Prolog.Expressions
             m_preconditions = preconditions.ToList().AsReadOnly();
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string m_module;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string m_name;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         int m_arity;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<CompoundExpression> m_preconditions;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<VariableExpression> m_parameters;
 
         public string Module
@@ -401,7 +412,9 @@ namespace Logic.Prolog.Expressions
             m_arguments = arguments.ToList().AsReadOnly();
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Expression m_predicate;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<Expression> m_arguments;
 
         public new Expression Predicate
@@ -508,12 +521,17 @@ namespace Logic.Prolog.Expressions
             m_parameters = parameters.ToList().AsReadOnly();
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string m_module;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string m_name;
-
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<VariableExpression> m_parameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<CompoundExpression> m_preconditions;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Expression m_body;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IDelta<CompoundExpression> m_effects;
 
         public string Module
