@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ethics.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Expressions.cs" />

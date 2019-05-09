@@ -43,7 +43,7 @@ namespace Logic.Prolog.Expressions
         internal static CompoundExpression m_falseCompound = Compound(m_false);
 
         internal static VariableExpression m_trueVariable = new VariableExpression(true);
-        internal static VariableExpression m_falseVariable = Variable(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
+        internal static VariableExpression m_falseVariable = new VariableExpression(false);
 
         internal static SetExpression m_universalSet = Set(m_emptyCompounds, m_trueVariable);
         internal static SetExpression m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
@@ -178,8 +178,16 @@ namespace Logic.Prolog.Expressions
     {
         internal VariableExpression(bool value)
         {
-            m_constraints = m_emptyCompounds;
-            m_parameter = this;
+            if (value)
+            {
+                m_constraints = m_emptyCompounds;
+                m_parameter = this;
+            }
+            else
+            {
+                m_constraints = new CompoundExpression[] { m_falseCompound };
+                m_parameter = Expression.m_trueVariable;
+            }
         }
         internal VariableExpression(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
         {

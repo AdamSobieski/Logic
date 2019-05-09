@@ -4,6 +4,7 @@
 *
 *********************************************************/
 
+using Logic.Ethics;
 using Logic.Prolog.Expressions;
 using System.Collections.Generic;
 

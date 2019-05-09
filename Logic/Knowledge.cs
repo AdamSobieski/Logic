@@ -44,12 +44,8 @@ namespace Logic.Prolog.Knowledge
 
     public delegate void KnowledgebaseTableChangedEventHandler(object sender, IDelta<CompoundExpression> delta);
 
-    public interface IKnowledgebaseTable : IEnumerable<CompoundExpression>, INotifyCollectionChanged
+    public interface IKnowledgebaseTable : IReadOnlyList<CompoundExpression>, INotifyCollectionChanged
     {
-        int Count { get; }
-
-        CompoundExpression this[int index] { get; }
-
         event KnowledgebaseTableChangedEventHandler OnTableChanged;
     }
 }

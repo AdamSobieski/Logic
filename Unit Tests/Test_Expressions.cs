@@ -20,13 +20,13 @@ namespace Logic.Prolog.Expressions
             var u = Expression.UniversalSet;
             var e = Expression.EmptySet;
 
-            var x = Expression.Variable();
-            var y = Expression.Variable();
+            var X = Expression.Variable();
+            var Y = Expression.Variable();
 
             var p = Expression.Predicate(null, "p", 2);
-            var c = Expression.Compound(p, x.Parameter, y);
+            var c = Expression.Compound(p, X.Parameter, Y);
 
-            x = x.AddConstraint(c);
+            X = X.AddConstraint(c);
         }
     }
 }
