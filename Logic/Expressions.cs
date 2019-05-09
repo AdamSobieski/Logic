@@ -4,7 +4,6 @@
 *
 *********************************************************/
 
-using Logic.Incremental;
 using Logic.Planning;
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,6 @@
 *
 *********************************************************/
 
-using Logic.Incremental;
 using Logic.Prolog.Expressions;
 using System.Collections.Generic;
 using System.Collections.Specialized;

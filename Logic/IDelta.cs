@@ -4,9 +4,7 @@
 *
 *********************************************************/
 
-using System.Collections.Generic;
-
-namespace Logic.Incremental
+namespace System.Collections.Generic
 {
     public interface IDelta<out T>
     {
