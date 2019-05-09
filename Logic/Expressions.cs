@@ -1,4 +1,5 @@
-﻿using Logic.Incremental;
+﻿using Logic.Collections;
+using Logic.Incremental;
 using Logic.Planning;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,23 @@ namespace Logic.Prolog.Expressions
 
     public abstract class Expression
     {
+        static Set m_universal;
+        public static Set UniversalSet
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+        static Set m_empty;
+        public static Set EmptySet
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public static ConstantExpression Constant(object value)
         {
             return new ConstantExpression(value, value != null ? value.GetType() : typeof(object));

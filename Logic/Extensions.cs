@@ -8,7 +8,7 @@ namespace Logic
 {
     public static class Extensions
     {
-        public static VariableExpression CreateVariable(this IntensionalSet set)
+        public static VariableExpression CreateVariable(this Set set)
         {
             return Expression.Variable(set.Definition, set.Parameter);
         }
@@ -73,6 +73,7 @@ namespace Logic
                 if (!expressionSet.Contains(condition.Replace(predicate.Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
                     return false;
             }
+
             return true;
         }
         public static bool IsValid(this CompoundExpression expression, IContainer<CompoundExpression> expressionSet)
@@ -88,7 +89,7 @@ namespace Logic
             }
         }
 
-        public static bool Contains(this IntensionalSet set, Expression element, IContainer<CompoundExpression> expressionSet)
+        public static bool Contains(this Set set, Expression element, IContainer<CompoundExpression> expressionSet)
         {
             if (set.Parameter != null)
                 if (!set.Parameter.CanUnify(element, expressionSet))
@@ -103,20 +104,20 @@ namespace Logic
             return true;
         }
 
-        public static IntensionalSet Intersection(this IntensionalSet set, IntensionalSet other, IContainer<CompoundExpression> expressionSet)
+        public static Set Intersection(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
         {
             throw new NotImplementedException();
         }
-        public static IntensionalSet Union(this IntensionalSet set, IntensionalSet other, IContainer<CompoundExpression> expressionSet)
+        public static Set Union(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
         {
             throw new NotImplementedException();
         }
 
-        public static bool IsSubsetOf(this IntensionalSet set, IntensionalSet other, IContainer<CompoundExpression> expressionSet)
+        public static bool IsSubsetOf(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
         {
             throw new NotImplementedException();
         }
-        public static bool IsSupersetOf(this IntensionalSet set, IntensionalSet other, IContainer<CompoundExpression> expressionSet)
+        public static bool IsSupersetOf(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
         {
             throw new NotImplementedException();
         }

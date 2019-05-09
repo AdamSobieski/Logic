@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Logic.Collections
 {
-    public class IntensionalSet
+    public class Set
     {
         public IReadOnlyList<CompoundExpression> Definition { get; }
         public VariableExpression Parameter { get; }
