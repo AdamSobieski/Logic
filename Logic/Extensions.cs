@@ -23,7 +23,7 @@ namespace Logic
 
         public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> expressionSet)
         {
-            if (variable.Parameter != null)
+            if (!object.ReferenceEquals(variable, variable.Parameter))
                 if (!variable.Parameter.CanUnify(value, expressionSet))
                     return false;
 
@@ -91,9 +91,8 @@ namespace Logic
 
         public static bool Contains(this Set set, Expression element, IContainer<CompoundExpression> expressionSet)
         {
-            if (set.Parameter != null)
-                if (!set.Parameter.CanUnify(element, expressionSet))
-                    return false;
+            if (!set.Parameter.CanUnify(element, expressionSet))
+                return false;
 
             foreach (var constraint in set.Definition)
             {

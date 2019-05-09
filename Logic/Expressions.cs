@@ -4,6 +4,7 @@ using Logic.Planning;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Logic.Prolog.Expressions
 {
@@ -27,22 +28,39 @@ namespace Logic.Prolog.Expressions
 
     public abstract class Expression
     {
-        static Set m_universal;
+        internal static IReadOnlyList<CompoundExpression> m_emptyConstraints = new List<CompoundExpression>(0).AsReadOnly();
+        internal static IReadOnlyList<VariableExpression> m_emptyVariables = new List<VariableExpression>(0).AsReadOnly();
+
+        internal static PredicateExpression m_true = Predicate(null, "true", 0);
+        internal static PredicateExpression m_false = Predicate(null, "false", 0);
+
+        internal static CompoundExpression m_trueCompound = Compound(m_true);
+        internal static CompoundExpression m_falseCompound = Compound(m_false);
+
+        internal static VariableExpression m_trueVariable = new VariableExpression(true);
+        internal static VariableExpression m_falseVariable = Variable(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
+
+        internal static Set m_universalSet = Set(m_emptyConstraints, m_trueVariable);
+        internal static Set m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
+
+
+
         public static Set UniversalSet
         {
             get
             {
-                throw new NotImplementedException();
+                return m_universalSet;
             }
         }
-        static Set m_empty;
         public static Set EmptySet
         {
             get
             {
-                throw new NotImplementedException();
+                return m_emptySet;
             }
         }
+
+
 
         public static ConstantExpression Constant(object value)
         {
@@ -77,9 +95,17 @@ namespace Logic.Prolog.Expressions
 
         public static VariableExpression Variable()
         {
-            throw new NotImplementedException();
+            return new VariableExpression();
         }
         public static VariableExpression Variable(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        {
+            Contract.Requires<ArgumentNullException>(constraints != null);
+            Contract.Requires<ArgumentNullException>(parameter != null);
+
+            return new VariableExpression(constraints, parameter);
+        }
+
+        public static Set Set(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
         {
             throw new NotImplementedException();
         }
@@ -142,8 +168,39 @@ namespace Logic.Prolog.Expressions
 
     public class VariableExpression : Expression
     {
-        public IReadOnlyList<CompoundExpression> Constraints { get; }
-        public VariableExpression Parameter { get; }
+        internal VariableExpression(bool value)
+        {
+            m_constraints = m_emptyConstraints;
+            m_parameter = this;
+        }
+        internal VariableExpression(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        {
+            m_constraints = constraints.ToList().AsReadOnly();
+            m_parameter = parameter;
+        }
+        internal VariableExpression()
+        {
+            m_constraints = Expression.m_emptyConstraints;
+            m_parameter = Expression.m_trueVariable;
+        }
+
+        IReadOnlyList<CompoundExpression> m_constraints;
+        VariableExpression m_parameter;
+
+        public IReadOnlyList<CompoundExpression> Constraints
+        {
+            get
+            {
+                return m_constraints;
+            }
+        }
+        public VariableExpression Parameter
+        {
+            get
+            {
+                return m_parameter;
+            }
+        }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
@@ -192,12 +249,79 @@ namespace Logic.Prolog.Expressions
 
     public class PredicateExpression : Expression
     {
-        public string Module { get; }
-        public string Name { get; }
-        public int Arity { get; }
+        internal PredicateExpression(string module, string name, int arity)
+        {
+            Contract.Requires<ArgumentNullException>(name != null);
+            Contract.Requires<ArgumentException>(arity >= 0);
 
-        public IReadOnlyList<VariableExpression> Parameters { get; }
-        public IReadOnlyList<CompoundExpression> Preconditions { get; }
+            m_module = module;
+            m_name = name;
+            m_arity = arity;
+            m_preconditions = Expression.m_emptyConstraints;
+            if(arity == 0)
+            {
+                m_parameters = Expression.m_emptyVariables;
+            }
+            else
+            {
+                List<VariableExpression> p = new List<VariableExpression>(arity);
+                for(int i = 0; i < arity; i++)
+                {
+                    p.Add(Expression.Variable());
+                }
+                m_parameters = p.AsReadOnly();
+            }
+        }
+        internal PredicateExpression(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
+        {
+            Contract.Requires<ArgumentNullException>(name != null);
+            Contract.Requires<ArgumentException>(arity >= 0);
+
+            throw new NotImplementedException();
+        }
+
+        string m_module;
+        string m_name;
+        int m_arity;
+        IReadOnlyList<CompoundExpression> m_preconditions;
+        IReadOnlyList<VariableExpression> m_parameters;
+
+        public string Module
+        {
+            get
+            {
+                return m_module;
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+        }
+        public int Arity
+        {
+            get
+            {
+                return m_arity;
+            }
+        }
+
+        public IReadOnlyList<VariableExpression> Parameters
+        {
+            get
+            {
+                return m_parameters;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Preconditions
+        {
+            get
+            {
+                return m_preconditions;
+            }
+        }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
