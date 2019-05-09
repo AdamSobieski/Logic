@@ -130,7 +130,7 @@ namespace Logic.Prolog.Expressions
 
         public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
-            throw new NotImplementedException();
+            return new LambdaExpression(module, name, preconditions, body, effects_remove, effects_add, parameters);
         }
 
 
@@ -219,10 +219,17 @@ namespace Logic.Prolog.Expressions
             if(count > 0)
             {
                 p = Parameter;
-                pn = p.Replace(from, to) as VariableExpression;
-                if (!object.ReferenceEquals(p, pn))
+                if (!object.ReferenceEquals(p, this))
                 {
-                    any = true;
+                    pn = p.Replace(from, to) as VariableExpression;
+                    if (!object.ReferenceEquals(p, pn))
+                    {
+                        any = true;
+                    }
+                }
+                else
+                {
+                    pn = p;
                 }
             }
             else
@@ -276,8 +283,25 @@ namespace Logic.Prolog.Expressions
         {
             Contract.Requires(name != null);
             Contract.Requires(arity >= 0);
+            Contract.Requires(preconditions != null);
+            Contract.Requires(parameters != null);
 
-            throw new NotImplementedException();
+            m_module = module;
+            m_name = name;
+            m_arity = arity;
+
+            if(arity == 0)
+            {
+                m_parameters = Expression.m_emptyVariables;
+            }
+            else
+            {
+                m_parameters = parameters.ToList().AsReadOnly();
+            }
+
+            Contract.Requires(m_parameters.Count == arity);
+
+            m_preconditions = preconditions.ToList().AsReadOnly();
         }
 
         string m_module;
@@ -431,23 +455,116 @@ namespace Logic.Prolog.Expressions
             if (!any) return this;
             else return Expression.Compound(p, args);
         }
+
+        //public override string ToString()
+        //{
+        //    string retval = Predicate.ToString();
+        //    int count = Arguments.Count;
+        //    if(count > 0)
+        //    {
+        //        retval += "(" + Arguments[0].ToString();
+        //        for(int i = 1; i < count; i++)
+        //        {
+        //            retval += "," + Arguments[i].ToString();
+        //        }
+        //        retval += ")";
+        //    }
+        //    return retval;
+        //}
     }
 
     public class LambdaExpression : Expression, IAction
     {
-        public string Module { get; }
-        public string Name { get; }
+        internal class Delta : IDelta<CompoundExpression>
+        {
+            internal Delta(IEnumerable<CompoundExpression> remove, IEnumerable<CompoundExpression> add)
+            {
+                m_remove = remove.ToList().AsReadOnly();
+                m_add = add.ToList().AsReadOnly();
+            }
 
-        public IReadOnlyList<VariableExpression> Parameters { get; }
-        public IReadOnlyList<CompoundExpression> Preconditions { get; }
-        public Expression Body { get; }
-        public IDelta<CompoundExpression> Effects { get; }
+            IReadOnlyList<CompoundExpression> m_remove;
+            IReadOnlyList<CompoundExpression> m_add;
+
+            public IReadOnlyList<CompoundExpression> Remove => m_remove;
+
+            public IReadOnlyList<CompoundExpression> Add => m_add;
+        }
+
+        internal LambdaExpression(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
+        {
+            Contract.Requires(name != null);
+            Contract.Requires(preconditions != null);
+            Contract.Requires(body != null);
+            Contract.Requires(effects_remove != null);
+            Contract.Requires(effects_add != null);
+            Contract.Requires(parameters != null);
+
+            m_module = module;
+            m_name = name;
+            m_preconditions = preconditions.ToList().AsReadOnly();
+            m_body = body;
+            m_effects = new Delta(effects_remove, effects_add);
+            m_parameters = parameters.ToList().AsReadOnly();
+        }
+
+        string m_module;
+        string m_name;
+
+        IReadOnlyList<VariableExpression> m_parameters;
+        IReadOnlyList<CompoundExpression> m_preconditions;
+        Expression m_body;
+        IDelta<CompoundExpression> m_effects;
+
+        public string Module
+        {
+            get
+            {
+                return m_module;
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+        }
+
+        public IReadOnlyList<VariableExpression> Parameters
+        {
+            get
+            {
+                return m_parameters;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Preconditions
+        {
+            get
+            {
+                return m_preconditions;
+            }
+        }
+        public Expression Body
+        {
+            get
+            {
+                return m_body;
+            }
+        }
+        public IDelta<CompoundExpression> Effects
+        {
+            get
+            {
+                return m_effects;
+            }
+        }
 
         public Type ReturnType
         {
             get
             {
-                throw new NotImplementedException();
+                return m_body.Type;
             }
         }
 

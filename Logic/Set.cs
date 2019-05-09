@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Logic.Collections
 {
-    public class Set
+    public class Set : Expression
     {
         public Set(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
         {
@@ -28,6 +28,11 @@ namespace Logic.Collections
             {
                 return m_parameter;
             }
+        }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

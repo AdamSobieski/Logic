@@ -20,7 +20,11 @@ namespace Logic.Prolog.Expressions
             var u = Expression.UniversalSet;
             var e = Expression.EmptySet;
 
-            
+            var x = Expression.Variable();
+            var y = Expression.Variable();
+
+            var p = Expression.Predicate(null, "p", 2);
+            var c = Expression.Compound(p, x, y);
         }
     }
 }
