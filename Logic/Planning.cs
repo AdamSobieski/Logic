@@ -1,5 +1,5 @@
-﻿using Logic.Prolog.Expressions;
-using Logic.Prolog.Incremental;
+﻿using Logic.Incremental;
+using Logic.Prolog.Expressions;
 using System.Collections.Generic;
 
 namespace Logic.Planning
@@ -11,6 +11,6 @@ namespace Logic.Planning
 
         IReadOnlyList<VariableExpression> Parameters { get; }
         IReadOnlyList<CompoundExpression> Preconditions { get; }
-        ICompoundExpressionDelta Effects { get; }
+        IDelta<CompoundExpression> Effects { get; }
     }
 }

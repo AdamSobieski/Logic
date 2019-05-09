@@ -1,5 +1,5 @@
-﻿using Logic.Prolog.Expressions;
-using Logic.Prolog.Incremental;
+﻿using Logic.Incremental;
+using Logic.Prolog.Expressions;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -27,9 +27,9 @@ namespace Logic.Prolog.Knowledge
 
         bool Add(IEnumerable<CompoundExpression> expressions);
         bool Remove(IEnumerable<CompoundExpression> expressions);
-        bool Replace(IEnumerable<CompoundExpression> removals, IEnumerable<CompoundExpression> additions);
+        bool Replace(IEnumerable<CompoundExpression> remove, IEnumerable<CompoundExpression> add);
 
-        bool Replace(ICompoundExpressionDelta delta);
+        bool Replace(IDelta<CompoundExpression> delta);
 
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
@@ -39,7 +39,7 @@ namespace Logic.Prolog.Knowledge
         IKnowledgebaseModule Clone(string name);
     }
 
-    public delegate void KnowledgebaseTableChangedEventHandler(object sender, ICompoundExpressionDelta delta);
+    public delegate void KnowledgebaseTableChangedEventHandler(object sender, IDelta<CompoundExpression> delta);
 
     public interface IKnowledgebaseTable : IEnumerable<CompoundExpression>, INotifyCollectionChanged
     {

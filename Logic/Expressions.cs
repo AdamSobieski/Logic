@@ -1,5 +1,5 @@
-﻿using Logic.Planning;
-using Logic.Prolog.Incremental;
+﻿using Logic.Incremental;
+using Logic.Planning;
 using Logic.Prolog.Knowledge;
 using System;
 using System.Collections.Generic;
@@ -86,12 +86,12 @@ namespace Logic.Prolog.Expressions
             throw new NotImplementedException();
         }
 
-        public static Expression Evaluate(Expression /*ICompoundExpressionContainer*/ set, CompoundExpression expression)
+        public static Expression Evaluate(Expression /* IKnowledgebaseModule */ set, CompoundExpression expression)
         {
             throw new NotImplementedException();
         }
 
-        public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, ICompoundExpressionDelta effects, IEnumerable<VariableExpression> parameters)
+        public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
             throw new NotImplementedException();
         }
@@ -142,6 +142,16 @@ namespace Logic.Prolog.Expressions
         public VariableExpression RemoveConstraint(CompoundExpression constraint)
         {
             throw new NotImplementedException();
+        }
+
+        public bool CanUnify(IKnowledgebaseModule module, Expression value)
+        {
+            foreach (var constraint in Constraints)
+            {
+                if (!module.Contains(constraint.Replace(new Expression[] { this }, new Expression[] { value }) as CompoundExpression))
+                    return false;
+            }
+            return true;
         }
     }
 
@@ -276,7 +286,7 @@ namespace Logic.Prolog.Expressions
         public IReadOnlyList<VariableExpression> Parameters { get; }
         public IReadOnlyList<CompoundExpression> Preconditions { get; }
         public Expression Body { get; }
-        public ICompoundExpressionDelta Effects { get; }
+        public IDelta<CompoundExpression> Effects { get; }
 
         public Type ReturnType
         {
