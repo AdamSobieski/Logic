@@ -1,4 +1,10 @@
-﻿namespace System.Collections.Generic
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
+namespace System.Collections.Generic
 {
     public interface IContainer<in T>
     {

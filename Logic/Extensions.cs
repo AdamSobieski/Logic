@@ -1,4 +1,9 @@
-﻿using Logic.Collections;
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
 using Logic.Prolog.Expressions;
 using System;
 using System.Collections.Generic;
@@ -8,7 +13,7 @@ namespace Logic
 {
     public static class Extensions
     {
-        public static VariableExpression CreateVariable(this Set set)
+        public static VariableExpression CreateVariable(this SetExpression set)
         {
             return Expression.Variable(set.Definition, set.Parameter);
         }
@@ -21,21 +26,21 @@ namespace Logic
             return Expression.Variable(variable.Constraints.Except(new CompoundExpression[] { constraint }), variable.Parameter);
         }
 
-        public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> expressionSet)
+        public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> kb)
         {
             if (!object.ReferenceEquals(variable, variable.Parameter))
-                if (!variable.Parameter.CanUnify(value, expressionSet))
+                if (!variable.Parameter.CanUnify(value, kb))
                     return false;
 
             foreach (var constraint in variable.Constraints)
             {
-                if (!expressionSet.Contains(constraint.Replace(new Expression[] { variable.Parameter }, new Expression[] { value }) as CompoundExpression))
+                if (!kb.Contains(constraint.Replace(new Expression[] { variable.Parameter }, new Expression[] { value }) as CompoundExpression))
                     return false;
             }
 
             return true;
         }
-        internal static bool CanUnify(this IEnumerable<VariableExpression> variables, IEnumerable<Expression> values, IContainer<CompoundExpression> expressionSet)
+        internal static bool CanUnify(this IEnumerable<VariableExpression> variables, IEnumerable<Expression> values, IContainer<CompoundExpression> kb)
         {
             using (var enumerator1 = variables.GetEnumerator())
             {
@@ -50,7 +55,7 @@ namespace Logic
 
                     while (moveNext1)
                     {
-                        if (!enumerator1.Current.CanUnify(enumerator2.Current, expressionSet)) return false;
+                        if (!enumerator1.Current.CanUnify(enumerator2.Current, kb)) return false;
 
                         moveNext1 = enumerator1.MoveNext();
                         moveNext2 = enumerator2.MoveNext();
@@ -63,25 +68,25 @@ namespace Logic
             }
         }
 
-        public static bool IsValid(this PredicateExpression predicate, IEnumerable<Expression> arguments, IContainer<CompoundExpression> expressionSet)
+        public static bool IsValid(this PredicateExpression predicate, IEnumerable<Expression> arguments, IContainer<CompoundExpression> kb)
         {
-            if (!predicate.Parameters.CanUnify(arguments, expressionSet))
+            if (!predicate.Parameters.CanUnify(arguments, kb))
                 return false;
 
             foreach (var condition in predicate.Preconditions)
             {
-                if (!expressionSet.Contains(condition.Replace(predicate.Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
+                if (!kb.Contains(condition.Replace(predicate.Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
                     return false;
             }
 
             return true;
         }
-        public static bool IsValid(this CompoundExpression expression, IContainer<CompoundExpression> expressionSet)
+        public static bool IsValid(this CompoundExpression expression, IContainer<CompoundExpression> kb)
         {
             PredicateExpression predicate = expression.Predicate as PredicateExpression;
             if (predicate != null)
             {
-                return predicate.IsValid(expression.Arguments, expressionSet);
+                return predicate.IsValid(expression.Arguments, kb);
             }
             else
             {
@@ -89,34 +94,34 @@ namespace Logic
             }
         }
 
-        public static bool Contains(this Set set, Expression element, IContainer<CompoundExpression> expressionSet)
+        public static bool Contains(this SetExpression set, Expression element, IContainer<CompoundExpression> kb)
         {
-            if (!set.Parameter.CanUnify(element, expressionSet))
+            if (!set.Parameter.CanUnify(element, kb))
                 return false;
 
             foreach (var constraint in set.Definition)
             {
-                if (!expressionSet.Contains(constraint.Replace(new Expression[] { set.Parameter }, new Expression[] { element }) as CompoundExpression))
+                if (!kb.Contains(constraint.Replace(new Expression[] { set.Parameter }, new Expression[] { element }) as CompoundExpression))
                     return false;
             }
 
             return true;
         }
 
-        public static Set Intersection(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
+        public static SetExpression Intersection(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
         }
-        public static Set Union(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
+        public static SetExpression Union(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
         }
 
-        public static bool IsSubsetOf(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
+        public static bool IsSubsetOf(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
         }
-        public static bool IsSupersetOf(this Set set, Set other, IContainer<CompoundExpression> expressionSet)
+        public static bool IsSupersetOf(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
         }

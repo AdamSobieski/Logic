@@ -1,4 +1,9 @@
-﻿using Logic.Collections;
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
 using Logic.Incremental;
 using Logic.Planning;
 using System;
@@ -41,19 +46,19 @@ namespace Logic.Prolog.Expressions
         internal static VariableExpression m_trueVariable = new VariableExpression(true);
         internal static VariableExpression m_falseVariable = Variable(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
 
-        internal static Set m_universalSet = Set(m_emptyCompounds, m_trueVariable);
-        internal static Set m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
+        internal static SetExpression m_universalSet = Set(m_emptyCompounds, m_trueVariable);
+        internal static SetExpression m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
 
 
 
-        public static Set UniversalSet
+        public static SetExpression UniversalSet
         {
             get
             {
                 return m_universalSet;
             }
         }
-        public static Set EmptySet
+        public static SetExpression EmptySet
         {
             get
             {
@@ -106,9 +111,9 @@ namespace Logic.Prolog.Expressions
             return new VariableExpression(constraints, parameter);
         }
 
-        public static Set Set(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
+        public static SetExpression Set(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
         {
-            return new Set(definition, parameter);
+            return new SetExpression(definition, parameter);
         }
 
         public static PredicateExpression Predicate(string module, string name, int arity)
@@ -257,6 +262,40 @@ namespace Logic.Prolog.Expressions
             if (!any) return this;
 
             return Expression.Variable(nc, pn);
+        }
+    }
+
+    public class SetExpression : Expression
+    {
+        public SetExpression(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
+        {
+            this.m_definition = definition.ToList().AsReadOnly();
+            this.m_parameter = parameter;
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<CompoundExpression> m_definition;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        VariableExpression m_parameter;
+
+        public IReadOnlyList<CompoundExpression> Definition
+        {
+            get
+            {
+                return m_definition;
+            }
+        }
+        public VariableExpression Parameter
+        {
+            get
+            {
+                return m_parameter;
+            }
+        }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            throw new System.NotImplementedException();
         }
     }
 
@@ -506,7 +545,6 @@ namespace Logic.Prolog.Expressions
 
         internal LambdaExpression(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
-            Contract.Requires(name != null);
             Contract.Requires(preconditions != null);
             Contract.Requires(body != null);
             Contract.Requires(effects_remove != null);

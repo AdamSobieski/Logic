@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
+using System.Collections.Generic;
 
 namespace Logic.Incremental
 {

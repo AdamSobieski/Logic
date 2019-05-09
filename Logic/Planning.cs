@@ -1,4 +1,10 @@
-﻿using Logic.Incremental;
+﻿/*********************************************************
+* 
+*  Author:        Adam Sobieski
+*
+*********************************************************/
+
+using Logic.Incremental;
 using Logic.Prolog.Expressions;
 using System.Collections.Generic;
 
