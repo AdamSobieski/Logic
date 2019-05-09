@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 namespace Logic.Prolog.Swi
 {
     [TestClass]
-    public class SwiProlog_Tests
+    public class Test_SwiProlog
     {
         static V8ScriptEngine v8;
         static SwiPrologEngine prolog;

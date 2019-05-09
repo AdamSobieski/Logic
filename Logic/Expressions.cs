@@ -28,7 +28,7 @@ namespace Logic.Prolog.Expressions
 
     public abstract class Expression
     {
-        internal static IReadOnlyList<CompoundExpression> m_emptyConstraints = new List<CompoundExpression>(0).AsReadOnly();
+        internal static IReadOnlyList<CompoundExpression> m_emptyCompounds = new List<CompoundExpression>(0).AsReadOnly();
         internal static IReadOnlyList<VariableExpression> m_emptyVariables = new List<VariableExpression>(0).AsReadOnly();
 
         internal static PredicateExpression m_true = Predicate(null, "true", 0);
@@ -40,7 +40,7 @@ namespace Logic.Prolog.Expressions
         internal static VariableExpression m_trueVariable = new VariableExpression(true);
         internal static VariableExpression m_falseVariable = Variable(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
 
-        internal static Set m_universalSet = Set(m_emptyConstraints, m_trueVariable);
+        internal static Set m_universalSet = Set(m_emptyCompounds, m_trueVariable);
         internal static Set m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
 
 
@@ -99,33 +99,33 @@ namespace Logic.Prolog.Expressions
         }
         public static VariableExpression Variable(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
         {
-            Contract.Requires<ArgumentNullException>(constraints != null);
-            Contract.Requires<ArgumentNullException>(parameter != null);
+            Contract.Requires(constraints != null);
+            Contract.Requires(parameter != null);
 
             return new VariableExpression(constraints, parameter);
         }
 
-        public static Set Set(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        public static Set Set(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
         {
-            throw new NotImplementedException();
+            return new Set(definition, parameter);
         }
 
         public static PredicateExpression Predicate(string module, string name, int arity)
         {
-            throw new NotImplementedException();
+            return new PredicateExpression(module, name, arity);
         }
         public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
         {
-            throw new NotImplementedException();
+            return new PredicateExpression(module, name, arity, preconditions, parameters);
         }
 
         public static CompoundExpression Compound(Expression predicate, params Expression[] arguments)
         {
-            throw new NotImplementedException();
+            return new CompoundExpression(predicate, arguments);
         }
         public static CompoundExpression Compound(Expression predicate, IEnumerable<Expression> arguments)
         {
-            throw new NotImplementedException();
+            return new CompoundExpression(predicate, arguments);
         }
 
         public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
@@ -170,7 +170,7 @@ namespace Logic.Prolog.Expressions
     {
         internal VariableExpression(bool value)
         {
-            m_constraints = m_emptyConstraints;
+            m_constraints = m_emptyCompounds;
             m_parameter = this;
         }
         internal VariableExpression(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
@@ -180,7 +180,7 @@ namespace Logic.Prolog.Expressions
         }
         internal VariableExpression()
         {
-            m_constraints = Expression.m_emptyConstraints;
+            m_constraints = Expression.m_emptyCompounds;
             m_parameter = Expression.m_trueVariable;
         }
 
@@ -251,13 +251,13 @@ namespace Logic.Prolog.Expressions
     {
         internal PredicateExpression(string module, string name, int arity)
         {
-            Contract.Requires<ArgumentNullException>(name != null);
-            Contract.Requires<ArgumentException>(arity >= 0);
+            Contract.Requires(name != null);
+            Contract.Requires(arity >= 0);
 
             m_module = module;
             m_name = name;
             m_arity = arity;
-            m_preconditions = Expression.m_emptyConstraints;
+            m_preconditions = Expression.m_emptyCompounds;
             if(arity == 0)
             {
                 m_parameters = Expression.m_emptyVariables;
@@ -274,8 +274,8 @@ namespace Logic.Prolog.Expressions
         }
         internal PredicateExpression(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
         {
-            Contract.Requires<ArgumentNullException>(name != null);
-            Contract.Requires<ArgumentException>(arity >= 0);
+            Contract.Requires(name != null);
+            Contract.Requires(arity >= 0);
 
             throw new NotImplementedException();
         }
@@ -371,8 +371,29 @@ namespace Logic.Prolog.Expressions
 
     public class CompoundExpression : Expression
     {
-        public new Expression Predicate { get; }
-        public IReadOnlyList<Expression> Arguments { get; }
+        public CompoundExpression(Expression predicate, IEnumerable<Expression> arguments)
+        {
+            m_predicate = predicate;
+            m_arguments = arguments.ToList().AsReadOnly();
+        }
+
+        Expression m_predicate;
+        IReadOnlyList<Expression> m_arguments;
+
+        public new Expression Predicate
+        {
+            get
+            {
+                return m_predicate;
+            }
+        }
+        public IReadOnlyList<Expression> Arguments
+        {
+            get
+            {
+                return m_arguments;
+            }
+        }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
