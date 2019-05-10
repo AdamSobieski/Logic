@@ -55,7 +55,7 @@ namespace Logic.Argumentation
         IReadOnlyList<CompoundExpression> RuleSupport { get; }
         CompoundExpression RuleDerived { get; }
         IBinding Binding { get; }
-        IReadOnlyList<_6> Support { get; }
-        _6 Derived { get; }
+        IReadOnlyList<_5> Support { get; }
+        _5 Derived { get; }
     }
 }
