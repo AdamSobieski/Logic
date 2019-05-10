@@ -640,6 +640,6 @@ namespace Logic.Prolog.Expressions
     public interface IBinding
     {
         IReadOnlyList<VariableExpression> Variables { get; }
-        IReadOnlyList<Expression> Arguments { get; }
+        IReadOnlyList<Expression> Bindings { get; }
     }
 }

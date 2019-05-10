@@ -95,7 +95,7 @@ namespace Logic
         }
         public static bool IsValid(this IBinding binding, IContainer<CompoundExpression> kb)
         {
-            return binding.Variables.CanUnify(binding.Arguments, kb);
+            return binding.Variables.CanUnify(binding.Bindings, kb);
         }
 
         public static bool Contains(this SetExpression set, Expression element, IContainer<CompoundExpression> kb)
