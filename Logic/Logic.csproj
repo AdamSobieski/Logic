@@ -55,6 +55,7 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="IDelta.cs" />
+    <Compile Include="IGraph.cs" />
     <Compile Include="Knowledge.cs" />
     <Compile Include="Planning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
