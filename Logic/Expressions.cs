@@ -234,7 +234,7 @@ namespace Logic.Prolog.Expressions
             index = Array.IndexOf(from, this);
             if (index >= 0) return to[index];
 
-            if(count > 0)
+            if (count > 0)
             {
                 p = Parameter;
                 if (!object.ReferenceEquals(p, this))
@@ -317,14 +317,14 @@ namespace Logic.Prolog.Expressions
             m_name = name;
             m_arity = arity;
             m_preconditions = Expression.m_emptyCompounds;
-            if(arity == 0)
+            if (arity == 0)
             {
                 m_parameters = Expression.m_emptyVariables;
             }
             else
             {
                 List<VariableExpression> p = new List<VariableExpression>(arity);
-                for(int i = 0; i < arity; i++)
+                for (int i = 0; i < arity; i++)
                 {
                     p.Add(Expression.Variable());
                 }
@@ -342,7 +342,7 @@ namespace Logic.Prolog.Expressions
             m_name = name;
             m_arity = arity;
 
-            if(arity == 0)
+            if (arity == 0)
             {
                 m_parameters = Expression.m_emptyVariables;
             }
@@ -635,5 +635,11 @@ namespace Logic.Prolog.Expressions
         {
             throw new NotImplementedException();
         }
+    }
+
+    public interface IBinding
+    {
+        IReadOnlyList<VariableExpression> Variables { get; }
+        IReadOnlyList<Expression> Arguments { get; }
     }
 }
