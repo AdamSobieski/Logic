@@ -46,8 +46,8 @@ namespace Logic.Argumentation
     public interface _5
     {
         CompoundExpression Expression { get; }
-        IReadOnlyList<_6> Supports { get; }
-        IReadOnlyList<_6> Opposes { get; }
+        IReadOnlyList<_6> SupportedBy { get; }
+        IReadOnlyList<_6> OpposedBy { get; }
     }
 
     public interface _6
