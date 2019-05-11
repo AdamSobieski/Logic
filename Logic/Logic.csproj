@@ -52,10 +52,10 @@
     <Compile Include="Argumentation.cs" />
     <Compile Include="Ethics.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="IContainer.cs" />
+    <Compile Include="Collections\IContainer.cs" />
     <Compile Include="Expressions\Expressions.cs" />
-    <Compile Include="IDelta.cs" />
-    <Compile Include="IGraph.cs" />
+    <Compile Include="Collections\IDelta.cs" />
+    <Compile Include="Collections\IGraph.cs" />
     <Compile Include="Knowledge.cs" />
     <Compile Include="Planning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

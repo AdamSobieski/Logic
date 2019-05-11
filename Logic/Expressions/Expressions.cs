@@ -246,25 +246,18 @@ namespace Logic.Expressions
             index = Array.IndexOf(from, this);
             if (index >= 0) return to[index];
 
-            if (count > 0)
+            p = Parameter;
+            if (!object.ReferenceEquals(p, this))
             {
-                p = Parameter;
-                if (!object.ReferenceEquals(p, this))
+                pn = p.Replace(from, to) as VariableExpression;
+                if (!object.ReferenceEquals(p, pn))
                 {
-                    pn = p.Replace(from, to) as VariableExpression;
-                    if (!object.ReferenceEquals(p, pn))
-                    {
-                        any = true;
-                    }
-                }
-                else
-                {
-                    pn = p;
+                    any = true;
                 }
             }
             else
             {
-                pn = Parameter;
+                pn = p;
             }
 
             for (index = 0; index < count; index++)
@@ -326,18 +319,11 @@ namespace Logic.Expressions
             index = Array.IndexOf(from, this);
             if (index >= 0) return to[index];
 
-            if (count > 0)
+            p = Parameter;
+            pn = p.Replace(from, to) as VariableExpression;
+            if (!object.ReferenceEquals(p, pn))
             {
-                p = Parameter;
-                pn = p.Replace(from, to) as VariableExpression;
-                if (!object.ReferenceEquals(p, pn))
-                {
-                    any = true;
-                }
-            }
-            else
-            {
-                pn = Parameter;
+                any = true;
             }
 
             for (index = 0; index < count; index++)
