@@ -4,7 +4,7 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Expressions;
+using Logic.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

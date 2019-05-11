@@ -4,13 +4,13 @@
 *
 *********************************************************/
 
-using Logic.Prolog.Expressions;
+using Logic.Expressions;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace Logic.Prolog.Knowledge
 {
-    public interface IKnowledgebaseEngine
+    public interface IKnowledgebase
     {
         IKnowledgebaseModule CreateModule();
         IKnowledgebaseModule CreateModule(string name);

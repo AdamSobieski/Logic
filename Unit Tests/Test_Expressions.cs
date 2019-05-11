@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace Logic.Prolog.Expressions
+namespace Logic.Expressions
 {
     [TestClass]
     public class Test_Expressions

@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace Logic.Prolog.Expressions
+namespace Logic.Expressions
 {
     internal struct Atom
     {
@@ -170,8 +170,20 @@ namespace Logic.Prolog.Expressions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Type m_type;
 
-        public object Value => m_value;
-        public override Type Type => m_type;
+        public object Value
+        {
+            get
+            {
+                return m_value;
+            }
+        }
+        public override Type Type
+        {
+            get
+            {
+                return m_type;
+            }
+        }
     }
 
     public class VariableExpression : Expression
@@ -302,7 +314,46 @@ namespace Logic.Prolog.Expressions
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
-            throw new System.NotImplementedException();
+            bool any = false;
+            Expression e;
+            CompoundExpression n;
+            VariableExpression p;
+            VariableExpression pn;
+            int index;
+            int count = Definition.Count;
+            List<CompoundExpression> nd = new List<CompoundExpression>(count);
+
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            if (count > 0)
+            {
+                p = Parameter;
+                pn = p.Replace(from, to) as VariableExpression;
+                if (!object.ReferenceEquals(p, pn))
+                {
+                    any = true;
+                }
+            }
+            else
+            {
+                pn = Parameter;
+            }
+
+            for (index = 0; index < count; index++)
+            {
+                e = Definition[index];
+                n = e.Replace(from, to) as CompoundExpression;
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                nd.Add(n);
+            }
+
+            if (!any) return this;
+
+            return Expression.Set(nd, pn);
         }
     }
 

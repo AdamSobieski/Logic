@@ -5,7 +5,7 @@
 *********************************************************/
 
 using Logic.Ethics;
-using Logic.Prolog.Expressions;
+using Logic.Expressions;
 using System.Collections.Generic;
 
 namespace Logic.Planning
