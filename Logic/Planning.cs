@@ -29,6 +29,8 @@ namespace Logic.Planning
         // IComparable GetCost(IState state);
 
         // DateTimeOffset? Duration { get; }
+
+        // dynamic Metadata { get; }
     }
 
     public interface IInvocableAction
@@ -39,7 +41,7 @@ namespace Logic.Planning
 
     public interface IState
     {
-
+        // dynamic Metadata { get; }
     }
 
     public interface IPlan
@@ -57,10 +59,18 @@ namespace Logic.Planning
 
 namespace Logic.Planning.Agents
 {
+    // https://en.wikipedia.org/wiki/Belief%E2%80%93desire%E2%80%93intention_software_model
+    // https://plato.stanford.edu/entries/belief/
+    // https://plato.stanford.edu/entries/desire/
+    // https://plato.stanford.edu/entries/intention/
+    // https://en.wikipedia.org/wiki/Intelligent_agent
     public interface IAgent
     {
         IPlanner Planner { get; }
-        IKnowledgebaseModule Knowledge { get; }
-        IReadOnlyCollection<CompoundExpression> Intentions { get; } // instead of a collection, might this be a stack or a tree with a task/subtask or goal/subgoal structure?
+        IKnowledgebaseModule Beliefs { get; }                     
+        IReadOnlyCollection<IGoal> Desires { get; }                
+        IReadOnlyCollection<CompoundExpression> Intentions { get; } // instead of a collection, might this be a stack or a tree with a task/subtask or goal/subgoal structure, perhaps a weighted set of stacks or trees?
     }
+
+    public interface IGoal { }
 }
