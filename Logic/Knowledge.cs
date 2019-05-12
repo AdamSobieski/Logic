@@ -8,7 +8,7 @@ using Logic.Expressions;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Logic.Prolog.Knowledge
+namespace Logic.Knowledge
 {
     public interface IKnowledgebase
     {
@@ -36,6 +36,7 @@ namespace Logic.Prolog.Knowledge
 
         bool AddRule(CompoundExpression rule);
         bool RemoveRule(CompoundExpression rule);
+        bool ReplaceRule(CompoundExpression remove, CompoundExpression add);
         bool ContainsRule(CompoundExpression rule);
 
         IKnowledgebaseModule Clone();
