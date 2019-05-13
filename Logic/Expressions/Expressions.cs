@@ -18,7 +18,7 @@ namespace Logic.Expressions
         public Atom(string name)
         {
             Contract.Requires(name != null);
-        
+
             m_name = name;
         }
 
@@ -46,8 +46,8 @@ namespace Logic.Expressions
         internal static VariableExpression m_trueVariable = new VariableExpression(true);
         internal static VariableExpression m_falseVariable = new VariableExpression(false);
 
-        internal static SetExpression m_universalSet = Set(m_emptyCompounds, m_trueVariable);
-        internal static SetExpression m_emptySet = Set(new CompoundExpression[] { m_falseCompound }, m_trueVariable);
+        internal static SetExpression m_universalSet = Set(new VariableExpression[] { m_trueVariable }, m_emptyCompounds);
+        internal static SetExpression m_emptySet = Set(new VariableExpression[] { m_trueVariable }, new CompoundExpression[] { m_falseCompound });
 
 
 
@@ -103,26 +103,29 @@ namespace Logic.Expressions
         {
             return new VariableExpression();
         }
-        public static VariableExpression Variable(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        public static VariableExpression Variable(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
+            Contract.Requires(parameters != null);
             Contract.Requires(constraints != null);
-            Contract.Requires(parameter != null);
 
-            return new VariableExpression(constraints, parameter);
+            return new VariableExpression(parameters, constraints);
         }
 
-        public static SetExpression Set(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
+        public static SetExpression Set(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
-            return new SetExpression(definition, parameter);
+            Contract.Requires(parameters != null);
+            Contract.Requires(constraints != null);
+
+            return new SetExpression(parameters, constraints);
         }
 
         public static PredicateExpression Predicate(string module, string name, int arity)
         {
             return new PredicateExpression(module, name, arity);
         }
-        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
+        public static PredicateExpression Predicate(string module, string name, int arity, IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
-            return new PredicateExpression(module, name, arity, preconditions, parameters);
+            return new PredicateExpression(module, name, arity, parameters, constraints);
         }
 
         public static CompoundExpression Compound(Expression predicate, params Expression[] arguments)
@@ -151,11 +154,7 @@ namespace Logic.Expressions
 
 
 
-        internal virtual Expression Replace(Expression[] from, Expression[] to)
-        {
-            int index = Array.IndexOf(from, this);
-            return (index >= 0) ? to[index] : this;
-        }
+        internal abstract Expression Replace(Expression[] from, Expression[] to);
     }
 
     public class ConstantExpression : Expression
@@ -185,6 +184,12 @@ namespace Logic.Expressions
                 return m_type;
             }
         }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            int index = Array.IndexOf(from, this);
+            return (index >= 0) ? to[index] : this;
+        }
     }
 
     public class VariableExpression : Expression
@@ -194,238 +199,29 @@ namespace Logic.Expressions
             if (value)
             {
                 m_constraints = m_emptyCompounds;
-                m_parameter = this;
+                m_parameters = new VariableExpression[] { this };
             }
             else
             {
                 m_constraints = new CompoundExpression[] { m_falseCompound };
-                m_parameter = Expression.m_trueVariable;
+                m_parameters = new VariableExpression[] { Expression.m_trueVariable };
             }
         }
-        internal VariableExpression(IEnumerable<CompoundExpression> constraints, VariableExpression parameter)
+        internal VariableExpression(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
             m_constraints = constraints.ToList().AsReadOnly();
-            m_parameter = parameter;
+            m_parameters = parameters.ToList().AsReadOnly();
         }
         internal VariableExpression()
         {
             m_constraints = Expression.m_emptyCompounds;
-            m_parameter = Expression.m_trueVariable;
+            m_parameters = new VariableExpression[] { Expression.m_trueVariable };
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_constraints;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        VariableExpression m_parameter;
-
-        public IReadOnlyList<CompoundExpression> Constraints
-        {
-            get
-            {
-                return m_constraints;
-            }
-        }
-        public VariableExpression Parameter
-        {
-            get
-            {
-                return m_parameter;
-            }
-        }
-
-        internal override Expression Replace(Expression[] from, Expression[] to)
-        {
-            bool any = false;
-            Expression e;
-            CompoundExpression n;
-            VariableExpression p;
-            VariableExpression pn;
-            int index;
-            int count = Constraints.Count;
-            List<CompoundExpression> nc = new List<CompoundExpression>(count);
-
-            index = Array.IndexOf(from, this);
-            if (index >= 0) return to[index];
-
-            p = Parameter;
-            if (!object.ReferenceEquals(p, this))
-            {
-                pn = p.Replace(from, to) as VariableExpression;
-                if (!object.ReferenceEquals(p, pn))
-                {
-                    any = true;
-                }
-            }
-            else
-            {
-                pn = p;
-            }
-
-            for (index = 0; index < count; index++)
-            {
-                e = Constraints[index];
-                n = e.Replace(from, to) as CompoundExpression;
-                if (!object.ReferenceEquals(e, n))
-                {
-                    any = true;
-                }
-                nc.Add(n);
-            }
-
-            if (!any) return this;
-
-            return Expression.Variable(nc, pn);
-        }
-    }
-
-    public class SetExpression : Expression
-    {
-        public SetExpression(IEnumerable<CompoundExpression> definition, VariableExpression parameter)
-        {
-            this.m_definition = definition.ToList().AsReadOnly();
-            this.m_parameter = parameter;
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_definition;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        VariableExpression m_parameter;
-
-        public IReadOnlyList<CompoundExpression> Definition
-        {
-            get
-            {
-                return m_definition;
-            }
-        }
-        public VariableExpression Parameter
-        {
-            get
-            {
-                return m_parameter;
-            }
-        }
-
-        internal override Expression Replace(Expression[] from, Expression[] to)
-        {
-            bool any = false;
-            Expression e;
-            CompoundExpression n;
-            VariableExpression p;
-            VariableExpression pn;
-            int index;
-            int count = Definition.Count;
-            List<CompoundExpression> nd = new List<CompoundExpression>(count);
-
-            index = Array.IndexOf(from, this);
-            if (index >= 0) return to[index];
-
-            p = Parameter;
-            pn = p.Replace(from, to) as VariableExpression;
-            if (!object.ReferenceEquals(p, pn))
-            {
-                any = true;
-            }
-
-            for (index = 0; index < count; index++)
-            {
-                e = Definition[index];
-                n = e.Replace(from, to) as CompoundExpression;
-                if (!object.ReferenceEquals(e, n))
-                {
-                    any = true;
-                }
-                nd.Add(n);
-            }
-
-            if (!any) return this;
-
-            return Expression.Set(nd, pn);
-        }
-    }
-
-    public class PredicateExpression : Expression
-    {
-        internal PredicateExpression(string module, string name, int arity)
-        {
-            Contract.Requires(name != null);
-            Contract.Requires(arity >= 0);
-
-            m_module = module;
-            m_name = name;
-            m_arity = arity;
-            m_preconditions = Expression.m_emptyCompounds;
-            if (arity == 0)
-            {
-                m_parameters = Expression.m_emptyVariables;
-            }
-            else
-            {
-                List<VariableExpression> p = new List<VariableExpression>(arity);
-                for (int i = 0; i < arity; i++)
-                {
-                    p.Add(Expression.Variable());
-                }
-                m_parameters = p.AsReadOnly();
-            }
-        }
-        internal PredicateExpression(string module, string name, int arity, IEnumerable<CompoundExpression> preconditions, IEnumerable<VariableExpression> parameters)
-        {
-            Contract.Requires(name != null);
-            Contract.Requires(arity >= 0);
-            Contract.Requires(preconditions != null);
-            Contract.Requires(parameters != null);
-
-            m_module = module;
-            m_name = name;
-            m_arity = arity;
-
-            if (arity == 0)
-            {
-                m_parameters = Expression.m_emptyVariables;
-            }
-            else
-            {
-                m_parameters = parameters.ToList().AsReadOnly();
-            }
-
-            Contract.Requires(m_parameters.Count == arity);
-
-            m_preconditions = preconditions.ToList().AsReadOnly();
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_module;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_name;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        int m_arity;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_preconditions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<VariableExpression> m_parameters;
-
-        public string Module
-        {
-            get
-            {
-                return m_module;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-        }
-        public int Arity
-        {
-            get
-            {
-                return m_arity;
-            }
-        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<CompoundExpression> m_constraints;
 
         public IReadOnlyList<VariableExpression> Parameters
         {
@@ -434,11 +230,11 @@ namespace Logic.Expressions
                 return m_parameters;
             }
         }
-        public IReadOnlyList<CompoundExpression> Preconditions
+        public IReadOnlyList<CompoundExpression> Constraints
         {
             get
             {
-                return m_preconditions;
+                return m_constraints;
             }
         }
 
@@ -469,12 +265,12 @@ namespace Logic.Expressions
                 p.Add((VariableExpression)n);
             }
 
-            count = Preconditions.Count;
+            count = Constraints.Count;
             c = new List<CompoundExpression>(count);
 
             for (index = 0; index < count; index++)
             {
-                e = Preconditions[index];
+                e = Constraints[index];
                 n = e.Replace(from, to);
                 if (!object.ReferenceEquals(e, n))
                 {
@@ -484,7 +280,225 @@ namespace Logic.Expressions
             }
 
             if (!any) return this;
-            return Expression.Predicate(Module, Name, Arity, c, p);
+            return Variable(p, c);
+        }
+    }
+
+    public class SetExpression : Expression
+    {
+        public SetExpression(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
+        {
+            this.m_constraints = constraints.ToList().AsReadOnly();
+            this.m_parameters = parameters.ToList().AsReadOnly();
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<VariableExpression> m_parameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<CompoundExpression> m_constraints;
+
+        public IReadOnlyList<VariableExpression> Parameters
+        {
+            get
+            {
+                return m_parameters;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Constraints
+        {
+            get
+            {
+                return m_constraints;
+            }
+        }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            bool any = false;
+            Expression e;
+            Expression n;
+            List<VariableExpression> p;
+            List<CompoundExpression> c;
+            int index;
+            int count;
+
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            count = Parameters.Count;
+            p = new List<VariableExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Parameters[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                p.Add((VariableExpression)n);
+            }
+
+            count = Constraints.Count;
+            c = new List<CompoundExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Constraints[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                c.Add((CompoundExpression)n);
+            }
+
+            if (!any) return this;
+            return Set(p, c);
+        }
+    }
+
+    public class PredicateExpression : Expression
+    {
+        internal PredicateExpression(string module, string name, int arity)
+        {
+            Contract.Requires(name != null);
+            Contract.Requires(arity >= 0);
+
+            m_module = module;
+            m_name = name;
+            m_arity = arity;
+            m_constraints = Expression.m_emptyCompounds;
+            if (arity == 0)
+            {
+                m_parameters = Expression.m_emptyVariables;
+            }
+            else
+            {
+                List<VariableExpression> p = new List<VariableExpression>(arity);
+                for (int i = 0; i < arity; i++)
+                {
+                    p.Add(Expression.Variable());
+                }
+                m_parameters = p.AsReadOnly();
+            }
+        }
+        internal PredicateExpression(string module, string name, int arity, IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
+        {
+            Contract.Requires(name != null);
+            Contract.Requires(arity >= 0);
+            Contract.Requires(parameters != null);
+            Contract.Requires(constraints != null);
+
+            m_module = module;
+            m_name = name;
+            m_arity = arity;
+
+            if (arity == 0)
+            {
+                m_parameters = Expression.m_emptyVariables;
+            }
+            else
+            {
+                m_parameters = parameters.ToList().AsReadOnly();
+            }
+
+            Contract.Requires(m_parameters.Count == arity);
+
+            m_constraints = constraints.ToList().AsReadOnly();
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string m_module;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        string m_name;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        int m_arity;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<VariableExpression> m_parameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<CompoundExpression> m_constraints;
+
+        public string Module
+        {
+            get
+            {
+                return m_module;
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return m_name;
+            }
+        }
+        public int Arity
+        {
+            get
+            {
+                return m_arity;
+            }
+        }
+
+        public IReadOnlyList<VariableExpression> Parameters
+        {
+            get
+            {
+                return m_parameters;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Constraints
+        {
+            get
+            {
+                return m_constraints;
+            }
+        }
+
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            bool any = false;
+            Expression e;
+            Expression n;
+            List<VariableExpression> p;
+            List<CompoundExpression> c;
+            int index;
+            int count;
+
+            index = Array.IndexOf(from, this);
+            if (index >= 0) return to[index];
+
+            count = Parameters.Count;
+            p = new List<VariableExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Parameters[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                p.Add((VariableExpression)n);
+            }
+
+            count = Constraints.Count;
+            c = new List<CompoundExpression>(count);
+
+            for (index = 0; index < count; index++)
+            {
+                e = Constraints[index];
+                n = e.Replace(from, to);
+                if (!object.ReferenceEquals(e, n))
+                {
+                    any = true;
+                }
+                c.Add((CompoundExpression)n);
+            }
+
+            if (!any) return this;
+            return Expression.Predicate(Module, Name, Arity, p, c);
         }
     }
 

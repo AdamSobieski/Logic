@@ -15,101 +15,110 @@ namespace Logic
     {
         public static VariableExpression CreateVariable(this SetExpression set)
         {
-            return Expression.Variable(set.Definition, set.Parameter);
+            return Expression.Variable(set.Parameters, set.Constraints);
         }
         public static VariableExpression AddConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            return Expression.Variable(variable.Constraints.Append(constraint), variable.Parameter);
+            return Expression.Variable(variable.Parameters, variable.Constraints.Append(constraint));
         }
         public static VariableExpression RemoveConstraint(this VariableExpression variable, CompoundExpression constraint)
         {
-            return Expression.Variable(variable.Constraints.Except(new CompoundExpression[] { constraint }), variable.Parameter);
+            return Expression.Variable(variable.Parameters, variable.Constraints.Except(new CompoundExpression[] { constraint }));
         }
 
-        public static bool CanUnify(this VariableExpression variable, Expression value, IContainer<CompoundExpression> kb)
+        public static bool CanUnify(this VariableExpression variable, IEnumerable<Expression> value, IContainer<CompoundExpression> kb)
         {
-            if (!object.ReferenceEquals(variable, variable.Parameter))
-                if (!variable.Parameter.CanUnify(value, kb))
-                    return false;
+            throw new NotImplementedException();
+            //if (!object.ReferenceEquals(variable, variable.Parameter))
+            //    if (!variable.Parameter.CanUnify(value, kb))
+            //        return false;
 
-            foreach (var constraint in variable.Constraints)
-            {
-                if (!kb.Contains(constraint.Replace(new Expression[] { variable.Parameter }, new Expression[] { value }) as CompoundExpression))
-                    return false;
-            }
+            //foreach (var constraint in variable.Constraints)
+            //{
+            //    if (!kb.Contains(constraint.Replace(new Expression[] { variable.Parameter }, new Expression[] { value }) as CompoundExpression))
+            //        return false;
+            //}
 
-            return true;
+            //return true;
         }
-        internal static bool CanUnify(this IEnumerable<VariableExpression> variables, IEnumerable<Expression> values, IContainer<CompoundExpression> kb)
+        internal static bool CanUnify(this IEnumerable<VariableExpression> variables, IEnumerable<IEnumerable<Expression>> values, IContainer<CompoundExpression> kb)
         {
-            using (var enumerator1 = variables.GetEnumerator())
-            {
-                using (var enumerator2 = values.GetEnumerator())
-                {
-                    bool moveNext1, moveNext2;
+            throw new NotImplementedException();
+            //using (var enumerator1 = variables.GetEnumerator())
+            //{
+            //    using (var enumerator2 = values.GetEnumerator())
+            //    {
+            //        bool moveNext1, moveNext2;
 
-                    moveNext1 = enumerator1.MoveNext();
-                    moveNext2 = enumerator2.MoveNext();
+            //        moveNext1 = enumerator1.MoveNext();
+            //        moveNext2 = enumerator2.MoveNext();
 
-                    if (moveNext1 != moveNext2) return false;
+            //        if (moveNext1 != moveNext2) return false;
 
-                    while (moveNext1)
-                    {
-                        if (!enumerator1.Current.CanUnify(enumerator2.Current, kb)) return false;
+            //        while (moveNext1)
+            //        {
+            //            if (!enumerator1.Current.CanUnify(enumerator2.Current, kb)) return false;
 
-                        moveNext1 = enumerator1.MoveNext();
-                        moveNext2 = enumerator2.MoveNext();
+            //            moveNext1 = enumerator1.MoveNext();
+            //            moveNext2 = enumerator2.MoveNext();
 
-                        if (moveNext1 != moveNext2) return false;
-                    }
+            //            if (moveNext1 != moveNext2) return false;
+            //        }
 
-                    return true;
-                }
-            }
+            //        return true;
+            //    }
+            //}
         }
 
         public static bool IsValid(this PredicateExpression predicate, IEnumerable<Expression> arguments, IContainer<CompoundExpression> kb)
         {
-            if (!predicate.Parameters.CanUnify(arguments, kb))
-                return false;
+            throw new NotImplementedException();
 
-            foreach (var condition in predicate.Preconditions)
-            {
-                if (!kb.Contains(condition.Replace(predicate.Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
-                    return false;
-            }
+            //if (!predicate.Parameters.CanUnify(arguments, kb))
+            //    return false;
 
-            return true;
+            //foreach (var condition in predicate.Constraints)
+            //{
+            //    if (!kb.Contains(condition.Replace(predicate.Parameters.ToArray(), arguments.ToArray()) as CompoundExpression))
+            //        return false;
+            //}
+
+            //return true;
         }
         public static bool IsValid(this CompoundExpression expression, IContainer<CompoundExpression> kb)
         {
-            PredicateExpression predicate = expression.Predicate as PredicateExpression;
-            if (predicate != null)
-            {
-                return predicate.IsValid(expression.Arguments, kb);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
+
+            //PredicateExpression predicate = expression.Predicate as PredicateExpression;
+            //if (predicate != null)
+            //{
+            //    return predicate.IsValid(expression.Arguments, kb);
+            //}
+            //else
+            //{
+            //    throw new NotImplementedException();
+            //}
         }
         public static bool IsValid(this IBinding binding, IContainer<CompoundExpression> kb)
         {
-            return binding.Variables.CanUnify(binding.Bindings, kb);
+            throw new NotImplementedException();
+            // return binding.Variables.CanUnify(binding.Bindings, kb);
         }
 
         public static bool Contains(this SetExpression set, Expression element, IContainer<CompoundExpression> kb)
         {
-            if (!set.Parameter.CanUnify(element, kb))
-                return false;
+            throw new NotImplementedException();
 
-            foreach (var constraint in set.Definition)
-            {
-                if (!kb.Contains(constraint.Replace(new Expression[] { set.Parameter }, new Expression[] { element }) as CompoundExpression))
-                    return false;
-            }
+            //if (!set.Parameters.CanUnify(element, kb))
+            //    return false;
 
-            return true;
+            //foreach (var constraint in set.Definition)
+            //{
+            //    if (!kb.Contains(constraint.Replace(new Expression[] { set.Parameters }, new Expression[] { element }) as CompoundExpression))
+            //        return false;
+            //}
+
+            //return true;
         }
 
         public static SetExpression Intersection(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
@@ -119,6 +128,23 @@ namespace Logic
         public static SetExpression Union(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
+        }
+
+        public static SetExpression CartesianProduct(this SetExpression set, SetExpression other)
+        {
+            return Expression.Set(set.Parameters.Concat(other.Parameters), set.Constraints.Concat(other.Constraints));
+        }
+        public static int Dimensionality(this SetExpression set)
+        {
+            return set.Parameters.Count;
+        }
+        public static int Dimensionality(this VariableExpression set)
+        {
+            return set.Parameters.Count;
+        }
+        public static int Arity(this PredicateExpression predicate)
+        {
+            return predicate.Parameters.Count;
         }
 
         public static bool IsSubsetOf(this SetExpression set, SetExpression other, IContainer<CompoundExpression> kb)

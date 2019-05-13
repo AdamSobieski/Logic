@@ -24,7 +24,7 @@ namespace Logic.Expressions
             var Y = Expression.Variable();
 
             var p = Expression.Predicate(null, "p", 2);
-            var c = Expression.Compound(p, X.Parameter, Y);
+            var c = Expression.Compound(p, X.Parameters[0], Y);
 
             X = X.AddConstraint(c);
         }
