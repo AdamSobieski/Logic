@@ -133,9 +133,9 @@ namespace Logic.Expressions
             return new CompoundExpression(predicate, arguments);
         }
 
-        public static LambdaExpression Lambda(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
+        public static LambdaExpression Lambda(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
-            return new LambdaExpression(module, name, preconditions, body, effects_remove, effects_add, parameters);
+            return new LambdaExpression(atom, preconditions, body, effects_remove, effects_add, parameters);
         }
 
 
@@ -587,7 +587,7 @@ namespace Logic.Expressions
             public IReadOnlyList<CompoundExpression> Add => m_add;
         }
 
-        internal LambdaExpression(string module, string name, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
+        internal LambdaExpression(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
         {
             Contract.Requires(preconditions != null);
             Contract.Requires(body != null);
@@ -595,8 +595,7 @@ namespace Logic.Expressions
             Contract.Requires(effects_add != null);
             Contract.Requires(parameters != null);
 
-            m_module = module;
-            m_name = name;
+            m_expression = atom;
             m_preconditions = preconditions.ToList().AsReadOnly();
             m_body = body;
             m_effects = new Delta(effects_remove, effects_add);
@@ -604,9 +603,7 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_module;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_name;
+        Expression m_expression;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<VariableExpression> m_parameters;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -616,18 +613,11 @@ namespace Logic.Expressions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IDelta<CompoundExpression> m_effects;
 
-        public string Module
+        public Expression Expression
         {
             get
             {
-                return m_module;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return m_name;
+                return m_expression;
             }
         }
 

@@ -46,7 +46,7 @@ namespace Logic.Planning
 
     public interface IPlan
     {
-
+        // dynamic Metadata { get; }
     }
 
     public interface IPlanner : IHasExpression
