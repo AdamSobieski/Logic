@@ -49,7 +49,7 @@ namespace Logic.Planning
 
     }
 
-    public interface IPlanner
+    public interface IPlanner : IHasExpression
     {
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal); // a default set of actions could be all of the actions in the kb module
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal, IEnumerable<IAction> actions);
@@ -64,13 +64,12 @@ namespace Logic.Planning.Agents
     // https://plato.stanford.edu/entries/desire/
     // https://plato.stanford.edu/entries/intention/
     // https://en.wikipedia.org/wiki/Intelligent_agent
-    public interface IAgent
+    public interface IAgent : IHasExpression
     {
         IPlanner Planner { get; }
-        IKnowledgebaseModule Beliefs { get; }                     
-        IReadOnlyCollection<IGoal> Desires { get; }                
-        IReadOnlyCollection<CompoundExpression> Intentions { get; } // instead of a collection, might this be a stack or a tree with a task/subtask or goal/subgoal structure, perhaps a weighted set of stacks or trees?
-    }
 
-    public interface IGoal { }
+        IKnowledgebaseModule Beliefs { get; }
+        IReadOnlyCollection<CompoundExpression> Desires { get; }    // instead of collections, might these be stacks or trees with task/subtask or goal/subgoal structures, perhaps weighted sets of stacks or trees?
+        IReadOnlyCollection<CompoundExpression> Intentions { get; } //
+    }
 }

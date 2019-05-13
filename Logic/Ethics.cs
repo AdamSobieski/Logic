@@ -6,6 +6,7 @@
 
 namespace Logic.Ethics
 {
+    // https://plato.stanford.edu/entries/reasoning-moral/
     // (1) Ethical reasoning
     // (2) Ethical reasoning about actions and plans
 

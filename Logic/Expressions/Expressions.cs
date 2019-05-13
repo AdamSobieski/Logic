@@ -679,4 +679,9 @@ namespace Logic.Expressions
         IReadOnlyList<VariableExpression> Variables { get; }
         IReadOnlyList<Expression> Bindings { get; }
     }
+
+    public interface IHasExpression
+    {
+        Expression Expression { get; }
+    }
 }
