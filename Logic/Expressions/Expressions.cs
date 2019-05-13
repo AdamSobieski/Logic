@@ -17,11 +17,12 @@ namespace Logic.Expressions
     {
         public Atom(string name)
         {
+            Contract.Requires(name != null);
+        
             m_name = name;
         }
 
         string m_name;
-
         public string Name
         {
             get
@@ -133,9 +134,9 @@ namespace Logic.Expressions
             return new CompoundExpression(predicate, arguments);
         }
 
-        public static LambdaExpression Lambda(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
+        public static LambdaExpression Lambda(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
-            return new LambdaExpression(atom, preconditions, body, effects_remove, effects_add, parameters);
+            return new LambdaExpression(atom, preconditions, body, effects_remove, effects_add, parameters, constraints);
         }
 
 
@@ -587,25 +588,29 @@ namespace Logic.Expressions
             public IReadOnlyList<CompoundExpression> Add => m_add;
         }
 
-        internal LambdaExpression(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters)
+        internal LambdaExpression(Expression atom, IEnumerable<CompoundExpression> preconditions, Expression body, IEnumerable<CompoundExpression> effects_remove, IEnumerable<CompoundExpression> effects_add, IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
             Contract.Requires(preconditions != null);
             Contract.Requires(body != null);
             Contract.Requires(effects_remove != null);
             Contract.Requires(effects_add != null);
             Contract.Requires(parameters != null);
+            Contract.Requires(constraints != null);
 
             m_expression = atom;
             m_preconditions = preconditions.ToList().AsReadOnly();
             m_body = body;
             m_effects = new Delta(effects_remove, effects_add);
             m_parameters = parameters.ToList().AsReadOnly();
+            m_constraints = constraints.ToList().AsReadOnly();
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         Expression m_expression;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<VariableExpression> m_parameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        IReadOnlyList<CompoundExpression> m_constraints;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         IReadOnlyList<CompoundExpression> m_preconditions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -621,6 +626,14 @@ namespace Logic.Expressions
             }
         }
 
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return ((Atom)(Expression as ConstantExpression).Value).Name;
+        //    }
+        //}
+
         public IReadOnlyList<VariableExpression> Parameters
         {
             get
@@ -628,6 +641,14 @@ namespace Logic.Expressions
                 return m_parameters;
             }
         }
+        public IReadOnlyList<CompoundExpression> Constraints
+        {
+            get
+            {
+                return m_constraints;
+            }
+        }
+
         public IReadOnlyList<CompoundExpression> Preconditions
         {
             get

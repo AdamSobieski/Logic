@@ -22,6 +22,8 @@ namespace Logic.Planning
         //string Name { get; }
 
         IReadOnlyList<VariableExpression> Parameters { get; }
+        IReadOnlyList<CompoundExpression> Constraints { get; }
+
         IReadOnlyList<CompoundExpression> Preconditions { get; }
         IDelta<CompoundExpression> Effects { get; }
 
