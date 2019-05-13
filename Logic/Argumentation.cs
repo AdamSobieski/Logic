@@ -92,7 +92,7 @@ namespace Logic.Argumentation
         PredicateExpression Relation { get; }
         _9 Target { get; }
 
-        IReadOnlyList<_11> Support { get; }
+        IReadOnlyList<_11> SupportedBy { get; }
     }
 
     public interface _11
@@ -110,7 +110,7 @@ namespace Logic.Argumentation
         IReadOnlyList<_13> IncomingEdges { get; }
         IReadOnlyList<_13> OutgoingEdges { get; }
 
-        IReadOnlyList<_14> Support { get; }
+        IReadOnlyList<_14> SupportedBy { get; }
     }
 
     public interface _13 : _12
@@ -123,7 +123,7 @@ namespace Logic.Argumentation
         PredicateExpression Relation { get; }
         _12 Target { get; }
 
-        //IReadOnlyList<_14> Support { get; }
+        //IReadOnlyList<_14> SupportedBy { get; }
     }
 
     public interface _14

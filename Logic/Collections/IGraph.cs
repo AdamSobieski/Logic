@@ -18,4 +18,6 @@ namespace System.Collections.Generic
         IReadOnlyCollection<TNode> Nodes { get; }
         IReadOnlyCollection<IEdge<TNode, TEdgeValue>> Edges { get; }
     }
+
+    // public interface ISemanticGraphEdge<out TNode> : IEdge<TNode, Logic.Expressions.PredicateExpression> { }
 }

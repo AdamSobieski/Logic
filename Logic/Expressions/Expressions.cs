@@ -179,6 +179,10 @@ namespace Logic.Expressions
         }
     }
 
+    // public class TupleExpression
+    // public class ListExpression
+    // public class VectorExpression
+
     public class VariableExpression : Expression
     {
         internal VariableExpression(bool value)
