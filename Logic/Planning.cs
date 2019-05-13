@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 namespace Logic.Planning
 {
-    public interface IAction
+    public interface IAction : IHasExpression
     {
-        string Module { get; }
-        string Name { get; }
+        //string Module { get; }
+        //string Name { get; }
 
         IReadOnlyList<VariableExpression> Parameters { get; }
         IReadOnlyList<CompoundExpression> Preconditions { get; }
@@ -53,12 +53,14 @@ namespace Logic.Planning
     {
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal); // a default set of actions could be all of the actions in the kb module
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal, IEnumerable<IAction> actions);
-        // to do: landmarks, preferences, etc... IObservable<IPlan> Plan(PlannerSettings settings) ?
+        // to do: landmarks, preferences, constraints, etc... IObservable<IPlan> Plan(PlannerSettings settings) ?
+        // Gerevini, Alfonso, and Derek Long. Plan constraints and preferences in PDDL3. Technical Report 2005-08-07, Department of Electronics for Automation, University of Brescia, Brescia, Italy, 2005.
     }
 }
 
 namespace Logic.Planning.Agents
 {
+    // https://en.wikipedia.org/wiki/Belief%E2%80%93desire%E2%80%93intention_model
     // https://en.wikipedia.org/wiki/Belief%E2%80%93desire%E2%80%93intention_software_model
     // https://plato.stanford.edu/entries/belief/
     // https://plato.stanford.edu/entries/desire/
@@ -71,5 +73,8 @@ namespace Logic.Planning.Agents
         IKnowledgebaseModule Beliefs { get; }
         IReadOnlyCollection<CompoundExpression> Desires { get; }    // instead of collections, might these be stacks or trees with task/subtask or goal/subgoal structures, perhaps weighted sets of stacks or trees?
         IReadOnlyCollection<CompoundExpression> Intentions { get; } //
+
+        // should these be parameters to plan generation and/or to plan evaluation and comparison?
+        IReadOnlyCollection<CompoundExpression> Principles { get; }
     }
 }
