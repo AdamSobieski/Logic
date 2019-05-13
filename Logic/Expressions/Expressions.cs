@@ -22,7 +22,7 @@ namespace Logic.Expressions
             m_name = name;
         }
 
-        string m_name;
+        readonly string m_name;
         public string Name
         {
             get
@@ -70,33 +70,20 @@ namespace Logic.Expressions
 
         public static ConstantExpression Constant(object value)
         {
-            return new ConstantExpression(value, value != null ? value.GetType() : typeof(object));
-        }
-        public static ConstantExpression Constant(object value, Type type)
-        {
-            Contract.Requires(type != null);
-            if (value == null && type.IsValueType && !(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)))
-            {
-                throw new ArgumentException();
-            }
-            if (value != null && !type.IsAssignableFrom(value.GetType()))
-            {
-                throw new ArgumentException();
-            }
-            return new ConstantExpression(value, type);
+            return new ConstantExpression(value, UniversalSet);
         }
 
         public static ConstantExpression Integer(int value)
         {
-            return new ConstantExpression(value, typeof(int));
+            return new ConstantExpression(value, UniversalSet);
         }
         public static ConstantExpression Float(double value)
         {
-            return new ConstantExpression(value, typeof(double));
+            return new ConstantExpression(value, UniversalSet);
         }
         public static ConstantExpression Atom(string name)
         {
-            return new ConstantExpression(new Atom(name), typeof(Atom));
+            return new ConstantExpression(new Atom(name), UniversalSet);
         }
 
         public static VariableExpression Variable()
@@ -144,11 +131,11 @@ namespace Logic.Expressions
 
 
 
-        public virtual Type Type
+        public virtual SetExpression Type
         {
             get
             {
-                return typeof(object);
+                return UniversalSet;
             }
         }
 
@@ -159,16 +146,16 @@ namespace Logic.Expressions
 
     public class ConstantExpression : Expression
     {
-        internal ConstantExpression(object value, Type type)
+        internal ConstantExpression(object value, SetExpression type)
         {
             m_value = value;
             m_type = type;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        object m_value;
+        readonly object m_value;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        Type m_type;
+        readonly SetExpression m_type;
 
         public object Value
         {
@@ -177,7 +164,7 @@ namespace Logic.Expressions
                 return m_value;
             }
         }
-        public override Type Type
+        public override SetExpression Type
         {
             get
             {
@@ -219,9 +206,9 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<VariableExpression> m_parameters;
+        readonly IReadOnlyList<VariableExpression> m_parameters;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_constraints;
+        readonly IReadOnlyList<CompoundExpression> m_constraints;
 
         public IReadOnlyList<VariableExpression> Parameters
         {
@@ -293,9 +280,9 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<VariableExpression> m_parameters;
+        readonly IReadOnlyList<VariableExpression> m_parameters;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_constraints;
+        readonly IReadOnlyList<CompoundExpression> m_constraints;
 
         public IReadOnlyList<VariableExpression> Parameters
         {
@@ -409,15 +396,15 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_module;
+        readonly string m_module;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        string m_name;
+        readonly string m_name;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        int m_arity;
+        readonly int m_arity;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<VariableExpression> m_parameters;
+        readonly IReadOnlyList<VariableExpression> m_parameters;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_constraints;
+        readonly IReadOnlyList<CompoundExpression> m_constraints;
 
         public string Module
         {
@@ -511,9 +498,9 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        Expression m_predicate;
+        readonly Expression m_predicate;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<Expression> m_arguments;
+        readonly IReadOnlyList<Expression> m_arguments;
 
         public new Expression Predicate
         {
@@ -594,8 +581,8 @@ namespace Logic.Expressions
                 m_add = add.ToList().AsReadOnly();
             }
 
-            IReadOnlyList<CompoundExpression> m_remove;
-            IReadOnlyList<CompoundExpression> m_add;
+            readonly IReadOnlyList<CompoundExpression> m_remove;
+            readonly IReadOnlyList<CompoundExpression> m_add;
 
             public IReadOnlyList<CompoundExpression> Remove => m_remove;
 
@@ -620,17 +607,17 @@ namespace Logic.Expressions
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        Expression m_expression;
+        readonly Expression m_expression;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<VariableExpression> m_parameters;
+        readonly IReadOnlyList<VariableExpression> m_parameters;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_constraints;
+        readonly IReadOnlyList<CompoundExpression> m_constraints;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IReadOnlyList<CompoundExpression> m_preconditions;
+        readonly IReadOnlyList<CompoundExpression> m_preconditions;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        Expression m_body;
+        readonly Expression m_body;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        IDelta<CompoundExpression> m_effects;
+        readonly IDelta<CompoundExpression> m_effects;
 
         public Expression Expression
         {
@@ -685,7 +672,7 @@ namespace Logic.Expressions
             }
         }
 
-        public Type ReturnType
+        public SetExpression ReturnType
         {
             get
             {

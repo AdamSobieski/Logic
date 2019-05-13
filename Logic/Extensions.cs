@@ -132,6 +132,7 @@ namespace Logic
 
         public static SetExpression CartesianProduct(this SetExpression set, SetExpression other)
         {
+            // or flatten both parameter lists into higher-dimensional variables and then concat the two higher-dimensional variables?
             return Expression.Set(set.Parameters.Concat(other.Parameters), set.Constraints.Concat(other.Constraints));
         }
         public static int Dimensionality(this SetExpression set)
