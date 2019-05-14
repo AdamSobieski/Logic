@@ -132,8 +132,18 @@ namespace Logic
 
         public static SetExpression CartesianProduct(this SetExpression set, SetExpression other)
         {
-            // or flatten both parameter lists into higher-dimensional variables and then concat the two higher-dimensional variables?
-            return Expression.Set(set.Parameters.Concat(other.Parameters), set.Constraints.Concat(other.Constraints));
+            return Expression.Set(set.Parameters.Concat(other.Parameters), set.Constraints.Concat(other.Constraints)); // also possible a tree structure; cartesian product with parentheses; output dimensionality = 2
+        }
+        public static SetExpression CartesianProduct(this IEnumerable<SetExpression> sets)
+        {
+            IEnumerable<VariableExpression> parameters = Enumerable.Empty<VariableExpression>();
+            IEnumerable<CompoundExpression> constraints = Enumerable.Empty<CompoundExpression>();
+            foreach(var set in sets)
+            {
+                parameters = parameters.Concat(set.Parameters);
+                constraints = constraints.Concat(set.Constraints);
+            }
+            return Expression.Set(parameters, constraints);
         }
         public static int Dimensionality(this SetExpression set)
         {

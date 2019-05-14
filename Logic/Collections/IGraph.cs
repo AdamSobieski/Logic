@@ -19,5 +19,5 @@ namespace System.Collections.Generic
         IReadOnlyCollection<IEdge<TNode, TEdgeValue>> Edges { get; }
     }
 
-    // public interface ISemanticGraphEdge<out TNode> : IEdge<TNode, Logic.Expressions.PredicateExpression> { }
+    // public interface ISemanticGraphEdge : IEdge<Logic.Expressions.Expression, Logic.Expressions.PredicateExpression> { }
 }
