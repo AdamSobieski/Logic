@@ -70,20 +70,20 @@ namespace Logic.Expressions
 
         public static ConstantExpression Constant(object value)
         {
-            return new ConstantExpression(value, UniversalSet);
+            return new ConstantExpression(value, null);
         }
 
         public static ConstantExpression Integer(int value)
         {
-            return new ConstantExpression(value, UniversalSet);
+            return new ConstantExpression(value, null);
         }
         public static ConstantExpression Float(double value)
         {
-            return new ConstantExpression(value, UniversalSet);
+            return new ConstantExpression(value, null);
         }
         public static ConstantExpression Atom(string name)
         {
-            return new ConstantExpression(new Atom(name), UniversalSet);
+            return new ConstantExpression(new Atom(name), null);
         }
 
         public static VariableExpression Variable()
@@ -131,11 +131,11 @@ namespace Logic.Expressions
 
 
 
-        public virtual SetExpression Type
+        public virtual ClassExpression Type
         {
             get
             {
-                return UniversalSet;
+                return null;
             }
         }
 
@@ -146,7 +146,7 @@ namespace Logic.Expressions
 
     public class ConstantExpression : Expression
     {
-        internal ConstantExpression(object value, SetExpression type)
+        internal ConstantExpression(object value, ClassExpression type)
         {
             m_value = value;
             m_type = type;
@@ -155,7 +155,7 @@ namespace Logic.Expressions
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         readonly object m_value;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        readonly SetExpression m_type;
+        readonly ClassExpression m_type;
 
         public object Value
         {
@@ -164,7 +164,7 @@ namespace Logic.Expressions
                 return m_value;
             }
         }
-        public override SetExpression Type
+        public override ClassExpression Type
         {
             get
             {
@@ -346,6 +346,14 @@ namespace Logic.Expressions
 
             if (!any) return this;
             return Set(p, c);
+        }
+    }
+
+    public class ClassExpression : Expression
+    {
+        internal override Expression Replace(Expression[] from, Expression[] to)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -676,7 +684,7 @@ namespace Logic.Expressions
             }
         }
 
-        public SetExpression ReturnType
+        public ClassExpression ReturnType
         {
             get
             {

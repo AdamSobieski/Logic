@@ -126,7 +126,7 @@ namespace Logic.Argumentation
         //IReadOnlyList<_14> SupportedBy { get; }
     }
 
-    public interface _14
+    public interface _14 // : _12
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
