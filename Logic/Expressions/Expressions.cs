@@ -277,7 +277,7 @@ namespace Logic.Expressions
 
     public class SetExpression : Expression
     {
-        public SetExpression(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
+        internal SetExpression(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints)
         {
             this.m_constraints = constraints.ToList().AsReadOnly();
             this.m_parameters = parameters.ToList().AsReadOnly();
@@ -351,6 +351,8 @@ namespace Logic.Expressions
 
     public class ClassExpression : Expression
     {
+        public IReadOnlyList<PredicateExpression> Predicates { get; }
+
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
             throw new NotImplementedException();
@@ -503,7 +505,7 @@ namespace Logic.Expressions
 
     public class CompoundExpression : Expression
     {
-        public CompoundExpression(Expression predicate, IEnumerable<Expression> arguments)
+        internal CompoundExpression(Expression predicate, IEnumerable<Expression> arguments)
         {
             m_predicate = predicate;
             m_arguments = arguments.ToList().AsReadOnly();
