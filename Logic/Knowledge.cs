@@ -5,6 +5,7 @@
 *********************************************************/
 
 using Logic.Expressions;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -41,6 +42,9 @@ namespace Logic.Knowledge
 
         IKnowledgebaseModule Clone();
         IKnowledgebaseModule Clone(string name);
+
+        // IEnumerable Query(CompoundExpression query, IVariableBindings bindings);
+        // IEnumerable<IReadOnlyVariableBindings> Query(CompoundExpression query);
     }
 
     public delegate void KnowledgebaseTableChangedEventHandler(object sender, IDelta<CompoundExpression> delta);

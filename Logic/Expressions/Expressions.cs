@@ -700,7 +700,13 @@ namespace Logic.Expressions
         }
     }
 
-    public interface IBinding
+    public interface IVariableBindings
+    {
+        IList<VariableExpression> Variables { get; }
+        IList<Expression> Bindings { get; }
+    }
+
+    public interface IReadOnlyVariableBindings
     {
         IReadOnlyList<VariableExpression> Variables { get; }
         IReadOnlyList<Expression> Bindings { get; }

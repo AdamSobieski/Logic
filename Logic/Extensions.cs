@@ -99,7 +99,7 @@ namespace Logic
             //    throw new NotImplementedException();
             //}
         }
-        public static bool IsValid(this IBinding binding, IContainer<CompoundExpression> kb)
+        public static bool IsValid(this IReadOnlyVariableBindings binding, IContainer<CompoundExpression> kb)
         {
             throw new NotImplementedException();
             // return binding.Variables.CanUnify(binding.Bindings, kb);

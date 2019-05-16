@@ -12,7 +12,7 @@ namespace Logic.Argumentation
     public interface _1
     {
         CompoundExpression Rule { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         CompoundExpression Expression { get; }
     }
 
@@ -20,7 +20,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         IReadOnlyList<CompoundExpression> RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<CompoundExpression> Body { get; }
         IReadOnlyList<CompoundExpression> Head { get; }
     }
@@ -29,7 +29,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<CompoundExpression> Body { get; }
         CompoundExpression Head { get; }
     }
@@ -38,7 +38,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_4> Body { get; }
         CompoundExpression Head { get; }
     }
@@ -54,7 +54,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_5> Body { get; }
         _5 Head { get; }
     }
@@ -72,7 +72,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_7> Body { get; }
         _7 Head { get; }
     }
@@ -99,7 +99,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_9> Body { get; }
         _10 Head { get; }
     }
@@ -124,7 +124,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_12> Body { get; }
         _12 Head { get; }
     }
@@ -150,7 +150,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_15> Body { get; }
         _15 Head { get; }
     }
@@ -173,7 +173,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_18> Body { get; }
         _18 Head { get; }
     }
@@ -206,7 +206,7 @@ namespace Logic.Argumentation
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
-        IBinding Binding { get; }
+        IReadOnlyVariableBindings Bindings { get; }
         IReadOnlyList<_21> Body { get; }
         _24 Head { get; }
     }
