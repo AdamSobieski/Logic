@@ -23,7 +23,7 @@ namespace Logic.Agents
     // https://plato.stanford.edu/entries/desire/
     // https://plato.stanford.edu/entries/intention/
     // https://en.wikipedia.org/wiki/Intelligent_agent
-    public interface IAgent : IHasExpression
+    public interface IAgent
     {
         IPlanner Planner { get; }
 

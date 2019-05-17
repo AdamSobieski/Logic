@@ -4,6 +4,7 @@
 *
 *********************************************************/
 
+using Logic.Knowledge;
 using Logic.Planning;
 using System;
 using System.Collections.Generic;
@@ -406,6 +407,21 @@ namespace Logic.Expressions
         }
     }
 
+    public interface IThing
+    {
+        IKnowledgebaseModule Knowledgebase { get; }
+
+        ClassExpression GetClass();
+
+        object this[PredicateExpression predicate] { get; set; }
+    }
+
+    public interface IExpando : IThing
+    {
+        bool Add(PredicateExpression predicate);
+        bool Remove(PredicateExpression predicate);
+    }
+
     public class PredicateExpression : Expression
     {
         internal PredicateExpression(string module, string name, int arity)
@@ -757,10 +773,5 @@ namespace Logic.Expressions
     {
         IReadOnlyList<VariableExpression> Variables { get; }
         IReadOnlyList<Expression> Bindings { get; }
-    }
-
-    public interface IHasExpression
-    {
-        Expression Expression { get; }
     }
 }

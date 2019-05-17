@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Logic.Planning
 {
-    public interface IAction : IHasExpression
+    public interface IAction
     {
         //string Module { get; }
         //string Name { get; }
@@ -52,7 +52,7 @@ namespace Logic.Planning
         // dynamic Metadata { get; }
     }
 
-    public interface IPlanner : IHasExpression
+    public interface IPlanner
     {
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal); // a default set of actions could be all of the actions in the kb module
         IObservable<IPlan> Plan(IKnowledgebaseModule kb, IState initial, IState goal, IEnumerable<IAction> actions);
