@@ -180,6 +180,7 @@ namespace Logic.Argumentation
 
     public interface _21
     {
+        // IReadOnlyList<CompoundExpression> Expressions { get; }?
         CompoundExpression Expression { get; }
     }
 
