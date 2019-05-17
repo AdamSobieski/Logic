@@ -9,10 +9,13 @@ using System.Collections.Generic;
 
 namespace Logic.Narrative
 {
+    // to do: (1) semantics and emergent semantics through derivation
+    //        (2) hermeneutics, interpretive inferencing and interpretations of: events, sequences of events, and narrative structure
+
     public interface IEvent
     {
         VariableExpression Parameter { get; }
-        IReadOnlyList<CompoundExpression> Expressions { get; }
+        IDelta<CompoundExpression> Expressions { get; } // IReadOnlyCollection<> or IDelta<> ?
     }
 
     public interface IEventNode : IEvent
