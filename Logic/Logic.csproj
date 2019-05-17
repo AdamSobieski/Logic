@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agents.cs" />
     <Compile Include="Argumentation.cs" />
     <Compile Include="Ethics.cs" />
     <Compile Include="Extensions.cs" />

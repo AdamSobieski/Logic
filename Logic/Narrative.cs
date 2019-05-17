@@ -11,11 +11,12 @@ namespace Logic.Narrative
 {
     // to do: (1) semantics and emergent semantics through derivation
     //        (2) hermeneutics, interpretive inferencing and interpretations of: events, sequences of events, and narrative structure
+    //            (a) an intelligent agent, utilizing a knowledgebase, can make interpretive inferences
 
     public interface IEvent
     {
-        VariableExpression Parameter { get; }
-        IDelta<CompoundExpression> Expressions { get; } // IReadOnlyCollection<> or IDelta<> ?
+        VariableExpression ThisParameter { get; }
+        IDelta<CompoundExpression> Expressions { get; }
     }
 
     public interface IEventNode : IEvent
@@ -41,7 +42,7 @@ namespace Logic.Narrative
         //IReadOnlyCollection<IReadOnlyEventGraph> Subgraphs { get; }
         //IReadOnlyCollection<IReadOnlyEventGraph> Supergraphs { get; }
 
-        VariableExpression Parameter { get; }
+        VariableExpression ThisParameter { get; }
         IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
     }
 }
