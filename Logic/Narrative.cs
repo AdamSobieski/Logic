@@ -32,8 +32,8 @@ namespace Logic.Narrative
 
     public interface IReadOnlyEventGraph
     {
-        IReadOnlyCollection<IEvent> Events { get; }
-        IReadOnlyCollection<IEventEdge> Relations { get; }
+        IReadOnlyCollection<IEvent> Nodes { get; }
+        IReadOnlyCollection<IEventEdge> Edges { get; }
 
         //IReadOnlyCollection<IReadOnlyEventGraph> Subgraphs { get; }
         //IReadOnlyCollection<IReadOnlyEventGraph> Supergraphs { get; }

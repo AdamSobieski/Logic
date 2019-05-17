@@ -185,8 +185,8 @@ namespace Logic.Argumentation
 
     public interface IArgumentNode : IArgument
     {
-        IReadOnlyList<IArgumentEdge> IncomingEdges { get; }
-        IReadOnlyList<IArgumentEdge> OutgoingEdges { get; }
+        IReadOnlyCollection<IArgumentEdge> IncomingEdges { get; }
+        IReadOnlyCollection<IArgumentEdge> OutgoingEdges { get; }
     }
 
     public interface IArgumentEdge : IArgument
