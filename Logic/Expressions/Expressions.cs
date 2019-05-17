@@ -349,9 +349,56 @@ namespace Logic.Expressions
         }
     }
 
-    public class ClassExpression : Expression
+    public class ClassExpression : Expression // SetExpression?
     {
-        public IReadOnlyList<PredicateExpression> Predicates { get; }
+        internal ClassExpression(IEnumerable<VariableExpression> parameters, IEnumerable<CompoundExpression> constraints, VariableExpression descriptionParameter, IEnumerable<CompoundExpression> description)
+        {
+            m_parameters = parameters.ToList().AsReadOnly();
+            m_constraints = constraints.ToList().AsReadOnly();
+            m_descriptionParameter = descriptionParameter;
+            m_description = description.ToList().AsReadOnly();
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        readonly IReadOnlyList<VariableExpression> m_parameters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        readonly IReadOnlyList<CompoundExpression> m_constraints;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        readonly VariableExpression m_descriptionParameter;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        readonly IReadOnlyList<CompoundExpression> m_description;
+
+        public IReadOnlyList<VariableExpression> Parameters
+        {
+            get
+            {
+                return m_parameters;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Constraints
+        {
+            get
+            {
+                return m_constraints;
+            }
+        }
+
+        public VariableExpression DescriptionParameter
+        {
+            get
+            {
+                return m_descriptionParameter;
+            }
+        }
+        public IReadOnlyList<CompoundExpression> Description
+        {
+            get
+            {
+                return m_description;
+            }
+        }
+
+        // public IReadOnlyList<PredicateExpression> Predicates { get; }
 
         internal override Expression Replace(Expression[] from, Expression[] to)
         {
