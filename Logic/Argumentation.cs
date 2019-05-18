@@ -213,7 +213,7 @@ namespace Logic.Argumentation
 
     public interface IReadOnlyArgumentGraph
     {
-        IReadOnlyList<IArgument> Nodes { get; }
-        IReadOnlyList<IArgumentEdge> Edges { get; }
+        IReadOnlyCollection<IArgument> Nodes { get; }
+        IReadOnlyCollection<IArgumentEdge> Edges { get; }
     }
 }
