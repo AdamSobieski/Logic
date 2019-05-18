@@ -17,11 +17,9 @@ namespace Logic.Narrative
     //
     // Cardona-Rivera, Rogelio E., and R. Michael Young. "Desiderata for a Computational Model of Human Online Narrative Sensemaking." (2019).
 
-    public interface IEvent
+    public interface IEvent : IIndividual
     {
-        Expression This { get; }
-
-        IDelta<CompoundExpression> Expressions { get; }
+        IDelta<CompoundExpression> Effects { get; }
     }
 
     //public interface IEventNode : IEvent
@@ -39,15 +37,13 @@ namespace Logic.Narrative
         IEvent Target { get; }
     }
 
-    public interface IReadOnlyEventGraph
+    public interface IReadOnlyEventGraph : IIndividual
     {
-        IEnumerable<IEvent> Nodes { get; }
+        IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
 
         //IReadOnlyCollection<IReadOnlyEventGraph> Subgraphs { get; }
         //IReadOnlyCollection<IReadOnlyEventGraph> Supergraphs { get; }
-
-        Expression This { get; }
 
         IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
     }

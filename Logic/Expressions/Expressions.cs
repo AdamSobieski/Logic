@@ -411,6 +411,8 @@ namespace Logic.Expressions
     {
         IKnowledgebaseModule Knowledgebase { get; }
 
+        Expression This { get; }
+
         ClassExpression GetClass();
 
         object this[PredicateExpression predicate] { get; set; }

@@ -17,7 +17,7 @@ namespace System.Collections.Generic
 
     public interface IReadOnlyGraph<out TNode, out TEdgeValue>
     {
-        IEnumerable<TNode> Nodes { get; }
+        IQueryable<TNode> Nodes { get; }
         IQueryable<IEdge<TNode, TEdgeValue>> Edges { get; }
     }
 
