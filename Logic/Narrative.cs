@@ -6,6 +6,7 @@
 
 using Logic.Expressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Logic.Narrative
 {
@@ -16,14 +17,15 @@ namespace Logic.Narrative
     public interface IEvent
     {
         Expression This { get; }
+
         IDelta<CompoundExpression> Expressions { get; }
     }
 
-    public interface IEventNode : IEvent
-    {
-        IReadOnlyList<IEventEdge> IncomingEdges { get; }
-        IReadOnlyList<IEventEdge> OutgoingEdges { get; }
-    }
+    //public interface IEventNode : IEvent
+    //{
+    //    IReadOnlyList<IEventEdge> IncomingEdges { get; }
+    //    IReadOnlyList<IEventEdge> OutgoingEdges { get; }
+    //}
 
     public interface IEventEdge
     {
@@ -37,12 +39,13 @@ namespace Logic.Narrative
     public interface IReadOnlyEventGraph
     {
         IReadOnlyCollection<IEvent> Nodes { get; }
-        IReadOnlyCollection<IEventEdge> Edges { get; }
+        IQueryable<IEventEdge> Edges { get; }
 
         //IReadOnlyCollection<IReadOnlyEventGraph> Subgraphs { get; }
         //IReadOnlyCollection<IReadOnlyEventGraph> Supergraphs { get; }
 
         Expression This { get; }
+
         IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
     }
 }

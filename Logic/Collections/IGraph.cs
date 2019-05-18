@@ -4,6 +4,8 @@
 *
 *********************************************************/
 
+using System.Linq;
+
 namespace System.Collections.Generic
 {
     public interface IEdge<out TNode, out TValue>
@@ -16,7 +18,7 @@ namespace System.Collections.Generic
     public interface IReadOnlyGraph<out TNode, out TEdgeValue>
     {
         IReadOnlyCollection<TNode> Nodes { get; }
-        IReadOnlyCollection<IEdge<TNode, TEdgeValue>> Edges { get; }
+        IQueryable<IEdge<TNode, TEdgeValue>> Edges { get; }
     }
 
     // public interface ISemanticGraphEdge : IEdge<Logic.Expressions.Expression, Logic.Expressions.PredicateExpression> { }

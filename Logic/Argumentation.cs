@@ -6,6 +6,7 @@
 
 using Logic.Expressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Logic.Argumentation
 {
@@ -183,11 +184,11 @@ namespace Logic.Argumentation
         CompoundExpression Expression { get; }
     }
 
-    public interface IArgumentNode : IArgument
-    {
-        IReadOnlyList<IArgumentEdge> IncomingEdges { get; }
-        IReadOnlyList<IArgumentEdge> OutgoingEdges { get; }
-    }
+    //public interface IArgumentNode : IArgument
+    //{
+    //    IReadOnlyList<IArgumentEdge> IncomingEdges { get; }
+    //    IReadOnlyList<IArgumentEdge> OutgoingEdges { get; }
+    //}
 
     public interface IArgumentEdge : IArgument
     {
@@ -214,6 +215,6 @@ namespace Logic.Argumentation
     public interface IReadOnlyArgumentGraph
     {
         IReadOnlyCollection<IArgument> Nodes { get; }
-        IReadOnlyCollection<IArgumentEdge> Edges { get; }
+        IQueryable<IArgumentEdge> Edges { get; }
     }
 }
