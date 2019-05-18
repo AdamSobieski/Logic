@@ -407,7 +407,7 @@ namespace Logic.Expressions
         }
     }
 
-    public interface IThing
+    public interface IIndividual
     {
         IKnowledgebaseModule Knowledgebase { get; }
 
@@ -416,7 +416,7 @@ namespace Logic.Expressions
         object this[PredicateExpression predicate] { get; set; }
     }
 
-    public interface IExpando : IThing
+    public interface IExpando : IIndividual
     {
         bool AddPredicate(PredicateExpression predicate);
         bool RemovePredicate(PredicateExpression predicate);
