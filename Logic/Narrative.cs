@@ -22,12 +22,6 @@ namespace Logic.Narrative
         IDelta<CompoundExpression> Effects { get; }
     }
 
-    //public interface IEventNode : IEvent
-    //{
-    //    IReadOnlyList<IEventEdge> IncomingEdges { get; }
-    //    IReadOnlyList<IEventEdge> OutgoingEdges { get; }
-    //}
-
     public interface IEventEdge
     {
         CompoundExpression Expression { get; }

@@ -15,12 +15,6 @@ namespace Logic.Argumentation
         CompoundExpression Expression { get; }
     }
 
-    //public interface IArgumentNode : IArgument
-    //{
-    //    IReadOnlyList<IArgumentEdge> IncomingEdges { get; }
-    //    IReadOnlyList<IArgumentEdge> OutgoingEdges { get; }
-    //}
-
     public interface IArgumentEdge : IArgument
     {
         IArgument Source { get; }
