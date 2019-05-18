@@ -418,8 +418,8 @@ namespace Logic.Expressions
 
     public interface IExpando : IThing
     {
-        bool Add(PredicateExpression predicate);
-        bool Remove(PredicateExpression predicate);
+        bool AddPredicate(PredicateExpression predicate);
+        bool RemovePredicate(PredicateExpression predicate);
     }
 
     public class PredicateExpression : Expression

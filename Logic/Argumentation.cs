@@ -185,8 +185,8 @@ namespace Logic.Argumentation
 
     public interface IArgumentNode : IArgument
     {
-        IReadOnlyCollection<IArgumentEdge> IncomingEdges { get; }
-        IReadOnlyCollection<IArgumentEdge> OutgoingEdges { get; }
+        IReadOnlyList<IArgumentEdge> IncomingEdges { get; }
+        IReadOnlyList<IArgumentEdge> OutgoingEdges { get; }
     }
 
     public interface IArgumentEdge : IArgument
@@ -198,8 +198,8 @@ namespace Logic.Argumentation
 
     public interface IArgumentDerived : IArgument
     {
-        IReadOnlyCollection<IArgumentDerivation> SupportedBy { get; }
-        IReadOnlyCollection<IArgumentDerivation> OpposedBy { get; }
+        IReadOnlyList<IArgumentDerivation> SupportedBy { get; }
+        IReadOnlyList<IArgumentDerivation> OpposedBy { get; }
     }
 
     public interface IArgumentDerivation
@@ -213,7 +213,7 @@ namespace Logic.Argumentation
 
     public interface IReadOnlyArgumentGraph
     {
-        IReadOnlyCollection<IArgument> Nodes { get; }
-        IReadOnlyCollection<IArgumentEdge> Edges { get; }
+        IReadOnlyList<IArgument> Nodes { get; }
+        IReadOnlyList<IArgumentEdge> Edges { get; }
     }
 }
