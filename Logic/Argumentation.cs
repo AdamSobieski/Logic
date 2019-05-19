@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Logic.Argumentation
 {
-    public interface IArgument
+    public interface IArgument : IIndividual
     {
         CompoundExpression Expression { get; }
     }
@@ -28,7 +28,7 @@ namespace Logic.Argumentation
         IReadOnlyList<IArgumentDerivation> OpposedBy { get; }
     }
 
-    public interface IArgumentDerivation
+    public interface IArgumentDerivation : IIndividual
     {
         IReadOnlyList<CompoundExpression> RuleBody { get; }
         CompoundExpression RuleHead { get; }
@@ -37,7 +37,7 @@ namespace Logic.Argumentation
         IArgumentDerived Head { get; }
     }
 
-    public interface IReadOnlyArgumentGraph
+    public interface IReadOnlyArgumentGraph : IIndividual
     {
         IQueryable<IArgument> Nodes { get; }
         IQueryable<IArgumentEdge> Edges { get; }
