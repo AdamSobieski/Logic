@@ -16,10 +16,13 @@ namespace Logic.Narrative
     //        (3) modelling story characters can be a use case scenario for the intelligent agents architecture
     //
     // Cardona-Rivera, Rogelio E., and R. Michael Young. "Desiderata for a Computational Model of Human Online Narrative Sensemaking." (2019).
+    // https://en.wikipedia.org/wiki/Fabula_and_syuzhet
 
     public interface IEvent : IIndividual
     {
         IDelta<CompoundExpression> Effects { get; }
+
+        IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
     }
 
     public interface IEventEdge : IIndividual
@@ -36,8 +39,8 @@ namespace Logic.Narrative
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
 
-        //IReadOnlyCollection<IReadOnlyEventGraph> Subgraphs { get; }
-        //IReadOnlyCollection<IReadOnlyEventGraph> Supergraphs { get; }
+        //IQueryable<IReadOnlyEventGraph> Subgraphs { get; }
+        //IQueryable<IReadOnlyEventGraph> Supergraphs { get; }
 
         IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
     }
