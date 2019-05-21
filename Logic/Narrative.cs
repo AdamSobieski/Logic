@@ -13,7 +13,7 @@ namespace Logic.Narrative
     // to do: (1) semantics and emergent semantics through derivation
     //        (2) hermeneutics, interpretive inferencing and interpretations of: events, sequences of events, and narrative structure
     //            (a) an intelligent agent, utilizing a knowledgebase, can make inferences which include interpretive inferences
-    //        (3) modelling story characters can be a use case scenario for the intelligent agents architecture
+    //        (3) the modelling of story characters can be a use case scenario for the intelligent agents architecture
     //
     // Cardona-Rivera, Rogelio E., and R. Michael Young. "Desiderata for a Computational Model of Human Online Narrative Sensemaking." (2019).
     // https://en.wikipedia.org/wiki/Fabula_and_syuzhet
@@ -22,7 +22,7 @@ namespace Logic.Narrative
     {
         IDelta<CompoundExpression> Effects { get; }
 
-        IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
+        IReadOnlyList<CompoundExpression> Semantics { get; }
     }
 
     public interface IEventEdge : IIndividual
@@ -42,6 +42,6 @@ namespace Logic.Narrative
         //IQueryable<IReadOnlyEventGraph> Subgraphs { get; }
         //IQueryable<IReadOnlyEventGraph> Supergraphs { get; }
 
-        IReadOnlyList<CompoundExpression> EmergentSemantics { get; }
+        IReadOnlyList<CompoundExpression> Semantics { get; }
     }
 }
