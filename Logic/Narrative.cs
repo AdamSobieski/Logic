@@ -41,7 +41,7 @@ namespace Logic.Narrative
 
         IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
-        IEnumerable<IEventGraph> Subgraphs { get; }
+        IQueryable<IEventGraph> Subgraphs { get; }
 
         IList<CompoundExpression> Semantics { get; }
     }
