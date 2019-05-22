@@ -36,12 +36,20 @@ namespace Logic.Narrative
 
     public interface IEventGraph : IIndividual
     {
+        //string Id { get; set; }
+        //IEventGraph GetSubgraphById(string id);
+
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
+        IQueryable<IEventGraph> Subgraphs { get; }
 
+        //IEvent FindOrCreateEvent(...);
+        //IEventEdge FindOrCreateEventEdge(IEvent from, PredicateExpression relation, IEvent to);
         IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
-        IQueryable<IEventGraph> Subgraphs { get; }
+        //bool Add(IEventEdge edge);
+        //bool Remove(IEventEdge edge);
+        //bool Contains(IEventEdge edge);
 
         IList<CompoundExpression> Semantics { get; }
     }

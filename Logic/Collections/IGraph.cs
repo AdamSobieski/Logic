@@ -20,6 +20,4 @@ namespace System.Collections.Generic
         IQueryable<TNode> Nodes { get; }
         IQueryable<IEdge<TNode, TEdgeValue>> Edges { get; }
     }
-
-    // public interface ISemanticGraphEdge : IEdge<Logic.Expressions.Expression, Logic.Expressions.PredicateExpression> { }
 }
