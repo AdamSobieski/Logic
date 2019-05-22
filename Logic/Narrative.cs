@@ -43,13 +43,13 @@ namespace Logic.Narrative
         IQueryable<IEventEdge> Edges { get; }
         IQueryable<IEventGraph> Subgraphs { get; }
 
-        //IEvent FindOrCreateNode(...);
-        //IEventEdge FindOrCreateEdge(IEvent from, PredicateExpression relation, IEvent to);
+        IEvent FindOrCreateNode(/*...*/);
+        IEventEdge FindOrCreateEdge(IEvent from, PredicateExpression relation, IEvent to);
         IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
-        //bool Add(IEventEdge edge);
-        //bool Remove(IEventEdge edge);
-        //bool Contains(IEventEdge edge);
+        bool Add(IEventEdge edge);
+        bool Remove(IEventEdge edge);
+        bool Contains(IEventEdge edge);
 
         IList<CompoundExpression> Semantics { get; }
     }
