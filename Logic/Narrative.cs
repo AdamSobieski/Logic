@@ -39,6 +39,8 @@ namespace Logic.Narrative
         //string Id { get; set; }
         //IEventGraph GetSubgraphById(string id);
 
+        IEventGraph Root { get; }
+
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
         IQueryable<IEventGraph> Subgraphs { get; }
