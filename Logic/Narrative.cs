@@ -16,7 +16,6 @@ namespace Logic.Narrative
     //        (3) the modelling of story characters can be a use case scenario for the intelligent agents architecture
     //
     // Cardona-Rivera, Rogelio E., and R. Michael Young. "Desiderata for a Computational Model of Human Online Narrative Sensemaking." (2019).
-    // https://en.wikipedia.org/wiki/Fabula_and_syuzhet
 
     public interface IEvent : IIndividual
     {
