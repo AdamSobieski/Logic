@@ -39,9 +39,9 @@ namespace Logic.Narrative
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
 
-        IEventGraph FindOrCreateChild(IEnumerable<IEventEdge> edges);
+        IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
-        IReadOnlyList<IEventGraph> Children { get; }
+        IEnumerable<IEventGraph> Subgraphs { get; }
 
         IList<CompoundExpression> Semantics { get; }
     }
