@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Agents.cs" />
     <Compile Include="Argumentation.cs" />
+    <Compile Include="Collections\ISemanticTree.cs" />
     <Compile Include="Ethics.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Collections\IContainer.cs" />
