@@ -22,7 +22,7 @@ namespace Logic.Narrative
     {
         IDelta<CompoundExpression> Effects { get; }
 
-        IReadOnlyList<CompoundExpression> Semantics { get; }
+        IList<CompoundExpression> Semantics { get; }
     }
 
     public interface IEventEdge : IIndividual
@@ -34,14 +34,15 @@ namespace Logic.Narrative
         IEvent Target { get; }
     }
 
-    public interface IReadOnlyEventGraph : IIndividual
+    public interface IEventGraph : IIndividual
     {
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
 
-        //IQueryable<IReadOnlyEventGraph> Subgraphs { get; }
-        //IQueryable<IReadOnlyEventGraph> Supergraphs { get; }
+        IEventGraph FindOrCreateChildGraph(IEnumerable<IEventEdge> edges);
 
-        IReadOnlyList<CompoundExpression> Semantics { get; }
+        IReadOnlyList<IEventGraph> Children { get; }
+
+        IList<CompoundExpression> Semantics { get; }
     }
 }
