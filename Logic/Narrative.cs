@@ -46,7 +46,7 @@ namespace Logic.Narrative
         IQueryable<IEventGraph> Subgraphs { get; }
 
         IEvent FindOrCreateNode(/*...*/);
-        IEventEdge FindOrCreateEdge(IEvent from, PredicateExpression relation, IEvent to);
+        IEventEdge FindOrCreateEdge(IEvent source, PredicateExpression relation, IEvent target);
         IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
         bool Add(IEventEdge edge);
