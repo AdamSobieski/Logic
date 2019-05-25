@@ -51,6 +51,7 @@ namespace Logic.Narrative
 
         bool Add(IEventEdge edge);
         bool Remove(IEventEdge edge);
+        bool Replace(IEventEdge remove, IEventEdge add);
         bool Contains(IEventEdge edge);
 
         IList<CompoundExpression> Semantics { get; }
