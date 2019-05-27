@@ -34,29 +34,6 @@ namespace Logic.Narrative
         IEvent Target { get; }
     }
 
-    //public interface IEventGraph : IIndividual
-    //{
-    //    //string Id { get; set; }
-    //    //IEventGraph GetSubgraphById(string id);
-
-    //    IEventGraph Root { get; }
-
-    //    IQueryable<IEvent> Nodes { get; }
-    //    IQueryable<IEventEdge> Edges { get; }
-    //    IQueryable<IEventGraph> Subgraphs { get; }
-
-    //    IEvent FindOrCreateNode(/*...*/);
-    //    IEventEdge FindOrCreateEdge(IEvent source, PredicateExpression relation, IEvent target);
-    //    IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
-
-    //    bool Add(IEventEdge edge);
-    //    bool Remove(IEventEdge edge);
-    //    bool Replace(IEventEdge remove, IEventEdge add);
-    //    bool Contains(IEventEdge edge);
-
-    //    IList<CompoundExpression> Semantics { get; }
-    //}
-
     public interface IEventSubgraph : IIndividual
     {
         string Id { get; set; }
@@ -95,4 +72,27 @@ namespace Logic.Narrative
 
         IList<CompoundExpression> Semantics { get; }
     }
+
+    //public interface IEventGraph : IIndividual
+    //{
+    //    //string Id { get; set; }
+    //    //IEventGraph GetSubgraphById(string id);
+
+    //    IEventGraph Root { get; }
+
+    //    IQueryable<IEvent> Nodes { get; }
+    //    IQueryable<IEventEdge> Edges { get; }
+    //    IQueryable<IEventGraph> Subgraphs { get; }
+
+    //    IEvent FindOrCreateNode(/*...*/);
+    //    IEventEdge FindOrCreateEdge(IEvent source, PredicateExpression relation, IEvent target);
+    //    IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
+
+    //    bool Add(IEventEdge edge);
+    //    bool Remove(IEventEdge edge);
+    //    bool Replace(IEventEdge remove, IEventEdge add);
+    //    bool Contains(IEventEdge edge);
+
+    //    IList<CompoundExpression> Semantics { get; }
+    //}
 }

@@ -37,7 +37,7 @@ namespace Logic.Argumentation
         IArgumentDerived Head { get; }
     }
 
-    public interface IReadOnlyArgumentGraph : IIndividual
+    public interface IArgumentGraph : IIndividual
     {
         IQueryable<IArgument> Nodes { get; }
         IQueryable<IArgumentEdge> Edges { get; }
