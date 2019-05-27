@@ -34,24 +34,63 @@ namespace Logic.Narrative
         IEvent Target { get; }
     }
 
-    public interface IEventGraph : IIndividual
+    //public interface IEventGraph : IIndividual
+    //{
+    //    //string Id { get; set; }
+    //    //IEventGraph GetSubgraphById(string id);
+
+    //    IEventGraph Root { get; }
+
+    //    IQueryable<IEvent> Nodes { get; }
+    //    IQueryable<IEventEdge> Edges { get; }
+    //    IQueryable<IEventGraph> Subgraphs { get; }
+
+    //    IEvent FindOrCreateNode(/*...*/);
+    //    IEventEdge FindOrCreateEdge(IEvent source, PredicateExpression relation, IEvent target);
+    //    IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
+
+    //    bool Add(IEventEdge edge);
+    //    bool Remove(IEventEdge edge);
+    //    bool Replace(IEventEdge remove, IEventEdge add);
+    //    bool Contains(IEventEdge edge);
+
+    //    IList<CompoundExpression> Semantics { get; }
+    //}
+
+    public interface IEventSubgraph : IIndividual
     {
-        //string Id { get; set; }
-        //IEventGraph GetSubgraphById(string id);
+        string Id { get; set; }
 
         IEventGraph Root { get; }
 
         IQueryable<IEvent> Nodes { get; }
         IQueryable<IEventEdge> Edges { get; }
-        IQueryable<IEventGraph> Subgraphs { get; }
+
+        bool Contains(IEventEdge edge);
+
+        IList<CompoundExpression> Semantics { get; }
+    }
+
+    public interface IEventGraph : IIndividual
+    {
+        IEventSubgraph GetSubgraphById(string id);
+
+        IQueryable<IEvent> Nodes { get; }
+        IQueryable<IEventEdge> Edges { get; }
+        IQueryable<IEventSubgraph> Subgraphs { get; }
 
         IEvent FindOrCreateNode(/*...*/);
         IEventEdge FindOrCreateEdge(IEvent source, PredicateExpression relation, IEvent target);
-        IEventGraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
+        IEventSubgraph FindOrCreateSubgraph(IEnumerable<IEventEdge> edges);
 
         bool Add(IEventEdge edge);
         bool Remove(IEventEdge edge);
         bool Replace(IEventEdge remove, IEventEdge add);
+
+        bool Add(IEnumerable<IEventEdge> edges);
+        bool Remove(IEnumerable<IEventEdge> edges);
+        bool Replace(IEnumerable<IEventEdge> remove, IEnumerable<IEventEdge> add);
+
         bool Contains(IEventEdge edge);
 
         IList<CompoundExpression> Semantics { get; }
