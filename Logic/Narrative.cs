@@ -11,7 +11,7 @@ using System.Linq;
 // see also: 
 // Cardona-Rivera, Rogelio E., and R. Michael Young. "Desiderata for a Computational Model of Human Online Narrative Sensemaking." (2019).
 //
-// to do: (1) model for the processing of multiple interpretative hypotheses
+// to do: (1) model for the processing of multiple interpretations
 //        (2) hermeneutics, interpretive inferencing and interpretations of: events, sequences of events, and narrative structure
 //            (a) an intelligent agent, utilizing a knowledgebase, can make inferences which include interpretive inferences
 //        (3) graph structure, semantics and emergent semantics through automated reasoning processes
