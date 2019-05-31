@@ -7,6 +7,8 @@
 using Logic.Expressions;
 using System.Collections.Generic;
 
+// to do: (1) model for the processing of multiple interpretative hypotheses
+
 namespace System.Collections.Specialized
 {
     public interface ISemanticTree
