@@ -49,21 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents.cs" />
-    <Compile Include="Argumentation.cs" />
-    <Compile Include="Collections\ISemanticTree.cs" />
-    <Compile Include="Ethics.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Collections\IContainer.cs" />
-    <Compile Include="Expressions\Expressions.cs" />
-    <Compile Include="Collections\IDelta.cs" />
-    <Compile Include="Collections\IGraph.cs" />
-    <Compile Include="Knowledge.cs" />
-    <Compile Include="Narrative.cs" />
-    <Compile Include="Planning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Search.cs" />
-    <Compile Include="TheoremProving.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
