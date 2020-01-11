@@ -762,6 +762,12 @@ namespace Logic.Prolog.Swi
         [DllImport(DllFileName)]
         internal static extern int PL_put_nil(uintptr_t term);
 
+        [DllImport(DllFileName)]
+        internal static extern int PL_put_pointer(uintptr_t term, IntPtr ptr);
+        [DllImport(DllFileName)]
+        internal static extern int PL_get_pointer(uintptr_t term, [Out]out IntPtr ptr);
+
+
         [DllImport(DllFileName, CharSet = CharSet.Unicode, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         internal static extern int PL_get_wchars(uintptr_t term, [In, Out]ref int len, [In, Out]ref IntPtr s, uint flags);
 

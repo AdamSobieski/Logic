@@ -368,6 +368,14 @@ namespace Logic.Prolog.Swi
         { SafeNativeMethods.PL_put_nil(term); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void PL_put_pointer(uintptr_t term, IntPtr ptr)
+        { SafeNativeMethods.PL_put_pointer(term, ptr); }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void PL_get_pointer(uintptr_t term, out IntPtr ptr)
+        { SafeNativeMethods.PL_get_pointer(term, out ptr); }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int PL_get_wchars(uintptr_t term, out string s, uint flags)
         {
             var dummyLen = 0;

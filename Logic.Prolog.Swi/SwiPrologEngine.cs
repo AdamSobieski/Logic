@@ -226,6 +226,12 @@ namespace Logic.Prolog.Swi
             return SwiPrologQuery.Call(module, "retract(" + term + ")");
         }
 
+        [ScriptMember("retractAll")]
+        public bool RetractAll(string term)
+        {
+            return SwiPrologQuery.Call(module, "retractall(" + term + ")");
+        }
+
         [ScriptMember("contains")]
         public bool Contains(string term)
         {
