@@ -36,8 +36,8 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClearScript, Version=5.5.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ClearScript.5.5.5\lib\net45\ClearScript.dll</HintPath>
+    <Reference Include="ClearScript, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ClearScript.6.0.0\lib\net45\ClearScript.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,20 +60,20 @@
     <Compile Include="XsbPrologTerm.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{ff666a9b-081e-423a-bfaf-a05bd8a8665b}</Project>
       <Name>Logic</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.ClearScript.5.5.5\build\Microsoft.ClearScript.targets" Condition="Exists('..\packages\Microsoft.ClearScript.5.5.5\build\Microsoft.ClearScript.targets')" />
+  <Import Project="..\packages\Microsoft.ClearScript.6.0.0\build\net45\Microsoft.ClearScript.targets" Condition="Exists('..\packages\Microsoft.ClearScript.6.0.0\build\net45\Microsoft.ClearScript.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.ClearScript.5.5.5\build\Microsoft.ClearScript.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ClearScript.5.5.5\build\Microsoft.ClearScript.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ClearScript.6.0.0\build\net45\Microsoft.ClearScript.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ClearScript.6.0.0\build\net45\Microsoft.ClearScript.targets'))" />
   </Target>
 </Project>
