@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
-namespace Logic
+namespace Logic.Collections
 {
     public interface IKnowledgebase
     {
@@ -12,5 +13,8 @@ namespace Logic
         void Remove(string functor, params object[] tuple);
         void AddRule(string functor, Expression rule);
         void RemoveRule(string functor, Expression rule);
+
+        IQueryable<IRow> GetAssertions(string functor);
+        IQueryable<Expression> GetRules(string functor);
     }
 }

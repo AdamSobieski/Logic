@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IKnowledgebase.cs" />
+    <Compile Include="IRow.cs" />
     <Compile Include="ParadoxException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
