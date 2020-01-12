@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IKnowledgebase.cs" />
-    <Compile Include="IRow.cs" />
+    <Compile Include="Collections\IKnowledgebase.cs" />
+    <Compile Include="Collections\IRow.cs" />
     <Compile Include="ParadoxException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
