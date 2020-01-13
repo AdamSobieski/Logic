@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Logic.Collections
 {
@@ -10,6 +9,6 @@ namespace Logic.Collections
         bool Remove(params object[] tuple);
         void Clear();
 
-        ITupleStore Scope();
+        ITupleStore Scope(IKnowledgebase kb);
     }
 }

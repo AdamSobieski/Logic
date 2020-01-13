@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Logic.Collections
 {
@@ -12,11 +11,12 @@ namespace Logic.Collections
         void Store(string functor, object value, params object[] tuple);
         bool Contains(string functor, out object value, params object[] tuple);
         bool Remove(string functor, params object[] tuple);
-        void AddRule(string functor, Expression rule);
-        bool RemoveRule(string functor, Expression rule);
+        void AddRule(string functor, Rule rule);
+        bool ContainsRule(string functor, Rule rule);
+        bool RemoveRule(string functor, Rule rule);
 
         IQueryable<IRow> GetAssertions(string functor);
-        IQueryable<Expression> GetRules(string functor);
+        IQueryable<Rule> GetRules(string functor);
 
         IKnowledgebase Scope();
         IDisposable Edit();
