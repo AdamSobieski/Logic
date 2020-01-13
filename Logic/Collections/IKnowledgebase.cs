@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Logic.Collections
 {
-    public interface IKnowledgebase : ICloneable
+    public interface IKnowledgebase : ICloneable, IDisposable
     {
         void AddFunctor(string functor, Type valueType, params Type[] tupleTypes);
         bool ContainsFunctor(string functor);
@@ -18,6 +18,8 @@ namespace Logic.Collections
         IQueryable<IRow> GetAssertions(string functor);
         IQueryable<Expression> GetRules(string functor);
 
+        IKnowledgebase Scope();
         new IKnowledgebase Clone();
+        IDisposable Open();
     }
 }
