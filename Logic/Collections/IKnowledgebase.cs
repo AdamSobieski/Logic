@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Logic.Collections
 {
@@ -15,8 +15,8 @@ namespace Logic.Collections
         bool ContainsRule(string functor, Rule rule);
         bool RemoveRule(string functor, Rule rule);
 
-        IQueryable<IRow> GetAssertions(string functor);
-        IQueryable<Rule> GetRules(string functor);
+        IEnumerable<IRow> GetContents(string functor);
+        IEnumerable<Rule> GetRules(string functor);
 
         IKnowledgebase Scope();
         IDisposable Edit();
