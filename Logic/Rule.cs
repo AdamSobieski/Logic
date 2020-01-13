@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 namespace Logic
 {
-    public delegate IEnumerable<IRow> Rule(IKnowledgebase kb);
+    public delegate IEnumerable<object> Rule(IKnowledgebase kb, object[] data);
 }

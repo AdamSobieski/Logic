@@ -2,7 +2,7 @@
 
 namespace Logic.Collections
 {
-    internal interface ITupleStore : IEnumerable<IRow>
+    internal interface ITupleStore : IEnumerable<object[]>
     {
         bool Contains(out object value, params object[] tuple);
         void Store(object value, params object[] tuple);
