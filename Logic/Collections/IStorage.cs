@@ -3,14 +3,18 @@ using System.Collections.Generic;
 
 namespace Logic.Collections
 {
+    internal enum ContainsMode
+    {
+        Stored = 1,
+        StoredAndDerived = 3
+    }
+
     internal interface IStorage : IEnumerable<object[]>
     {
-        bool Contains(out object value, params object[] tuple);
-        bool Contains(out Justification justification, out object value, params object[] tuple);
-        void Contains(out IEnumerable<object> value, params object[] tuple);
+        bool Contains(ContainsMode mode, out object value, params object[] tuple);
+        bool Contains(ContainsMode mode, out Justification justification, out object value, params object[] tuple);
         void Store(object value, params object[] tuple);
         bool Remove(params object[] tuple);
-        void Clear();
 
         void AddRule(Rule rule);
         bool ContainsRule(Rule rule);
@@ -18,6 +22,6 @@ namespace Logic.Collections
 
         IStorage Scope(IKnowledgebase kb);
 
-        IEnumerable<object> AsEnumerable(object[] data);
+        IEnumerable<object> AsEnumerable(ContainsMode mode1, object[] data, JustificationMode mode2);
     }
 }

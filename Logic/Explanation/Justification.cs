@@ -2,7 +2,7 @@
 
 namespace Logic.Explanation
 {
-    public enum Mode
+    public enum JustificationMode
     {
         OptimizeForSpeed = 0,
         ProvideJustification = 1
