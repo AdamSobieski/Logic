@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Logic.Explanation;
+using System.Collections.Generic;
 
 namespace Logic.Collections
 {
     internal interface IStorage : IEnumerable<object[]>
     {
         bool Contains(out object value, params object[] tuple);
+        bool Contains(out Justification justification, out object value, params object[] tuple);
         void Contains(out IEnumerable<object> value, params object[] tuple);
         void Store(object value, params object[] tuple);
         bool Remove(params object[] tuple);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic.Explanation;
+using System;
 using System.Collections.Generic;
 
 namespace Logic.Collections
@@ -10,6 +11,7 @@ namespace Logic.Collections
         bool RemoveFunctor(string functor);
         void Store(string functor, object value, params object[] tuple);
         bool Contains(string functor, out object value, params object[] tuple);
+        bool Contains(string functor, out Justification justification, out object value, params object[] tuple);
         bool Remove(string functor, params object[] tuple);
         void AddRule(string functor, Rule rule);
         bool ContainsRule(string functor, Rule rule);

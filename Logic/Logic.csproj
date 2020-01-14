@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Collections\IKnowledgebase.cs" />
     <Compile Include="Collections\IStorage.cs" />
+    <Compile Include="Explanation\Justification.cs" />
     <Compile Include="ParadoxException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rule.cs" />
