@@ -10,6 +10,7 @@ namespace Logic.Collections
         bool RemoveFunctor(string functor);
         void Store(string functor, object value, params object[] tuple);
         bool Contains(string functor, out object value, params object[] tuple);
+        void Contains(string functor, out IEnumerable<object> value, params object[] tuple);
         bool Remove(string functor, params object[] tuple);
         void AddRule(string functor, Rule rule);
         bool ContainsRule(string functor, Rule rule);
