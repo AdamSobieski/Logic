@@ -18,7 +18,7 @@ namespace Logic.Collections
         bool RemoveRule(string functor, Rule rule);
 
         IEnumerable<object[]> GetContents(string functor);
-        IEnumerable<object> GetContents(string functor, object[] data);
+        IEnumerable<object> GetContents(string functor, object[] data, Mode mode);
         IEnumerable<Rule> GetRules(string functor);
 
         IKnowledgebase Scope();
