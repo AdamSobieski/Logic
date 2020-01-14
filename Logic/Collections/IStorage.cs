@@ -16,6 +16,6 @@ namespace Logic.Collections
 
         IStorage Scope(IKnowledgebase kb);
 
-        IEnumerator<object> GetEnumerator(object[] data);
+        IEnumerable<object> AsEnumerable(object[] data);
     }
 }
