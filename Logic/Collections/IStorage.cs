@@ -15,5 +15,7 @@ namespace Logic.Collections
         bool RemoveRule(Rule rule);
 
         IStorage Scope(IKnowledgebase kb);
+
+        IEnumerator<object> GetEnumerator(object[] data);
     }
 }
