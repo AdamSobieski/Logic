@@ -17,10 +17,13 @@ namespace Logic.Collections
         bool ContainsRule(string functor, Rule rule);
         bool RemoveRule(string functor, Rule rule);
 
+        IEnumerable<Justification> GetContents(string functor);
         IEnumerable<Justification> GetContents(string functor, object[] data, JustificationSettings mode);
-        IEnumerable<Rule> GetRules(string functor);
 
         IKnowledgebase Scope();
+        IKnowledgebase Commit();
+        IKnowledgebase Rollback();
+
         IDisposable Edit();
     }
 }

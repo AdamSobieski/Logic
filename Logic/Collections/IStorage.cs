@@ -21,6 +21,8 @@ namespace Logic.Collections
         bool RemoveRule(Rule rule);
 
         IStorage Scope(IKnowledgebase kb);
+        IStorage Commit();
+        IStorage Rollback();
 
         IEnumerable<Justification> AsEnumerable(Mode mode);
         IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, JustificationSettings settings);
