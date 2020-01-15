@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Logic.Explanation
 {
-    public enum JustificationMode
+    public enum JustificationSettings
     {
         OptimizeForSpeed = 0,
         ProvideJustification = 1

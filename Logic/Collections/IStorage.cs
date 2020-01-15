@@ -22,6 +22,6 @@ namespace Logic.Collections
 
         IStorage Scope(IKnowledgebase kb);
 
-        IEnumerable<object> AsEnumerable(Mode mode, object[] data, JustificationMode justification);
+        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, JustificationSettings justification);
     }
 }
