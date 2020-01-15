@@ -9,11 +9,11 @@ namespace Logic.Collections
         StoredAndDerived = 3
     }
 
-    internal interface IStorage : IEnumerable<object[]>
+    internal interface IStorage
     {
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
-        void Store(object value, params object[] tuple);
+        bool Store(object value, params object[] tuple);
         bool Remove(params object[] tuple);
 
         void AddRule(Rule rule);
@@ -22,6 +22,7 @@ namespace Logic.Collections
 
         IStorage Scope(IKnowledgebase kb);
 
-        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, JustificationSettings justification);
+        IEnumerable<Justification> AsEnumerable(Mode mode);
+        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, JustificationSettings settings);
     }
 }
