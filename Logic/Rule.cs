@@ -4,5 +4,10 @@ using System.Collections.Generic;
 
 namespace Logic
 {
-    public delegate IEnumerable<Justification> Rule(IKnowledgebase kb, object[] data, JustificationSettings justification);
+    public sealed class RuleSettings
+    {
+        public JustificationSettings Justification;
+    }
+
+    public delegate IEnumerable<Justification> Rule(IKnowledgebase kb, object[] data, RuleSettings settings);
 }

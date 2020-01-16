@@ -28,6 +28,6 @@ namespace Logic.Collections
         IStorage Rollback();
 
         IEnumerable<Justification> AsEnumerable(Mode mode);
-        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, JustificationSettings settings);
+        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, RuleSettings settings);
     }
 }

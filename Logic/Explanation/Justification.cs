@@ -5,7 +5,7 @@ namespace Logic.Explanation
 {
     public enum JustificationSettings
     {
-        OptimizeForSpeed = 0,
+        Optimize = 0,
         ProvideJustification = 1
     }
 

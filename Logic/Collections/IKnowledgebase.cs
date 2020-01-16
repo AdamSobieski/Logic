@@ -7,6 +7,7 @@ namespace Logic.Collections
     public interface IKnowledgebase
     {
         bool IsScope { get; }
+        IKnowledgebase Parent { get; }
 
         void AddFunctor(string functor, Type valueType, params Type[] tupleTypes);
         void AddFunctor(string functor, IStorage custom);
@@ -29,7 +30,7 @@ namespace Logic.Collections
         bool CheckConstraints();
 
         IEnumerable<Justification> AsEnumerable(string functor, Mode mode);
-        IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, JustificationSettings justification);
+        IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, RuleSettings settings);
 
         IKnowledgebase Scope();
         IKnowledgebase Commit();
