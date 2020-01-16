@@ -26,6 +26,8 @@ namespace Logic.Collections
         bool ContainsConstraint(Constraint constraint);
         bool RemoveConstraint(Constraint constraint);
 
+        bool CheckConstraints();
+
         IEnumerable<Justification> AsEnumerable(string functor, Mode mode);
         IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, JustificationSettings justification);
 
