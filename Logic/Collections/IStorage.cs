@@ -11,6 +11,8 @@ namespace Logic.Collections
 
     public interface IStorage
     {
+        bool IsScope { get; }
+
         void Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
