@@ -34,7 +34,5 @@ namespace Logic.Collections
         IKnowledgebase Scope();
         IKnowledgebase Commit();
         IKnowledgebase Rollback();
-
-        IDisposable Edit();
     }
 }
