@@ -17,8 +17,8 @@ namespace Logic.Collections
         bool ContainsRule(string functor, Rule rule);
         bool RemoveRule(string functor, Rule rule);
 
-        IEnumerable<Justification> GetContents(string functor);
-        IEnumerable<Justification> GetContents(string functor, object[] data, JustificationSettings mode);
+        IEnumerable<Justification> AsEnumerable(string functor, Mode mode);
+        IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, JustificationSettings justification);
 
         IKnowledgebase Scope();
         IKnowledgebase Commit();
