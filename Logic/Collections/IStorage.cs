@@ -9,11 +9,11 @@ namespace Logic.Collections
         StoredAndDerived = 3
     }
 
-    internal interface IStorage
+    public interface IStorage
     {
+        void Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
-        void Store(object value, params object[] tuple);
         bool Remove(params object[] tuple);
 
         void AddRule(Rule rule);
