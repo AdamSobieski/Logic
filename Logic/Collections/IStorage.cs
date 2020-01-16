@@ -27,7 +27,6 @@ namespace Logic.Collections
         IStorage Commit();
         IStorage Rollback();
 
-        IEnumerable<Justification> AsEnumerable(Mode mode);
         IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, RuleSettings settings);
     }
 }

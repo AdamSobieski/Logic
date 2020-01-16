@@ -29,7 +29,6 @@ namespace Logic.Collections
 
         bool CheckConstraints();
 
-        IEnumerable<Justification> AsEnumerable(string functor, Mode mode);
         IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, RuleSettings settings);
 
         IKnowledgebase Scope();
