@@ -5,8 +5,9 @@ namespace Logic.Collections
 {
     public enum Mode
     {
-        Stored = 1,
-        StoredAndDerived = 3
+        StoredAdditions = 1,
+        StoredRemovals = 2,
+        StoredAndDerivedAdditions = 5
     }
 
     public interface IStorage
