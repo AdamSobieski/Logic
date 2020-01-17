@@ -14,7 +14,7 @@ namespace Logic.Collections
     {
         bool IsScope { get; }
 
-        int Length { get; }
+        int Columns { get; }
 
         void Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
@@ -31,5 +31,6 @@ namespace Logic.Collections
         IStorage Rollback();
 
         IEnumerable<Justification> Match(Mode mode, object[] pattern, RuleSettings settings);
+        int Count(Mode mode, object[] pattern);
     }
 }

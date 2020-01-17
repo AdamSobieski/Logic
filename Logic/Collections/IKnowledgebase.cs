@@ -14,7 +14,7 @@ namespace Logic.Collections
         bool ContainsFunctor(string functor);
         IEnumerable<string> GetFunctors();
         bool RemoveFunctor(string functor);
-        int GetLength(string functor);
+        int GetColumns(string functor);
 
         void Store(string functor, object value, params object[] tuple);
         bool Contains(string functor, out object value, params object[] tuple);
@@ -34,6 +34,7 @@ namespace Logic.Collections
         bool CheckConstraints();
 
         IEnumerable<Justification> Match(string functor, Mode mode, object[] pattern, RuleSettings settings);
+        int Count(string functor, Mode mode, object[] pattern);
 
         IKnowledgebase Scope();
         IKnowledgebase Commit();
