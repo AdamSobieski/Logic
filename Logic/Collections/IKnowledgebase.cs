@@ -34,7 +34,6 @@ namespace Logic.Collections
         bool CheckConstraints();
 
         IEnumerable<Justification> Match(string functor, Mode mode, object[] pattern, RuleSettings settings);
-        IEnumerable<Justification> AsEnumerable(string functor, Mode mode, object[] data, RuleSettings settings);
 
         IKnowledgebase Scope();
         IKnowledgebase Commit();

@@ -31,6 +31,5 @@ namespace Logic.Collections
         IStorage Rollback();
 
         IEnumerable<Justification> Match(Mode mode, object[] pattern, RuleSettings settings);
-        IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, RuleSettings settings);
     }
 }
