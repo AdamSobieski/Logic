@@ -12,6 +12,7 @@ namespace Logic.Collections
         void AddFunctor(string functor, Type valueType, params Type[] tupleTypes);
         void AddFunctor(string functor, IStorage custom);
         bool ContainsFunctor(string functor);
+        IEnumerable<string> GetFunctors();
         bool RemoveFunctor(string functor);
 
         void Store(string functor, object value, params object[] tuple);
@@ -21,10 +22,12 @@ namespace Logic.Collections
 
         void AddRule(string functor, Rule rule);
         bool ContainsRule(string functor, Rule rule);
+        IEnumerable<Rule> GetRules(string functor);
         bool RemoveRule(string functor, Rule rule);
 
         void AddConstraint(Constraint constraint);
         bool ContainsConstraint(Constraint constraint);
+        IEnumerable<Constraint> GetConstraints();
         bool RemoveConstraint(Constraint constraint);
 
         bool CheckConstraints();

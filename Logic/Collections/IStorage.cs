@@ -21,6 +21,7 @@ namespace Logic.Collections
 
         void AddRule(Rule rule);
         bool ContainsRule(Rule rule);
+        IEnumerable<Rule> GetRules();
         bool RemoveRule(Rule rule);
 
         IStorage Scope(IKnowledgebase kb);
