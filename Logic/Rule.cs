@@ -9,5 +9,5 @@ namespace Logic
         public JustificationSettings Justification;
     }
 
-    public delegate IEnumerable<Justification> Rule(IKnowledgebase kb, object[] data, RuleSettings settings);
+    public delegate IEnumerable<Justification> Rule(IKnowledgebase kb, object[] pattern, RuleSettings settings);
 }

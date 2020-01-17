@@ -6,7 +6,8 @@ namespace Logic.Explanation
     public enum JustificationSettings
     {
         Optimize = 0,
-        ProvideJustification = 1
+        Compounds = 1,
+        Justifications = 2
     }
 
     public sealed class Justification : IEquatable<Justification>

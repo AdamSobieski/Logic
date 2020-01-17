@@ -14,6 +14,8 @@ namespace Logic.Collections
     {
         bool IsScope { get; }
 
+        int Length { get; }
+
         void Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
@@ -28,6 +30,7 @@ namespace Logic.Collections
         IStorage Commit();
         IStorage Rollback();
 
+        IEnumerable<Justification> Match(Mode mode, object[] pattern, RuleSettings settings);
         IEnumerable<Justification> AsEnumerable(Mode mode, object[] data, RuleSettings settings);
     }
 }
