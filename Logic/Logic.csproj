@@ -53,8 +53,10 @@
     <Compile Include="Collections\IStorage.cs" />
     <Compile Include="Constraint.cs" />
     <Compile Include="Explanation\Justification.cs" />
+    <Compile Include="Expressions\Expressions.cs" />
     <Compile Include="ParadoxException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\Reflection.cs" />
     <Compile Include="Rule.cs" />
   </ItemGroup>
   <ItemGroup>

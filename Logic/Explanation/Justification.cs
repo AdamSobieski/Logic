@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Logic.Expressions;
+using Logic.Reflection;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Logic.Explanation
 {
@@ -12,60 +15,65 @@ namespace Logic.Explanation
 
     public sealed class Justification : IEquatable<Justification>
     {
-        public string Functor;
-        public object[] Data;
-        public List<RuleApplication> Derivations;
+        static ReadOnlyCollection<RuleApplication> s_empty = new ReadOnlyCollection<RuleApplication>(new List<RuleApplication>(0));
 
-        public override int GetHashCode()
+        public Justification(EqualExpression expression)
         {
-            int hash = Functor.GetHashCode();
-            int n = Data.Length;
-            for (int i = 0; i < n; ++i)
-            {
-                hash = (hash * 33) ^ Data[i].GetHashCode();
-            }
-            n = Derivations.Count;
-            for (int i = 0; i < n; ++i)
-            {
-                hash = (hash * 33) ^ Derivations[i].GetHashCode();
-            }
-            return hash;
+            m_expr = expression;
+            m_ras = s_empty;
         }
+        public Justification(EqualExpression expression, RuleApplication ra)
+        {
+            m_expr = expression;
+            var list = new List<RuleApplication>(1);
+            list.Add(ra);
+            m_ras = new ReadOnlyCollection<RuleApplication>(list);
+        }
+        public Justification(EqualExpression expression, IEnumerable<RuleApplication> ras)
+        {
+            m_expr = expression;
+            var list = new List<RuleApplication>(ras);
+            list.TrimExcess();
+            m_ras = new ReadOnlyCollection<RuleApplication>(list);
+        }
+
+        readonly EqualExpression m_expr;
+        readonly ReadOnlyCollection<RuleApplication> m_ras;
+
+        public EqualExpression Expression
+        {
+            get
+            {
+                return m_expr;
+            }
+        }
+        public IReadOnlyList<RuleApplication> Derivations
+        {
+            get
+            {
+                return m_ras;
+            }
+        }
+
         public override bool Equals(object obj)
         {
-            if (obj is Justification other)
+            if (obj is Justification j)
             {
-                if (!Functor.Equals(other.Functor)) return false;
-                int n = Data.Length;
-                if (other.Data.Length != n) return false;
-                for (int i = 0; i < n; ++i)
-                {
-                    if (!Data[i].Equals(other.Data[i])) return false;
-                }
-                n = Derivations.Count;
-                if (other.Derivations.Count != n) return false;
-                for (int i = 0; i < n; ++i)
-                {
-                    if (!Derivations[i].Equals(other.Derivations[i])) return false;
-                }
-                return true;
+                return Equals(j);
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
         public bool Equals(Justification other)
         {
-            if (!Functor.Equals(other.Functor)) return false;
-            int length = Data.Length;
-            if (other.Data.Length != length) return false;
-            for (int i = 0; i < length; ++i)
+            if (!m_expr.Equals(other.m_expr)) return false;
+            int count = m_ras.Count;
+            if (count != other.m_ras.Count) return false;
+            for (int i = 0; i < count; ++i)
             {
-                if (!Data[i].Equals(other.Data[i])) return false;
-            }
-            length = Derivations.Count;
-            if (other.Derivations.Count != length) return false;
-            for (int i = 0; i < length; ++i)
-            {
-                if (!Derivations[i].Equals(other.Derivations[i])) return false;
+                if (!m_ras[i].Equals(other.m_ras[i])) return false;
             }
             return true;
         }
@@ -73,40 +81,63 @@ namespace Logic.Explanation
 
     public sealed class RuleApplication : IEquatable<RuleApplication>
     {
-        public string Rule;
-        public List<Justification> Dependencies;
-
-        public override int GetHashCode()
+        public RuleApplication(RuleInfo rule, IEnumerable<KeyValuePair<EqualExpression, Justification>> data)
         {
-            int hash = Rule.GetHashCode();
-            int n = Dependencies.Count;
-            for (int i = 0; i < n; ++i)
-            {
-                hash = (hash * 33) ^ Dependencies[i].GetHashCode();
-            }
-            return hash;
+            m_rule = rule;
+            var dictionary = new Dictionary<EqualExpression, Justification>();
+            foreach (var kvp in data)
+                dictionary.Add(kvp.Key, kvp.Value);
+            m_data = new ReadOnlyDictionary<EqualExpression, Justification>(dictionary);
+
+            // can generate m_bindings automatically
         }
+
+        readonly RuleInfo m_rule;
+        readonly ReadOnlyDictionary<VariableExpression, ConstantExpression> m_bindings;
+        readonly ReadOnlyDictionary<EqualExpression, Justification> m_data;
+
+        public RuleInfo Rule
+        {
+            get
+            {
+                return m_rule;
+            }
+        }
+        public IReadOnlyDictionary<VariableExpression, ConstantExpression> Bindings
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public IReadOnlyDictionary<EqualExpression, Justification> Dependencies
+        {
+            get
+            {
+                return m_data;
+            }
+        }
+
         public override bool Equals(object obj)
         {
-            if (obj is RuleApplication other)
+            if (obj is RuleApplication ra)
             {
-                if (!Rule.Equals(other.Rule)) return false;
-                int n = Dependencies.Count;
-                for (int i = 0; i < n; ++i)
-                {
-                    if (!Dependencies[i].Equals(other.Dependencies[i])) return false;
-                }
-                return true;
+                return Equals(ra);
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
         public bool Equals(RuleApplication other)
         {
-            if (!Rule.Equals(other.Rule)) return false;
-            int n = Dependencies.Count;
-            for (int i = 0; i < n; ++i)
+            if (!m_rule.Equals(other.m_rule)) return false;
+            if (m_data.Count != other.m_data.Count) return false;
+            foreach (var kvp in m_data)
             {
-                if (!Dependencies[i].Equals(other.Dependencies[i])) return false;
+                Justification otherValue;
+                if (!other.m_data.TryGetValue(kvp.Key, out otherValue)) return false;
+                if (!kvp.Value.Equals(otherValue)) return false;
             }
             return true;
         }
