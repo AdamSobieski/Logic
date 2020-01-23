@@ -149,7 +149,10 @@ namespace Logic.Expressions
     {
         internal AndExpression(Expression[] expressions)
         {
-            var list = new List<Expression>(expressions.Length);
+            int length = expressions.Length;
+            for (int i = 0; i < length; ++i)
+                if (expressions[i].Type != typeof(bool)) throw new ArgumentException("", nameof(expressions));
+            var list = new List<Expression>(length);
             list.AddRange(expressions);
             m_children = new ReadOnlyCollection<Expression>(list);
         }
@@ -164,7 +167,10 @@ namespace Logic.Expressions
     {
         internal OrExpression(Expression[] expressions)
         {
-            var list = new List<Expression>(expressions.Length);
+            int length = expressions.Length;
+            for (int i = 0; i < length; ++i)
+                if (expressions[i].Type != typeof(bool)) throw new ArgumentException("", nameof(expressions));
+            var list = new List<Expression>(length);
             list.AddRange(expressions);
             m_children = new ReadOnlyCollection<Expression>(list);
         }
