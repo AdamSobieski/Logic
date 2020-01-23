@@ -84,6 +84,18 @@ namespace Logic.Expressions
 
         public override Type Type => m_type;
         public override ExpressionType ExpressionType => ExpressionType.Constant;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ConstantExpression other)
+            {
+                return m_value.Equals(other.m_value) && m_type.Equals(other.m_type);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public sealed class VariableExpression : TermExpression
@@ -99,6 +111,18 @@ namespace Logic.Expressions
         public string Name => m_name;
         public override Type Type => m_type;
         public override ExpressionType ExpressionType => ExpressionType.Variable;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VariableExpression other)
+            {
+                return m_name.Equals(other.m_name) && m_type.Equals(other.m_type);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public sealed class CompoundExpression : Expression
@@ -126,6 +150,24 @@ namespace Logic.Expressions
         public ReadOnlyCollection<Expression> Arguments => m_arguments;
         public override Type Type => m_functor.FunctorType;
         public override ExpressionType ExpressionType => ExpressionType.Compound;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is CompoundExpression other)
+            {
+                if (!m_functor.Equals(other.m_functor)) return false;
+                int count = m_arguments.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    if (!m_arguments[i].Equals(other.m_arguments[i])) return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public sealed class EqualExpression : Expression
@@ -143,6 +185,18 @@ namespace Logic.Expressions
 
         public override Type Type => typeof(bool);
         public override ExpressionType ExpressionType => ExpressionType.Equal;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is EqualExpression other)
+            {
+                return m_left.Equals(other.m_left) && m_right.Equals(other.m_right);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public sealed class AndExpression : Expression
