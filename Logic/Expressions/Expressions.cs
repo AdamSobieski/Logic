@@ -100,6 +100,8 @@ namespace Logic.Expressions
         public override Type Type => m_type;
         public override ExpressionType ExpressionType => ExpressionType.Constant;
 
+        public object Value => m_value;
+
         public override bool Equals(object obj)
         {
             if (obj is ConstantExpression other)
@@ -215,7 +217,17 @@ namespace Logic.Expressions
 
         public IEnumerable<Justification> Evaluate(IKnowledgebase kb, RuleSettings settings)
         {
-            throw new NotImplementedException();
+            CompoundExpression compound = m_left as CompoundExpression;
+            var args = compound.Arguments;
+            var count = args.Count;
+            object[] pattern = new object[count + 1];
+            for (int i = 0; i < count; ++i)
+            {
+                pattern[i + 1] = (args[i] as ConstantExpression).Value;
+            }
+            pattern[0] = (m_right as ConstantExpression).Value;
+
+            return kb.Match(compound.Functor.DeclaringType + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
         }
     }
 
