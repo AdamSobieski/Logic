@@ -217,17 +217,51 @@ namespace Logic.Expressions
 
         public IEnumerable<Justification> Evaluate(IKnowledgebase kb, RuleSettings settings)
         {
-            CompoundExpression compound = m_left as CompoundExpression;
-            var args = compound.Arguments;
-            var count = args.Count;
-            object[] pattern = new object[count + 1];
-            for (int i = 0; i < count; ++i)
+            if (m_left is CompoundExpression compound)
             {
-                pattern[i + 1] = (args[i] as ConstantExpression).Value;
-            }
-            pattern[0] = (m_right as ConstantExpression).Value;
+                var args = compound.Arguments;
+                var count = args.Count;
+                object[] pattern = new object[count + 1];
+                Dictionary<VariableExpression, Variable> mapping = new Dictionary<VariableExpression, Variable>();
+                for (int i = 0; i < count; ++i)
+                {
+                    if (args[i] is ConstantExpression constant)
+                    {
+                        pattern[i + 1] = constant.Value;
+                    }
+                    else if (args[i] is VariableExpression variable)
+                    {
+                        Logic.Variable x;
+                        if (!mapping.TryGetValue(variable, out x))
+                        {
+                            x = new Variable();
+                            mapping.Add(variable, x);
+                        }
+                        pattern[i + 1] = x;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                if (m_right is ConstantExpression constant2)
+                {
+                    pattern[0] = constant2.Value;
+                }
+                else if (m_right is VariableExpression variable2)
+                {
+                    Logic.Variable x;
+                    if (!mapping.TryGetValue(variable2, out x))
+                    {
+                        x = new Variable();
+                        mapping.Add(variable2, x);
+                    }
+                    pattern[0] = x;
+                }
 
-            return kb.Match(compound.Functor.DeclaringType.FullName + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
+                return kb.Match(compound.Functor.DeclaringType.FullName + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
+            }
+            else throw new NotImplementedException();
         }
     }
 
