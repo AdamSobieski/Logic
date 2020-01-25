@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Logic
 {
@@ -37,7 +39,7 @@ namespace Logic
                         return s_emptyScope;
                     }
                 }
-                if (obj.Equals(arg))
+                else if (obj.Equals(arg))
                 {
                     unified = true;
                     return s_emptyScope;
@@ -56,7 +58,8 @@ namespace Logic
         IDisposable Unify(object arg, out bool unified);
     }
 
-    // TO DO: add constraints?
+    public delegate bool UnificationConstraint(object arg);
+
     public sealed class Variable : IUnifiable
     {
         private struct Scope : IDisposable
@@ -74,8 +77,25 @@ namespace Logic
             }
         }
 
-        private bool m_isBound = false;
+        public Variable()
+        {
+            m_isBound = false;
+            m_constraints = null;
+        }
+        public Variable(params UnificationConstraint[] constraints)
+        {
+            m_isBound = false;
+            m_constraints = new List<UnificationConstraint>(constraints);
+        }
+        public Variable(IEnumerable<UnificationConstraint> constraints)
+        {
+            m_isBound = false;
+            m_constraints = new List<UnificationConstraint>(constraints);
+        }
+
+        private bool m_isBound;
         private object m_value;
+        private List<UnificationConstraint> m_constraints;
 
         public object Value
         {
@@ -110,9 +130,17 @@ namespace Logic
                 }
                 else
                 {
-                    m_isBound = true;
-                    unified = true;
-                    return new Scope(this);
+                    if (m_constraints == null || m_constraints.All(constraint => constraint(arg)))
+                    {
+                        m_isBound = true;
+                        unified = true;
+                        return new Scope(this);
+                    }
+                    else
+                    {
+                        unified = false;
+                        return Extensions.s_emptyScope;
+                    }
                 }
             }
             else
