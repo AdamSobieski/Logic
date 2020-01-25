@@ -227,7 +227,7 @@ namespace Logic.Expressions
             }
             pattern[0] = (m_right as ConstantExpression).Value;
 
-            return kb.Match(compound.Functor.DeclaringType + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
+            return kb.Match(compound.Functor.DeclaringType.FullName + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
         }
     }
 
