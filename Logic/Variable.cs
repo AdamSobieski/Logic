@@ -97,6 +97,9 @@ namespace Logic
         private object m_value;
         private List<UnificationConstraint> m_constraints;
 
+        public bool IsBound => m_isBound;
+        public bool HasConstraints => m_constraints != null;
+
         public object Value
         {
             get
