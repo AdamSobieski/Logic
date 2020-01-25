@@ -1,4 +1,6 @@
-﻿using Logic.Reflection;
+﻿using Logic.Collections;
+using Logic.Explanation;
+using Logic.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,18 +40,31 @@ namespace Logic.Expressions
         {
             return new EqualExpression(compound, value);
         }
-        public static EqualExpression Equal(string functor, object[] data)
+        public static EqualExpression Equal(FunctorInfo functor, object[] data)
         {
-            FunctorInfo functorInfo = Logic.Reflection.Builtin.GetFunctor(functor);
             int length = data.Length;
             ConstantExpression[] expressions = new ConstantExpression[length - 1];
             for (int i = 1; i < length; ++i)
             {
-                expressions[i - 1] = Constant(data[i]);
+                object data_i = data[i];
+                expressions[i - 1] = Constant((data_i is Variable x) ? x.Value : data_i);
             }
             ConstantExpression value = Constant(data[0]);
-            CompoundExpression compound = Compound(functorInfo, expressions);
+            CompoundExpression compound = Compound(functor, expressions);
             return Equal(compound, value);
+        }
+        public static EqualExpression Equal(FunctorInfo functor, object value, object[] tuple)
+        {
+            int length = tuple.Length;
+            ConstantExpression[] expressions = new ConstantExpression[length];
+            for (int i = 0; i < length; ++i)
+            {
+                object tuple_i = tuple[i];
+                expressions[i] = Constant((tuple_i is Variable x1) ? x1.Value : tuple_i);
+            }
+            ConstantExpression _value = Constant((value is Variable x2) ? x2.Value : value);
+            CompoundExpression compound = Compound(functor, expressions);
+            return Equal(compound, _value);
         }
         public static AndExpression And(params Expression[] expressions)
         {
@@ -196,6 +211,11 @@ namespace Logic.Expressions
             {
                 return false;
             }
+        }
+
+        public IEnumerable<Justification> Evaluate(IKnowledgebase kb, RuleSettings settings)
+        {
+            throw new NotImplementedException();
         }
     }
 
