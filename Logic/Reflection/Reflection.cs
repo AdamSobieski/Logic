@@ -34,7 +34,8 @@ namespace Logic.Reflection
 
             MethodInfo m = domainType.GetMethod(ruleName, BindingFlags.Public | BindingFlags.Static);
 
-            return new RuntimeRuleInfo(assembly, domainTypeName, ruleName, null);
+            // TO DO: parse a RuleExpression from an attribute's text value
+            return new RuntimeRuleInfo(domainType, ruleName, null);
         }
         public static FunctorInfo GetFunctor(this Assembly assembly, string name)
         {
@@ -46,8 +47,8 @@ namespace Logic.Reflection
             //if (domainAttribute == null) throw new ArgumentException("", nameof(name));
 
             PropertyInfo p = domainType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
-            //FunctorAttribute fa = p.GetCustomAttribute<FunctorAttribute>();
-            //if (fa == null) throw new ArgumentException("", nameof(name));
+            //FunctorAttribute functorAttribute = p.GetCustomAttribute<FunctorAttribute>();
+            //if (functorAttribute == null) throw new ArgumentException("", nameof(name));
 
             Type shim = p.PropertyType;
             var dma = shim.GetCustomAttribute<DefaultMemberAttribute>();
@@ -61,79 +62,105 @@ namespace Logic.Reflection
             for (int i = 1; i < length; ++i)
                 parameters[i - 1] = ps[i];
 
-            return new RuntimeFunctorInfo(assembly, domainTypeName, propertyName, functorType, parameters);
+            return new RuntimeFunctorInfo(domainType, propertyName, functorType, parameters);
         }
     }
 
     internal sealed class RuntimeRuleInfo : RuleInfo
     {
-        public RuntimeRuleInfo(Assembly assembly, string ns, string name, RuleExpression expression)
+        public RuntimeRuleInfo(Type type, string name, RuleExpression expression)
         {
-            m_assembly = assembly;
-            m_ns = ns;
+            m_type = type;
             m_name = name;
             m_expr = expression;
         }
-        readonly Assembly m_assembly;
-        readonly string m_ns;
+        readonly Type m_type;
         readonly string m_name;
         readonly RuleExpression m_expr;
 
-        public override Assembly Assembly => m_assembly;
-
         public override string Name => m_name;
-
-        public override string Namespace => m_ns;
 
         public override RuleExpression Expression => m_expr;
 
-        public override FunctorInfo[] GetDependencies()
+        public override Type DeclaringType => m_type;
+
+        public override Type ReflectedType => m_type;
+
+        public override object[] GetCustomAttributes(bool inherit)
         {
-            throw new NotImplementedException();
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].GetCustomAttributes(inherit);
+        }
+
+        public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+        {
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].GetCustomAttributes(attributeType, inherit);
+        }
+
+        public override bool IsDefined(Type attributeType, bool inherit)
+        {
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].IsDefined(attributeType, inherit);
         }
     }
 
     internal sealed class RuntimeFunctorInfo : FunctorInfo
     {
-        public RuntimeFunctorInfo(Assembly assembly, string ns, string name, Type functorType, ParameterInfo[] parameters)
+        public RuntimeFunctorInfo(Type type, string name, Type functorType, ParameterInfo[] parameters)
         {
-            m_assembly = assembly;
-            m_ns = ns;
+            m_type = type;
             m_name = name;
             m_functorType = functorType;
             m_parameters = parameters;
         }
-        readonly Assembly m_assembly;
-        readonly string m_ns;
+        readonly Type m_type;
         readonly string m_name;
         readonly Type m_functorType;
         readonly ParameterInfo[] m_parameters;
 
-        public override Assembly Assembly => m_assembly;
-
         public override string Name => m_name;
 
-        public override string Namespace => m_ns;
-
         public override Type FunctorType => m_functorType;
+
+        public override Type DeclaringType => m_type;
+
+        public override Type ReflectedType => m_type;
 
         public override ParameterInfo[] GetParameters()
         {
             return (ParameterInfo[])m_parameters.Clone();
         }
+
+        public override object[] GetCustomAttributes(bool inherit)
+        {
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].GetCustomAttributes(inherit);
+        }
+
+        public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+        {
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].GetCustomAttributes(attributeType, inherit);
+        }
+
+        public override bool IsDefined(Type attributeType, bool inherit)
+        {
+            return m_type.GetMember(m_name, BindingFlags.Public | BindingFlags.Static)[0].IsDefined(attributeType, inherit);
+        }
     }
 
-    public abstract class RuleInfo : IEquatable<RuleInfo>
+    public abstract class RuleInfo : ICustomAttributeProvider, IEquatable<RuleInfo>
     {
-        public abstract Assembly Assembly { get; }
+        public abstract Type DeclaringType { get; }
 
-        public abstract string Name { get; }
-        public abstract string Namespace { get; }
-        public string FullName => Namespace + "." + Name;
-
-        public abstract FunctorInfo[] GetDependencies();
+        public abstract Type ReflectedType { get; }
 
         public abstract RuleExpression Expression { get; }
+
+        //public FunctorInfo[] GetDependencies()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public abstract string Name { get; }
+
+        // MethodInfo Method { get; }
 
         public override bool Equals(object obj)
         {
@@ -146,23 +173,30 @@ namespace Logic.Reflection
                 return false;
             }
         }
-        public bool Equals(RuleInfo other)
+        public virtual bool Equals(RuleInfo other)
         {
-            if (!Assembly.Equals(other.Assembly)) return false;
-            if (!FullName.Equals(other.FullName)) return false;
+            if (!DeclaringType.Equals(other.DeclaringType)) return false;
+            if (!Name.Equals(other.Name)) return false;
             return true;
         }
+
+        public abstract object[] GetCustomAttributes(bool inherit);
+
+        public abstract object[] GetCustomAttributes(Type attributeType, bool inherit);
+
+        public abstract bool IsDefined(Type attributeType, bool inherit);
     }
 
-    public abstract class FunctorInfo : IEquatable<FunctorInfo>
+    public abstract class FunctorInfo : ICustomAttributeProvider, IEquatable<FunctorInfo>
     {
-        public abstract Assembly Assembly { get; }
+        public abstract Type FunctorType { get; }
+
+        public abstract Type DeclaringType { get; }
+
+        public abstract Type ReflectedType { get; }
 
         public abstract string Name { get; }
-        public abstract string Namespace { get; }
-        public string FullName => Namespace + "." + Name;
 
-        public abstract Type FunctorType { get; }
         public abstract ParameterInfo[] GetParameters();
 
         public override bool Equals(object obj)
@@ -176,11 +210,17 @@ namespace Logic.Reflection
                 return false;
             }
         }
-        public bool Equals(FunctorInfo other)
+        public virtual bool Equals(FunctorInfo other)
         {
-            if (!Assembly.Equals(other.Assembly)) return false;
-            if (!FullName.Equals(other.FullName)) return false;
+            if (!DeclaringType.Equals(other.DeclaringType)) return false;
+            if (!Name.Equals(other.Name)) return false;
             return true;
         }
+
+        public abstract object[] GetCustomAttributes(bool inherit);
+
+        public abstract object[] GetCustomAttributes(Type attributeType, bool inherit);
+
+        public abstract bool IsDefined(Type attributeType, bool inherit);
     }
 }

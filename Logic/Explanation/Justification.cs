@@ -9,7 +9,7 @@ namespace Logic.Explanation
     public enum JustificationSettings
     {
         Optimize = 0,
-        Compounds = 1,
+        Expressions = 1,
         Justifications = 2
     }
 
