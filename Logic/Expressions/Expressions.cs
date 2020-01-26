@@ -106,7 +106,7 @@ namespace Logic.Expressions
         {
             if (obj is ConstantExpression other)
             {
-                return m_value.Equals(other.m_value) && m_type.Equals(other.m_type);
+                return object.ReferenceEquals(this, other) || (m_value.Equals(other.m_value) && m_type.Equals(other.m_type));
             }
             else
             {
@@ -133,7 +133,7 @@ namespace Logic.Expressions
         {
             if (obj is VariableExpression other)
             {
-                return m_name.Equals(other.m_name) && m_type.Equals(other.m_type);
+                return object.ReferenceEquals(this, other) || (m_name.Equals(other.m_name) && m_type.Equals(other.m_type));
             }
             else
             {
@@ -172,6 +172,8 @@ namespace Logic.Expressions
         {
             if (obj is CompoundExpression other)
             {
+                if (object.ReferenceEquals(this, other)) return true;
+
                 if (!m_functor.Equals(other.m_functor)) return false;
                 int count = m_arguments.Count;
                 for (int i = 0; i < count; ++i)
@@ -207,7 +209,7 @@ namespace Logic.Expressions
         {
             if (obj is EqualExpression other)
             {
-                return m_left.Equals(other.m_left) && m_right.Equals(other.m_right);
+                return object.ReferenceEquals(this, other) || (m_left.Equals(other.m_left) && m_right.Equals(other.m_right));
             }
             else
             {
@@ -317,5 +319,10 @@ namespace Logic.Expressions
 
         public override Type Type => typeof(void);
         public override ExpressionType ExpressionType => ExpressionType.Rule;
+
+        public Rule Compile()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
