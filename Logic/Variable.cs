@@ -124,8 +124,27 @@ namespace Logic
         {
             if (!m_isBound)
             {
-                m_value = (arg is Variable x) ? x.Value : arg;
+                object _arg = (arg is Variable x) ? x.Value : arg;
 
+                if (m_constraints != null)
+                {
+                    bool all = true;
+                    for (int i = 0; i < m_constraints.Count; ++i)
+                    {
+                        if (!m_constraints[i](_arg))
+                        {
+                            all = false;
+                            break;
+                        }
+                    }
+                    if (!all)
+                    {
+                        unified = false;
+                        return Extensions.s_emptyScope;
+                    }
+                }
+
+                m_value = _arg;
                 if (m_value == this)
                 {
                     unified = true;
@@ -133,17 +152,9 @@ namespace Logic
                 }
                 else
                 {
-                    if (m_constraints == null || m_constraints.All(constraint => constraint(arg)))
-                    {
-                        m_isBound = true;
-                        unified = true;
-                        return new Scope(this);
-                    }
-                    else
-                    {
-                        unified = false;
-                        return Extensions.s_emptyScope;
-                    }
+                    m_isBound = true;
+                    unified = true;
+                    return new Scope(this);
                 }
             }
             else
