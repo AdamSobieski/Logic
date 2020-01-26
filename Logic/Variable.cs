@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Logic
 {
@@ -129,7 +128,8 @@ namespace Logic
                 if (m_constraints != null)
                 {
                     bool all = true;
-                    for (int i = 0; i < m_constraints.Count; ++i)
+                    int count = m_constraints.Count;
+                    for (int i = 0; i < count; ++i)
                     {
                         if (!m_constraints[i](_arg))
                         {
