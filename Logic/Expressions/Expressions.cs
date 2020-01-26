@@ -259,7 +259,7 @@ namespace Logic.Expressions
                     pattern[0] = x;
                 }
 
-                return kb.Match(compound.Functor.DeclaringType.FullName + "." + compound.Functor.Name + ", " + compound.Functor.DeclaringType.Assembly.FullName, Mode.StoredAndDerivedAdditions, pattern, settings);
+                return kb.Match(compound.Functor, Mode.StoredAndDerivedAdditions, pattern, settings);
             }
             else throw new NotImplementedException();
         }

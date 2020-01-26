@@ -1,5 +1,5 @@
 ﻿using Logic.Explanation;
-using System;
+using Logic.Reflection;
 using System.Collections.Generic;
 
 namespace Logic.Collections
@@ -9,22 +9,21 @@ namespace Logic.Collections
         bool IsScope { get; }
         IKnowledgebase Parent { get; }
 
-        void AddFunctor(string functor, Type valueType, params Type[] tupleTypes);
-        void AddFunctor(string functor, IStorage custom);
-        bool ContainsFunctor(string functor);
-        IEnumerable<string> GetFunctors();
-        bool RemoveFunctor(string functor);
-        int GetColumns(string functor);
+        void AddFunctor(FunctorInfo functor);
+        void AddFunctor(FunctorInfo functor, IStorage custom);
+        bool ContainsFunctor(FunctorInfo functor);
+        IEnumerable<FunctorInfo> GetFunctors();
+        bool RemoveFunctor(FunctorInfo functor);
 
-        void Store(string functor, object value, params object[] tuple);
-        bool Contains(string functor, out object value, params object[] tuple);
-        bool Contains(string functor, out Justification justification, out object value, params object[] tuple);
-        bool Remove(string functor, params object[] tuple);
+        void Store(FunctorInfo functor, object value, params object[] tuple);
+        bool Contains(FunctorInfo functor, out object value, params object[] tuple);
+        bool Contains(FunctorInfo functor, out Justification justification, out object value, params object[] tuple);
+        bool Remove(FunctorInfo functor, params object[] tuple);
 
-        void AddRule(string functor, Rule rule);
-        bool ContainsRule(string functor, Rule rule);
-        IEnumerable<Rule> GetRules(string functor);
-        bool RemoveRule(string functor, Rule rule);
+        void AddRule(FunctorInfo functor, Rule rule);
+        bool ContainsRule(FunctorInfo functor, Rule rule);
+        IEnumerable<Rule> GetRules(FunctorInfo functor);
+        bool RemoveRule(FunctorInfo functor, Rule rule);
 
         void AddConstraint(Constraint constraint);
         bool ContainsConstraint(Constraint constraint);
@@ -33,8 +32,8 @@ namespace Logic.Collections
 
         bool CheckConstraints();
 
-        IEnumerable<Justification> Match(string functor, Mode mode, object[] pattern, RuleSettings settings);
-        int Count(string functor, Mode mode, object[] pattern);
+        IEnumerable<Justification> Match(FunctorInfo functor, Mode mode, object[] pattern, RuleSettings settings);
+        int Count(FunctorInfo functor, Mode mode, object[] pattern);
 
         IKnowledgebase Scope();
         IKnowledgebase Commit();

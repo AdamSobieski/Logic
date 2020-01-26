@@ -14,8 +14,6 @@ namespace Logic.Collections
     {
         bool IsScope { get; }
 
-        int Columns { get; }
-
         void Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);

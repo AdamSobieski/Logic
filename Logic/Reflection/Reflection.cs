@@ -166,7 +166,7 @@ namespace Logic.Reflection
         {
             if (obj is RuleInfo other)
             {
-                return Equals(other);
+                return object.ReferenceEquals(this, other) || Equals(other);
             }
             else
             {
@@ -191,19 +191,19 @@ namespace Logic.Reflection
     {
         public abstract Type FunctorType { get; }
 
+        public abstract ParameterInfo[] GetParameters();
+
         public abstract Type DeclaringType { get; }
 
         public abstract Type ReflectedType { get; }
 
         public abstract string Name { get; }
 
-        public abstract ParameterInfo[] GetParameters();
-
         public override bool Equals(object obj)
         {
             if (obj is FunctorInfo other)
             {
-                return Equals(other);
+                return object.ReferenceEquals(this, other) || Equals(other);
             }
             else
             {
