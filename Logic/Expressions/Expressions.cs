@@ -32,7 +32,7 @@ namespace Logic.Expressions
         {
             return new VariableExpression(name, type);
         }
-        public static CompoundExpression Compound(FunctorInfo functor, params Expression[] arguments)
+        public static CompoundExpression Compound(FunctorInfo functor, params TermExpression[] arguments)
         {
             return new CompoundExpression(functor, arguments);
         }
@@ -144,27 +144,27 @@ namespace Logic.Expressions
 
     public sealed class CompoundExpression : Expression
     {
-        internal CompoundExpression(FunctorInfo functor, Expression[] arguments)
+        internal CompoundExpression(FunctorInfo functor, TermExpression[] arguments)
         {
             m_functor = functor;
             int length = arguments.Length;
             var parameters = functor.GetParameters();
             var params_length = parameters.Length;
             if (params_length != length) throw new ArgumentException("", nameof(arguments));
-            var list = new List<Expression>(length);
+            var list = new List<TermExpression>(length);
             for (int i = 0; i < length; ++i)
             {
                 var argument = arguments[i];
                 if (!parameters[i].ParameterType.IsAssignableFrom(argument.Type)) throw new ArgumentException("", nameof(arguments));
                 list.Add(argument);
             }
-            m_arguments = new ReadOnlyCollection<Expression>(list);
+            m_arguments = new ReadOnlyCollection<TermExpression>(list);
         }
         readonly FunctorInfo m_functor;
-        readonly ReadOnlyCollection<Expression> m_arguments;
+        readonly ReadOnlyCollection<TermExpression> m_arguments;
 
         public FunctorInfo Functor => m_functor;
-        public ReadOnlyCollection<Expression> Arguments => m_arguments;
+        public ReadOnlyCollection<TermExpression> Arguments => m_arguments;
         public override Type Type => m_functor.FunctorType;
         public override ExpressionType ExpressionType => ExpressionType.Compound;
 
@@ -191,16 +191,16 @@ namespace Logic.Expressions
 
     public sealed class EqualExpression : Expression
     {
-        internal EqualExpression(Expression left, Expression right)
+        internal EqualExpression(CompoundExpression left, TermExpression right)
         {
             m_left = left;
             m_right = right;
         }
-        readonly Expression m_left;
-        readonly Expression m_right;
+        readonly CompoundExpression m_left;
+        readonly TermExpression m_right;
 
-        public Expression Left => m_left;
-        public Expression Right => m_right;
+        public CompoundExpression Left => m_left;
+        public TermExpression Right => m_right;
 
         public override Type Type => typeof(bool);
         public override ExpressionType ExpressionType => ExpressionType.Equal;
@@ -219,51 +219,48 @@ namespace Logic.Expressions
 
         public IEnumerable<Justification> Evaluate(IKnowledgebase kb, RuleSettings settings)
         {
-            if (m_left is CompoundExpression compound)
+            var args = m_left.Arguments;
+            var count = args.Count;
+            object[] pattern = new object[count + 1];
+            Dictionary<VariableExpression, Variable> mapping = new Dictionary<VariableExpression, Variable>();
+
+            for (int i = 0; i < count; ++i)
             {
-                var args = compound.Arguments;
-                var count = args.Count;
-                object[] pattern = new object[count + 1];
-                Dictionary<VariableExpression, Variable> mapping = new Dictionary<VariableExpression, Variable>();
-                for (int i = 0; i < count; ++i)
+                if (args[i] is ConstantExpression constant)
                 {
-                    if (args[i] is ConstantExpression constant)
-                    {
-                        pattern[i + 1] = constant.Value;
-                    }
-                    else if (args[i] is VariableExpression variable)
-                    {
-                        Logic.Variable x;
-                        if (!mapping.TryGetValue(variable, out x))
-                        {
-                            x = new Variable();
-                            mapping.Add(variable, x);
-                        }
-                        pattern[i + 1] = x;
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
+                    pattern[i + 1] = constant.Value;
                 }
-                if (m_right is ConstantExpression constant2)
-                {
-                    pattern[0] = constant2.Value;
-                }
-                else if (m_right is VariableExpression variable2)
+                else if (args[i] is VariableExpression variable)
                 {
                     Logic.Variable x;
-                    if (!mapping.TryGetValue(variable2, out x))
+                    if (!mapping.TryGetValue(variable, out x))
                     {
                         x = new Variable();
-                        mapping.Add(variable2, x);
+                        mapping.Add(variable, x);
                     }
-                    pattern[0] = x;
+                    pattern[i + 1] = x;
                 }
-
-                return kb.Match(compound.Functor, Mode.StoredAndDerivedAdditions, pattern, settings);
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
-            else throw new NotImplementedException();
+            if (m_right is ConstantExpression constant2)
+            {
+                pattern[0] = constant2.Value;
+            }
+            else if (m_right is VariableExpression variable2)
+            {
+                Logic.Variable x;
+                if (!mapping.TryGetValue(variable2, out x))
+                {
+                    x = new Variable();
+                    mapping.Add(variable2, x);
+                }
+                pattern[0] = x;
+            }
+
+            return kb.Match(m_left.Functor, Mode.StoredAndDerivedAdditions, pattern, settings);
         }
     }
 
