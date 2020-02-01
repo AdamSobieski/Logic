@@ -1,5 +1,7 @@
 ﻿using Logic.Explanation;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Logic.Collections
 {
@@ -10,11 +12,12 @@ namespace Logic.Collections
         StoredAndDerivedAdditions = 5
     }
 
-    public interface IStorage
+    public interface IStorage : INotifyCollectionChanged, INotifyPropertyChanged
     {
         bool IsScope { get; }
+        int Count { get; }
 
-        void Store(object value, params object[] tuple);
+        bool Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
         bool Remove(params object[] tuple);
@@ -29,6 +32,6 @@ namespace Logic.Collections
         IStorage Rollback();
 
         IEnumerable<Justification> Match(Mode mode, object[] pattern, RuleSettings settings);
-        int Count(Mode mode, object[] pattern);
+        int CountMatch(Mode mode, object[] pattern);
     }
 }
