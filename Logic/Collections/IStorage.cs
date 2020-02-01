@@ -15,12 +15,13 @@ namespace Logic.Collections
     public interface IStorage : INotifyCollectionChanged, INotifyPropertyChanged
     {
         bool IsScope { get; }
-        int Count { get; }
 
         bool Store(object value, params object[] tuple);
         bool Contains(Mode mode, out object value, params object[] tuple);
         bool Contains(Mode mode, out Justification justification, out object value, params object[] tuple);
         bool Remove(params object[] tuple);
+
+        int Count { get; }
 
         void AddRule(Rule rule);
         bool ContainsRule(Rule rule);
